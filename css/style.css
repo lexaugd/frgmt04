@@ -1524,12 +1524,19 @@ header {
         text-align: center; /* Center all password terminal content */
     }
     
-    /* Password result mobile centering */
+    /* Password result mobile centering and overflow fix */
     #password-result {
         margin-left: auto;
         margin-right: auto;
-        max-width: 90%;
+        max-width: 95%;
+        width: 100%;
         text-align: center !important;
+        word-break: break-word; /* Break long words */
+        overflow-wrap: break-word; /* Modern browsers */
+        hyphens: auto; /* Add hyphens for better breaking */
+        font-size: 0.9rem; /* Slightly smaller on mobile */
+        line-height: 1.4; /* Better line spacing */
+        padding: var(--space-sm) var(--space-xs); /* Reduce padding on mobile */
     }
     
     /* Consciousness widget positioning handled by dedicated media query above */
@@ -1679,6 +1686,20 @@ header {
         font-size: 0.7rem;
         min-height: 2.2rem; /* Consistent mobile height */
         gap: 0.4rem; /* Consistent gap */
+    }
+    
+    /* Password result extra small screen optimization */
+    @media screen and (max-width: 480px) {
+        #password-result {
+            font-size: 0.8rem; /* Even smaller text on very small screens */
+            max-width: 98%; /* Use almost full width */
+            padding: var(--space-xs); /* Minimal padding */
+        }
+        
+        .terminal-password {
+            padding: var(--space-xs);
+            font-size: 1rem;
+        }
     }
     
     /* Small screen optimization (≤620px) - Icon only */
