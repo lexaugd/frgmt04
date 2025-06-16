@@ -1467,6 +1467,50 @@ function initializeMobileInteractions() {
     if (Config.debugMode) console.log('Mobile interactions initialized for', isMobile ? 'mobile' : 'desktop');
 }
 
+// Scroll performance optimization - pause animations during scroll
+function initializeScrollOptimization() {
+    let isScrolling = false;
+    let scrollTimeout;
+    
+    function pauseAnimationsDuringScroll() {
+        if (!isScrolling) {
+            isScrolling = true;
+            document.body.classList.add('scrolling');
+            
+            // Pause scan line animations on mobile
+            if (isMobile) {
+                const scanLines = document.querySelectorAll('.scan-line, .scan-line-2, .corrupted-scan-line');
+                scanLines.forEach(line => {
+                    line.style.animationPlayState = 'paused';
+                });
+            }
+            
+            if (Config.debugMode) console.log('Animations paused for scroll');
+        }
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            isScrolling = false;
+            document.body.classList.remove('scrolling');
+            
+            // Resume animations
+            if (isMobile) {
+                const scanLines = document.querySelectorAll('.scan-line, .scan-line-2, .corrupted-scan-line');
+                scanLines.forEach(line => {
+                    line.style.animationPlayState = 'running';
+                });
+            }
+            
+            if (Config.debugMode) console.log('Animations resumed after scroll');
+        }, 150);
+    }
+    
+    // Use passive listener for better performance
+    document.addEventListener('scroll', pauseAnimationsDuringScroll, { passive: true });
+    
+    if (Config.debugMode) console.log('Scroll optimization initialized');
+}
+
 function applyTextCorruption() {
     if (!Config.enableEffects) return;
     
@@ -1815,6 +1859,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize mobile touch interactions
     initializeMobileInteractions();
+    
+    // Initialize scroll performance optimization
+    initializeScrollOptimization();
     
     const passwordPrompt = document.getElementById('password-prompt');
     const passwordInput = document.getElementById('password-input');

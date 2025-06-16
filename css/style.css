@@ -73,7 +73,9 @@ html, body {
     background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%), url('../assets/images/bg.png') center/cover no-repeat, var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Dynamic viewport height for modern browsers */
+    min-height: -webkit-fill-available; /* iOS Safari fallback */
     width: 100%;
     overflow-x: hidden;
     animation: background-flicker var(--flicker-duration) infinite;
@@ -152,7 +154,7 @@ main {
     transition: all 0.3s ease;
     text-transform: lowercase;
     letter-spacing: 0.04em;
-    will-change: transform;
+    /* will-change: transform; - removed for GPU optimization */
     transform: translate3d(0, 0, 0);
 }
 
@@ -226,7 +228,7 @@ main {
     padding: var(--space-lg);
     box-shadow: 0 2px 16px 2px rgba(122, 155, 184, 0.12);
     transition: all 0.3s ease;
-    will-change: transform;
+    /* will-change: transform; - removed for GPU optimization */
     transform: translate3d(0, 0, 0);
 }
 
@@ -272,7 +274,9 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh; /* Dynamic viewport height */
+    height: -webkit-fill-available; /* iOS Safari */
     text-align: center;
 }
 
@@ -332,13 +336,13 @@ main {
     border-radius: var(--radius-lg);
     box-shadow: 0 2px 16px 2px rgba(122, 155, 184, 0.12);
     transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-    will-change: transform, box-shadow;
     transform: translate3d(0, 0, 0);
 }
 
 /* Only apply hover effects on devices that support proper hover (not touch) */
 @media (hover: hover) {
     .fragment-card:hover {
+        will-change: transform, box-shadow; /* Only during interaction */
         transform: translate3d(0, -2px, 0);
         box-shadow: 0 4px 20px 4px rgba(122, 155, 184, 0.2);
     }
@@ -377,7 +381,7 @@ main {
                 opacity 0.4s ease,
                 padding-top 0.4s ease,
                 border-color 0.4s ease 0.2s; /* Delay border color change */
-    will-change: max-height, opacity;
+    /* will-change removed for better GPU memory management */
 }
 
 .fragment-card.expanded .fragment-details {
@@ -2090,6 +2094,28 @@ header {
 
 /* Better touch target sizes on mobile */
 @media (max-width: 767px) {
+    /* Hide performance-heavy scan lines on mobile */
+    .scan-line, .scan-line-2, .corrupted-scan-line {
+        display: none !important;
+    }
+    
+    /* Simplify background for better scroll performance */
+    body {
+        background: var(--color-bg); /* Simple solid background */
+        animation: none; /* Remove background flicker */
+    }
+    
+    body::before, body::after {
+        opacity: 0.3; /* Reduce overlay complexity */
+    }
+    
+    /* Convert fixed positioning to absolute for consciousness widget */
+    #consciousness-widget {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+    }
+    
     /* Better touch targets for all buttons on mobile */
     .fragment-card .btn-neural-primary,
     .fragment-card .btn-neural-secondary {
@@ -2113,4 +2139,20 @@ header {
         opacity: 1 !important;
         border-top: 1px solid var(--color-accent);
     }
+}
+
+/* Scroll performance optimization classes */
+.scrolling {
+    /* Disable expensive effects during scroll */
+}
+
+.scrolling .glitch,
+.scrolling .glitch-intense,
+.scrolling .glitch-subtle {
+    animation-play-state: paused !important;
+}
+
+.scrolling body::before,
+.scrolling body::after {
+    animation-play-state: paused !important;
 }
