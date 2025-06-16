@@ -1588,7 +1588,7 @@ header {
     .password-field {
         width: 180px;
         font-size: 1.1rem;
-        touch-action: pan-y pinch-zoom; /* Allow vertical scrolling + pinch zoom */
+        touch-action: manipulation;
     }
     
     .terminal-password {
@@ -2278,11 +2278,11 @@ header {
     
     .image-card {
         cursor: pointer;
-        touch-action: pan-y pinch-zoom; /* Allow vertical scrolling + pinch zoom */
+        touch-action: manipulation;
     }
     
     .fragment-card {
-        touch-action: pan-y pinch-zoom; /* Allow vertical scrolling + pinch zoom */
+        touch-action: manipulation;
     }
     
     /* Fragment details collapsed by default on mobile - unified expanded state */
