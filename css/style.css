@@ -397,10 +397,11 @@ main {
 }
 
 .fragment-card.expanded .fragment-details {
-    max-height: 400px; /* Generous but specific value for smooth animation */
-    padding: var(--space-md);
-    opacity: 1;
-    border-top-color: var(--color-accent); /* Only change the color, border exists */
+    max-height: 400px !important; /* Generous but specific value for smooth animation */
+    padding: var(--space-md) !important;
+    opacity: 1 !important;
+    border-top-color: var(--color-accent) !important; /* Only change the color, border exists */
+    overflow: visible !important; /* Override mobile hidden */
 }
 
 .audio-player {

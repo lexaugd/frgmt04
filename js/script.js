@@ -1991,19 +1991,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }, { passive: true });
             
             card.addEventListener('touchend', (e) => {
-                // Don't interfere with button clicks - CRITICAL FIX
-                if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                // Improved button detection - check if touch is on button or its children
+                const touchedElement = e.target;
+                const isButton = touchedElement.closest('button') || 
+                                touchedElement.closest('.btn-neural-primary') || 
+                                touchedElement.closest('.btn-neural-secondary') ||
+                                touchedElement.classList.contains('btn-neural-primary') ||
+                                touchedElement.classList.contains('btn-neural-secondary');
+                
+                // Don't interfere with button clicks
+                if (isButton) {
                     return;
                 }
                 
                 const touchDuration = Date.now() - touchStartTime;
                 
-                // Only toggle if it was a quick tap (not a scroll)
+                // Only toggle if it was a quick tap (not a scroll) and not on a button
                 if (!hasMoved && touchDuration < 500) {
-                    e.preventDefault();
+                    // Use passive approach - don't preventDefault to avoid blocking other interactions
                     toggleFragment();
                 }
-            }, { passive: false });
+            }, { passive: true });
             
             // Click event handling (desktop + mobile fallback)
             button.addEventListener('click', (e) => {
@@ -2011,13 +2019,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.stopPropagation();
                 toggleFragment();
             });
-            
-            // Prevent double-tap zoom on mobile
-            card.addEventListener('touchend', (e) => {
-                if (e.touches.length === 0) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
         });
         
         if (Config.debugMode) {
