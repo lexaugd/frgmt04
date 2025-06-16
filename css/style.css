@@ -1485,10 +1485,13 @@ header {
         width: 100%;
     }
     
-    /* Disable problematic hover effects on mobile */
+    /* Disable problematic hover effects on mobile - completely remove hover */
     .image-card:hover {
-        transform: none;
-        z-index: 1;
+        transform: none !important;
+        z-index: 1 !important;
+        box-shadow: none !important;
+        border-color: inherit !important;
+        background-color: inherit !important;
     }
     
     /* Password input mobile optimization */
@@ -2182,16 +2185,17 @@ header {
                     border-color 0.4s ease 0.2s;
     }
     
-    /* Override any expanded states from desktop */
-    .fragment-card:not(.mobile-tap-expanded) .fragment-details {
+    /* Override any expanded states from desktop, but allow both mobile-tap-expanded AND expanded */
+    .fragment-card:not(.mobile-tap-expanded):not(.expanded) .fragment-details {
         max-height: 0 !important;
         opacity: 0 !important;
         padding: 0 var(--space-md) 0 var(--space-md) !important;
         border-top: 1px solid transparent !important;
     }
     
-    /* Expanded state for mobile tap interactions */
-    .fragment-card.mobile-tap-expanded .fragment-details {
+    /* Expanded state for mobile tap interactions OR desktop button clicks */
+    .fragment-card.mobile-tap-expanded .fragment-details,
+    .fragment-card.expanded .fragment-details {
         max-height: 400px !important;
         opacity: 1 !important;
         padding: var(--space-md) !important;
