@@ -6,6 +6,11 @@ const Config = {
     productionMode: window.location.protocol === 'https:', // Auto-detect production vs local
     enableServiceWorker: false, // Dedicated toggle for service worker (disabled due to caching issues)
     
+    // Performance detection
+    isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+    isTablet: /iPad|Android/i.test(navigator.userAgent) && window.innerWidth >= 768 && window.innerWidth <= 1023,
+    isLowEndDevice: navigator.hardwareConcurrency <= 2 || navigator.deviceMemory <= 2,
+    
     // Essential settings
     glitchSpeed: 100,          // milliseconds between glitches
     animationQuality: 1.0,     // 0.5 = half speed, 1.0 = full speed
@@ -79,6 +84,71 @@ const Config = {
         debug: true                      // show debug messages for possession events
     },
     
+    // Auto-detect performance level and adjust settings
+    detectPerformanceLevel() {
+        const isMobile = this.isMobile;
+        const isTablet = this.isTablet;
+        const isLowEnd = this.isLowEndDevice;
+        const hasReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (hasReducedMotion || isLowEnd) {
+            return 'MINIMAL';
+        } else if (isMobile && !isTablet) {
+            return 'MOBILE';
+        } else if (isTablet) {
+            return 'TABLET';
+        } else {
+            return 'DESKTOP';
+        }
+    },
+    
+    // Apply performance-based settings
+    applyPerformanceSettings() {
+        const level = this.detectPerformanceLevel();
+        
+        switch (level) {
+            case 'MINIMAL':
+                this.enableEffects = false;
+                this.scanLines.enableScanLines = false;
+                this.animationQuality = 0;
+                this.glitchSpeed = 1000; // Much slower
+                this.corruptionCooldown = 30000; // Much less frequent
+                this.fragmentAnimationDuration = 150; // Faster
+                break;
+                
+            case 'MOBILE':
+                this.scanLines.enableScanLines = false; // Disable scan lines on mobile
+                this.animationQuality = 0.5;
+                this.glitchSpeed = 200;
+                this.corruptionCooldown = 15000;
+                this.fragmentAnimationDuration = 200;
+                this.scanLines.large.enable = false;
+                this.scanLines.small.enable = false;
+                break;
+                
+            case 'TABLET':
+                this.animationQuality = 0.7;
+                this.glitchSpeed = 150;
+                this.scanLines.large.opacity = 0.05;
+                this.scanLines.small.enable = false;
+                this.scanLines.large.speed = 8000; // Slower
+                break;
+                
+            case 'DESKTOP':
+                // Keep full quality
+                break;
+        }
+        
+        if (this.debugMode) {
+            console.log(`Performance level: ${level}`);
+            console.log('Applied settings:', {
+                enableEffects: this.enableEffects,
+                scanLines: this.scanLines.enableScanLines,
+                animationQuality: this.animationQuality
+            });
+        }
+    },
+    
     // Simple quality presets
     quality: {
         HIGH: { 
@@ -150,4 +220,7 @@ const Config = {
         
         if (this.debugMode) console.log('Config updated:', newSettings);
     }
-}; 
+};
+
+// Auto-apply performance settings on load
+Config.applyPerformanceSettings(); 

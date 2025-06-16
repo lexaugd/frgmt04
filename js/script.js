@@ -15,6 +15,11 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+// Performance detection for mobile browsers
+const isLowEndMobile = isMobile && (navigator.hardwareConcurrency <= 2 || navigator.deviceMemory <= 2);
+const isAndroidChrome = /Android.*Chrome/i.test(navigator.userAgent);
+const isAndroidFirefox = /Android.*Firefox/i.test(navigator.userAgent);
+
 // Glitch characters for text corruption
 const glitchCharacters = ['█', '▓', '░', '▒', '▄', '▀', '■', '□', '▪', '▫', '◆', '◇', '◼', '◻', '⬛', '⬜'];
 
@@ -41,6 +46,116 @@ function throttle(func, delay) {
             }, delay - (currentTime - lastExecTime));
         }
     };
+}
+
+// Enhanced mobile touch interaction system
+function initializeMobileTouchOptimizations() {
+    if (!isMobile) return;
+    
+    // Add touch class to body for CSS targeting
+    document.body.classList.add('using-touch');
+    
+    // Disable hover effects on struggling mobile browsers
+    if (isLowEndMobile || isAndroidChrome || isAndroidFirefox) {
+        document.body.classList.add('disable-hover');
+        
+        // Add CSS to disable hover effects
+        const style = document.createElement('style');
+        style.textContent = `
+            .disable-hover .image-card:hover,
+            .disable-hover .fragment-card:hover,
+            .disable-hover .neural-card:hover {
+                transform: none !important;
+                box-shadow: none !important;
+                animation: none !important;
+            }
+            
+            .disable-hover .image-card:active,
+            .disable-hover .fragment-card:active {
+                transform: scale(0.95) !important;
+                transition: transform 0.1s ease !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        if (Config.debugMode) {
+            console.log('Hover effects disabled for low-end mobile browser');
+        }
+    }
+    
+    // Enhanced touch feedback for image cards
+    const imageCards = document.querySelectorAll('.image-card');
+    imageCards.forEach(card => {
+        let touchStartTime = 0;
+        let hasMoved = false;
+        
+        card.addEventListener('touchstart', (e) => {
+            touchStartTime = Date.now();
+            hasMoved = false;
+            
+            // Immediate visual feedback
+            card.style.transform = 'scale(0.98)';
+            card.style.transition = 'transform 0.1s ease';
+        }, { passive: true });
+        
+        card.addEventListener('touchmove', (e) => {
+            hasMoved = true;
+            // Reset scale if user starts scrolling
+            card.style.transform = 'scale(1)';
+        }, { passive: true });
+        
+        card.addEventListener('touchend', (e) => {
+            const touchDuration = Date.now() - touchStartTime;
+            
+            // Reset scale
+            card.style.transform = 'scale(1)';
+            
+            // Only expand if it was a quick tap (not scroll)
+            if (!hasMoved && touchDuration < 300) {
+                // Toggle expanded state
+                if (card.classList.contains('tap-expanded')) {
+                    card.classList.remove('tap-expanded');
+                } else {
+                    // Remove expanded from other cards
+                    imageCards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            otherCard.classList.remove('tap-expanded');
+                        }
+                    });
+                    card.classList.add('tap-expanded');
+                    
+                    // Auto-collapse after 3 seconds
+                    setTimeout(() => {
+                        card.classList.remove('tap-expanded');
+                    }, 3000);
+                }
+            }
+        }, { passive: true });
+    });
+    
+    // Optimize scroll performance on mobile
+    let scrollTimeout;
+    document.addEventListener('scroll', () => {
+        // Pause heavy animations during scroll
+        document.body.classList.add('scrolling');
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            document.body.classList.remove('scrolling');
+        }, 150);
+    }, { passive: true });
+    
+    if (Config.debugMode) {
+        console.log('Mobile touch optimizations initialized');
+        console.log('Device info:', {
+            isMobile,
+            isLowEndMobile,
+            isAndroidChrome,
+            isAndroidFirefox,
+            hardwareConcurrency: navigator.hardwareConcurrency,
+            deviceMemory: navigator.deviceMemory
+        });
+    }
 }
 
 // Unified animation loop
@@ -1793,6 +1908,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize scroll performance optimization
     initializeScrollOptimization();
+    
+    // Initialize mobile touch optimizations
+    initializeMobileTouchOptimizations();
     
     // Initialize unified fragment card interactions
     initializeUnifiedFragmentInteractions();
