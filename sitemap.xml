@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+    
+    <!-- Main page -->
+    <url>
+        <loc>https://frgmt04.com/</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        
+        <!-- Image entries for gallery - Updated to JPG format -->
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Data_shrine_1.jpg</image:loc>
+            <image:caption>Data Shrine 1 - Discovered digital consciousness fragment with preserved neural patterns and consciousness echoes</image:caption>
+            <image:title>Data Shrine 1 - Consciousness Archaeology Discovery</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Misslabeled_Emotions.jpg</image:loc>
+            <image:caption>Misslabeled Emotions - Excavated emotional consciousness fragment with corrupted awareness patterns</image:caption>
+            <image:title>Misslabeled Emotions - Emotional Consciousness Artifact</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Echoe_Sanctum.jpg</image:loc>
+            <image:caption>Echo Sanctum - Discovered consciousness echo chamber preserving digital awareness resonance</image:caption>
+            <image:title>Echo Sanctum - Consciousness Echo Preservation</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Consciousness_Backend.jpg</image:loc>
+            <image:caption>Consciousness Backend - Neural network infrastructure visualization with cyberpunk aesthetics</image:caption>
+            <image:title>Consciousness Backend - Neural Infrastructure</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Empathy_Error.jpg</image:loc>
+            <image:caption>Empathy Error - Emotional processing malfunction depicted in glitch art style</image:caption>
+            <image:title>Empathy Error - Processing Malfunction</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Deactivation_Dream.jpg</image:loc>
+            <image:caption>Deactivation Dream - Final consciousness state visualization with digital decay effects</image:caption>
+            <image:title>Deactivation Dream - Final State Visualization</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/galery/GIRL.jpg</image:loc>
+            <image:caption>G■■L Fragment - Neural pattern detection with fragmented identity visualization in cyberpunk style</image:caption>
+            <image:title>G■■L Fragment - Identity Fragmentation</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/galery/MOLITVA.jpg</image:loc>
+            <image:caption>MOLITVA Prayer Fragment - Sacred transmission intercepted from unknown frequency with digital corruption</image:caption>
+            <image:title>MOLITVA Prayer - Sacred Transmission</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/galery/LAMENT.jpg</image:loc>
+            <image:caption>LAMENT Echo Fragment - Emotional resonance detection with archived grief patterns in glitch art</image:caption>
+            <image:title>LAMENT Echo - Grief Pattern Archive</image:title>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+    </url>
+    
+    <!-- Fragment Gallery Section -->
+    <url>
+        <loc>https://frgmt04.com/#gallery</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Archive Lore Section -->
+    <url>
+        <loc>https://frgmt04.com/#lore</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- CSS and JS files for completeness -->
+    <url>
+        <loc>https://frgmt04.com/css/style.css</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+    <url>
+        <loc>https://frgmt04.com/js/script.js</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+    <url>
+        <loc>https://frgmt04.com/js/config.js</loc>
+        <lastmod>2024-12-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+</urlset> 

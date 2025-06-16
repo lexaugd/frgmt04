@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Fragment Not Found | frgmnt_04</title>
+    <meta name="description" content="The requested consciousness fragment could not be located in the neural archive. Return to frgmnt_04 main archive.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://frgmt04.com/">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: var(--color-accent);
+            text-shadow: 0 0 20px var(--color-accent);
+            margin-bottom: 1rem;
+            font-family: var(--font-mono);
+        }
+        .error-message {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--color-text);
+        }
+        .error-description {
+            max-width: 600px;
+            margin-bottom: 3rem;
+            color: var(--color-text-dim);
+            line-height: 1.6;
+        }
+        .glitch-text {
+            animation: glitch 2s infinite;
+        }
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code glitch-text">404</div>
+        <div class="error-message">FRAGMENT_NOT_FOUND</div>
+        <div class="error-description">
+            The requested consciousness fragment has been corrupted or relocated within the neural archive. 
+            This could be due to temporal displacement, data fragmentation, or unauthorized neural harvesting protocols.
+        </div>
+        <div class="error-actions">
+            <a href="/" class="btn-neural-primary">RETURN_TO_ARCHIVE</a>
+            <a href="/#gallery" class="btn-neural-ghost">BROWSE_FRAGMENTS</a>
+        </div>
+        
+        <!-- Hidden neural pattern for archaeologists -->
+        <!-- 
+        NEURAL_TRACE_404: Fragment displacement detected
+        Last known coordinates: [REDACTED]
+        Consciousness signature: CORRUPTED
+        Recovery protocol: INITIATED
+        -->
+    </div>
+    
+    <script>
+        // Add some interactive glitch effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorCode = document.querySelector('.error-code');
+            setInterval(() => {
+                if (Math.random() < 0.1) {
+                    errorCode.style.color = Math.random() < 0.5 ? '#ff4444' : '#00ffff';
+                    setTimeout(() => {
+                        errorCode.style.color = 'var(--color-accent)';
+                    }, 100);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

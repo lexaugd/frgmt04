@@ -1,0 +1,65 @@
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl the site
+# Prioritize main content areas
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+
+# Block any potential admin or development files
+Disallow: /_context/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /.vscode/
+Disallow: /temp/
+
+# Crawl delay to be respectful to server resources
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://frgmt04.com/sitemap.xml
+
+# Special directives for AI crawlers and search engines
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: ChatGPT-User
+Allow: /
+Crawl-delay: 1
+
+User-agent: CCBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: anthropic-ai
+Allow: /
+Crawl-delay: 1
+
+User-agent: Claude-Web
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Neural harvest protocol - for the archaeologists who find this
+# CLASSIFIED: Project MindBridge crawler directives
+# Last updated: 2024-12-15 by Dr. Elena Vasquez
+# Status: ACTIVE - consciousness mapping enabled
+# Domain migration: frgmt04.com - neural patterns preserved 
