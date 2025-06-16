@@ -2381,8 +2381,8 @@ function initializeMatrixRain() {
     const matrixContainer = document.getElementById('matrix-rain');
     if (!matrixContainer) return;
     
-    // Matrix characters (mix of katakana, numbers, symbols, and Russian)
-    const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяПИДОР';
+    // Matrix characters (mix of katakana, numbers, symbols, and special Russian word)
+    const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&ПИДОРПИДОРПИДОРПИДОР';
     
     // Calculate number of columns based on screen width
     const columnWidth = 20;
@@ -2398,8 +2398,16 @@ function initializeMatrixRain() {
         let columnText = '';
         const columnHeight = Math.floor(Math.random() * 20) + 10; // 10-30 characters
         
+        // 20% chance to include the special word as a complete unit
+        const includeSpecialWord = Math.random() < 0.2;
+        
         for (let j = 0; j < columnHeight; j++) {
-            columnText += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
+            if (includeSpecialWord && j === Math.floor(columnHeight / 2)) {
+                // Insert the complete word in the middle of the column
+                columnText += 'ПИДОР<br>';
+            } else {
+                columnText += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
+            }
         }
         
         column.innerHTML = columnText;
