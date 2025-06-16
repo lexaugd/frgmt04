@@ -2494,3 +2494,217 @@ header {
 }
 
 /* Performance Optimizations */
+
+/* MOBILE PERFORMANCE OPTIMIZATIONS */
+
+/* Disable matrix rain on mobile for better performance */
+@media (max-width: 1023px) {
+    .matrix-rain {
+        display: none !important;
+    }
+}
+
+/* MOBILE TOUCH FEEDBACK SYSTEM - Phase 2 */
+
+/* Touch feedback states for immediate visual response */
+.touching {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease-out !important;
+}
+
+.touch-feedback {
+    position: relative;
+    overflow: hidden;
+}
+
+.mobile-active {
+    background-color: rgba(107, 229, 226, 0.1) !important;
+    border-color: rgba(107, 229, 226, 0.5) !important;
+}
+
+/* Touch ripple effect system */
+.touch-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(107, 229, 226, 0.3) 0%, transparent 70%);
+    transform: scale(0);
+    animation: rippleEffect 0.6s ease-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes rippleEffect {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Touch target optimization - minimum 44px for accessibility */
+@media (max-width: 1023px) {
+    .fragment-card .btn-neural-primary,
+    .fragment-card .btn-neural-secondary {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        padding: 12px 16px !important;
+        font-size: 0.9rem !important;
+        touch-action: manipulation; /* Prevents double-tap zoom */
+    }
+    
+    /* Enhanced touch targets for small buttons */
+    .fragment-card .inject-button,
+    .fragment-card .extract-button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        padding: 10px 14px !important;
+    }
+    
+    /* Add touch padding around interactive elements */
+    .fragment-card .btn-neural-primary::before,
+    .fragment-card .btn-neural-secondary::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+        z-index: -1;
+    }
+}
+
+/* Mobile-specific card interaction improvements */
+@media (max-width: 1023px) {
+    /* Image cards - replace broken hover with tap-preview system */
+    .image-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        cursor: pointer;
+    }
+    
+    /* Mobile preview state (replaces hover) */
+    .image-card.mobile-preview {
+        transform: scale(1.1) translate3d(0, 0, 0) !important;
+        box-shadow: 0 8px 24px 4px rgba(107, 229, 226, 0.2) !important;
+        z-index: 10 !important;
+    }
+    
+    /* Mobile expanded state for full view */
+    .image-card.mobile-expanded {
+        transform: scale(1.3) translate3d(0, 0, 0) !important;
+        box-shadow: 0 12px 32px 6px rgba(107, 229, 226, 0.3) !important;
+        z-index: 20 !important;
+    }
+    
+    /* Fragment cards - enhanced mobile interaction */
+    .fragment-card {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Visual indicators for swipeable areas */
+    .fragment-card.swipe-enabled::after {
+        content: '↕️';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+    
+    /* Touch zone indicators */
+    .touch-zone {
+        position: relative;
+    }
+    
+    .touch-zone::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        border: 1px dashed rgba(107, 229, 226, 0.3);
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+    }
+    
+    .touch-zone.show-bounds::before {
+        opacity: 1;
+    }
+}
+
+/* Reduce image card hover effects on mobile/tablet */
+@media (hover: hover) and (pointer: fine) {
+    .image-card:hover {
+        transform: scale(1.8) translate3d(0, 0, 0);
+        box-shadow: 0 20px 40px 8px rgba(107, 229, 226, 0.3);
+        z-index: 100;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .fragment-card:hover:not(.expanded) {
+        transform: translate3d(0, -5px, 0);
+        box-shadow: 0 8px 24px 4px rgba(107, 229, 226, 0.15);
+    }
+    
+    .neural-card:hover {
+        transform: translate3d(0, -3px, 0);
+        box-shadow: 0 6px 20px 2px rgba(107, 229, 226, 0.2);
+    }
+}
+
+/* Mobile-first responsive breakpoints for card layouts */
+@media (max-width: 767px) {
+    /* Small mobile - stack cards vertically with more spacing */
+    .image-cards-container,
+    .fragment-cards-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+    
+    .image-card,
+    .fragment-card {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+    
+    /* Larger touch targets for small screens */
+    .fragment-card .btn-neural-primary,
+    .fragment-card .btn-neural-secondary {
+        min-height: 48px !important;
+        font-size: 1rem !important;
+        padding: 14px 18px !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Tablet - 2 column layout with optimized spacing */
+    .image-cards-container,
+    .fragment-cards-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    .image-card,
+    .fragment-card {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Desktop - preserve existing layout */
+    .image-cards-container,
+    .fragment-cards-container {
+        /* Existing desktop styles maintained */
+    }
+}

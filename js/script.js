@@ -1912,6 +1912,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize mobile touch optimizations
     initializeMobileTouchOptimizations();
     
+    // Initialize enhanced mobile card interactions (Phase 3 & 4)
+    if (Config.isTouchPrimary) {
+        initializeEnhancedImageCardInteractions();
+        initializeEnhancedFragmentCardInteractions();
+    }
+    
     // Initialize unified fragment card interactions
     initializeUnifiedFragmentInteractions();
     
@@ -2553,5 +2559,304 @@ function initializeMatrixRain() {
     
     if (Config.debugMode) {
         console.log('🌧️ Matrix rain initialized with', numColumns, 'columns');
+    }
+}
+
+// MOBILE TOUCH FEEDBACK SYSTEM - Phase 2
+class MobileTouchFeedback {
+    constructor() {
+        this.config = Config.mobileInteraction;
+        this.activeRipples = new Set();
+    }
+    
+    // Create touch ripple effect
+    createRipple(element, x, y) {
+        if (!this.config.enableRippleEffect) return;
+        
+        const ripple = document.createElement('div');
+        ripple.className = 'touch-ripple';
+        
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 2;
+        
+        ripple.style.width = size + 'px';
+        ripple.style.height = size + 'px';
+        ripple.style.left = (x - rect.left - size / 2) + 'px';
+        ripple.style.top = (y - rect.top - size / 2) + 'px';
+        
+        element.appendChild(ripple);
+        this.activeRipples.add(ripple);
+        
+        // Remove ripple after animation
+        setTimeout(() => {
+            if (ripple.parentNode) {
+                ripple.parentNode.removeChild(ripple);
+            }
+            this.activeRipples.delete(ripple);
+        }, this.config.rippleDuration);
+    }
+    
+    // Add touch feedback to element
+    addTouchFeedback(element) {
+        if (!this.config.enableTouchFeedback) return;
+        
+        element.classList.add('touch-feedback');
+        
+        element.addEventListener('touchstart', (e) => {
+            element.classList.add('touching');
+            
+            // Create ripple effect
+            if (e.touches.length > 0) {
+                this.createRipple(element, e.touches[0].clientX, e.touches[0].clientY);
+            }
+            
+            // Haptic feedback
+            this.triggerHaptic();
+        }, { passive: true });
+        
+        element.addEventListener('touchend', () => {
+            setTimeout(() => {
+                element.classList.remove('touching');
+            }, this.config.touchFeedbackDuration);
+        }, { passive: true });
+        
+        element.addEventListener('touchcancel', () => {
+            element.classList.remove('touching');
+        }, { passive: true });
+    }
+    
+    // Trigger haptic feedback
+    triggerHaptic() {
+        if (this.config.enableHapticFeedback && navigator.vibrate) {
+            navigator.vibrate(this.config.hapticPattern);
+        }
+    }
+}
+
+// Initialize mobile touch feedback system
+const mobileTouchFeedback = new MobileTouchFeedback();
+
+// ENHANCED IMAGE CARD MOBILE INTERACTIONS - Phase 3
+function initializeEnhancedImageCardInteractions() {
+    if (!Config.isTouchPrimary) return; // Only for touch-primary devices
+    
+    const imageCards = document.querySelectorAll('.image-card');
+    let currentPreviewCard = null;
+    
+    imageCards.forEach(card => {
+        // Add touch feedback
+        mobileTouchFeedback.addTouchFeedback(card);
+        
+        let touchStartTime = 0;
+        let hasMoved = false;
+        let startY = 0;
+        
+        // Touch start
+        card.addEventListener('touchstart', (e) => {
+            // Reset cursor possession idle timer
+            if (cursorPossession) {
+                cursorPossession.resetIdle();
+            }
+            
+            touchStartTime = Date.now();
+            startY = e.touches[0].clientY;
+            hasMoved = false;
+            
+            if (Config.debugMode) {
+                console.log('Image card touch start:', card.querySelector('h3')?.textContent);
+            }
+        }, { passive: true });
+        
+        // Touch move detection
+        card.addEventListener('touchmove', (e) => {
+            const currentY = e.touches[0].clientY;
+            const moveDistance = Math.abs(currentY - startY);
+            
+            if (moveDistance > 10) {
+                hasMoved = true;
+            }
+        }, { passive: true });
+        
+        // Touch end - tap-to-preview system
+        card.addEventListener('touchend', (e) => {
+            // Reset cursor possession idle timer
+            if (cursorPossession) {
+                cursorPossession.resetIdle();
+            }
+            
+            const touchDuration = Date.now() - touchStartTime;
+            
+            // Only process if it was a quick tap (not a scroll)
+            if (!hasMoved && touchDuration < 500) {
+                this.handleImageCardTap(card);
+            }
+        }, { passive: true });
+    });
+    
+    // Handle image card tap interactions
+    this.handleImageCardTap = function(card) {
+        const isCurrentPreview = card === currentPreviewCard;
+        const hasPreview = card.classList.contains('mobile-preview');
+        const hasExpanded = card.classList.contains('mobile-expanded');
+        
+        // Clear all other cards
+        imageCards.forEach(otherCard => {
+            if (otherCard !== card) {
+                otherCard.classList.remove('mobile-preview', 'mobile-expanded');
+            }
+        });
+        
+        if (hasExpanded) {
+            // Expanded -> Normal
+            card.classList.remove('mobile-expanded');
+            currentPreviewCard = null;
+            if (Config.debugMode) console.log('Image card collapsed');
+        } else if (hasPreview) {
+            // Preview -> Expanded
+            card.classList.remove('mobile-preview');
+            card.classList.add('mobile-expanded');
+            if (Config.debugMode) console.log('Image card expanded');
+        } else {
+            // Normal -> Preview
+            card.classList.add('mobile-preview');
+            currentPreviewCard = card;
+            if (Config.debugMode) console.log('Image card preview');
+        }
+        
+        // Increase corruption on interaction
+        if (consciousnessMapper) {
+            consciousnessMapper.increaseCorruption();
+        }
+    };
+    
+    // Click outside to collapse expanded cards
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.image-card')) {
+            imageCards.forEach(card => {
+                card.classList.remove('mobile-preview', 'mobile-expanded');
+            });
+            currentPreviewCard = null;
+        }
+    });
+    
+    if (Config.debugMode) {
+        console.log('Enhanced image card interactions initialized for', imageCards.length, 'cards');
+    }
+}
+
+// ENHANCED FRAGMENT CARD MOBILE INTERACTIONS - Phase 4
+function initializeEnhancedFragmentCardInteractions() {
+    if (!Config.isTouchPrimary) return; // Only for touch-primary devices
+    
+    const fragmentCards = document.querySelectorAll('.fragment-card');
+    
+    fragmentCards.forEach(card => {
+        // Add touch feedback to the card
+        mobileTouchFeedback.addTouchFeedback(card);
+        
+        // Add touch feedback to buttons
+        const buttons = card.querySelectorAll('.btn-neural-primary, .btn-neural-secondary');
+        buttons.forEach(button => {
+            mobileTouchFeedback.addTouchFeedback(button);
+        });
+        
+        // Add swipe gesture support
+        if (Config.mobileInteraction.fragmentCardMode === 'enhanced-buttons' || 
+            Config.mobileInteraction.fragmentCardMode === 'hybrid') {
+            
+            card.classList.add('swipe-enabled');
+            this.addSwipeGestures(card);
+        }
+    });
+    
+    // Add swipe gesture functionality
+    this.addSwipeGestures = function(card) {
+        let startY = 0;
+        let startTime = 0;
+        let hasMoved = false;
+        
+        card.addEventListener('touchstart', (e) => {
+            // Don't interfere with button touches
+            if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                return;
+            }
+            
+            startY = e.touches[0].clientY;
+            startTime = Date.now();
+            hasMoved = false;
+        }, { passive: true });
+        
+        card.addEventListener('touchmove', (e) => {
+            // Don't interfere with button touches
+            if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                return;
+            }
+            
+            const currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            
+            if (Math.abs(deltaY) > 10) {
+                hasMoved = true;
+            }
+        }, { passive: true });
+        
+        card.addEventListener('touchend', (e) => {
+            // Don't interfere with button touches
+            if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                return;
+            }
+            
+            if (!hasMoved) return;
+            
+            const endY = e.changedTouches[0].clientY;
+            const deltaY = endY - startY;
+            const swipeTime = Date.now() - startTime;
+            const swipeSpeed = Math.abs(deltaY) / swipeTime;
+            
+            // Detect swipe gestures (minimum 50px movement, max 800ms duration)
+            if (Math.abs(deltaY) > 50 && swipeTime < 800 && swipeSpeed > 0.1) {
+                const isExpanded = card.classList.contains('expanded');
+                
+                if (deltaY < 0 && !isExpanded) {
+                    // Swipe up to expand
+                    this.toggleFragmentCard(card, true);
+                    if (Config.debugMode) console.log('Swipe up: expand fragment');
+                } else if (deltaY > 0 && isExpanded) {
+                    // Swipe down to collapse
+                    this.toggleFragmentCard(card, false);
+                    if (Config.debugMode) console.log('Swipe down: collapse fragment');
+                }
+            }
+        }, { passive: true });
+    };
+    
+    // Toggle fragment card (preserves existing functionality)
+    this.toggleFragmentCard = function(card, expand) {
+        const button = card.querySelector('.btn-neural-primary');
+        if (!button) return;
+        
+        if (expand) {
+            card.classList.add('expanded');
+            card.classList.add('neural-active');
+            button.textContent = '[collapse fragment]';
+        } else {
+            card.classList.remove('expanded');
+            card.classList.remove('neural-active');
+            button.textContent = '[view fragment]';
+        }
+        
+        // Increase corruption on interaction (preserve existing behavior)
+        if (consciousnessMapper) {
+            consciousnessMapper.increaseCorruption();
+        }
+        
+        // Reset cursor possession idle timer (preserve existing behavior)
+        if (cursorPossession) {
+            cursorPossession.resetIdle();
+        }
+    };
+    
+    if (Config.debugMode) {
+        console.log('Enhanced fragment card interactions initialized for', fragmentCards.length, 'cards');
     }
 }
