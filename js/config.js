@@ -4,6 +4,7 @@ const Config = {
     enableOptimizations: true,
     debugMode: false,  // Enable debug mode to see what's happening
     productionMode: window.location.protocol === 'https:', // Auto-detect production vs local
+    enableServiceWorker: false, // Dedicated toggle for service worker (disabled due to caching issues)
     
     // Essential settings
     glitchSpeed: 100,          // milliseconds between glitches

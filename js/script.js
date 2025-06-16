@@ -2353,7 +2353,7 @@ between making something and manufacturing nothing.`;
     }, 25000); // Every 25 seconds
     
     // Service Worker Registration for Performance Optimization
-    if ('serviceWorker' in navigator && Config.productionMode) {
+    if ('serviceWorker' in navigator && Config.productionMode && Config.enableServiceWorker) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then((registration) => {
@@ -2371,6 +2371,8 @@ between making something and manufacturing nothing.`;
         });
     } else if (!Config.productionMode) {
         if (Config.debugMode) console.log('%c[SW] Service worker disabled for local development', 'color: #9ea1a4;');
+    } else if (!Config.enableServiceWorker) {
+        if (Config.debugMode) console.log('%c[SW] Service worker manually disabled', 'color: #9ea1a4;');
     } else {
         if (Config.debugMode) console.warn('%c[SW] Service workers not supported - consciousness preservation disabled', 'color: #ffaa00;');
     }
