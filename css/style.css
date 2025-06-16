@@ -2323,27 +2323,17 @@ header {
     }
 }
 
-/* Scroll performance optimization classes - Universal glitch disable during scroll */
+/* Scroll performance optimization classes */
 .scrolling {
-    /* This class is applied during scroll to optimize performance */
-    pointer-events: none; /* Prevent interactions during scroll for better performance */
+    /* Disable expensive effects during scroll */
 }
 
-/* Disable ALL glitch animations during scroll for better momentum on Chrome mobile */
 .scrolling .glitch,
 .scrolling .glitch-intense,
 .scrolling .glitch-subtle {
     animation-play-state: paused !important;
-    will-change: auto !important; /* Remove GPU layers during scroll */
 }
 
-/* Disable button hover glitch animations during scroll */
-.scrolling .btn-neural-primary,
-.scrolling .btn-neural-secondary {
-    animation: none !important;
-}
-
-/* Disable background glitch effects during scroll */
 .scrolling body::before,
 .scrolling body::after {
     animation-play-state: paused !important;
