@@ -1961,14 +1961,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             
-            // Touch event handling (mobile)
+            // Touch event handling (mobile) - EXCLUDE BUTTONS
             card.addEventListener('touchstart', (e) => {
+                // Don't interfere with button clicks
+                if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                    return;
+                }
+                
                 touchStartTime = Date.now();
                 startY = e.touches[0].clientY;
                 hasMoved = false;
             }, { passive: true });
             
             card.addEventListener('touchmove', (e) => {
+                // Don't interfere with button clicks
+                if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                    return;
+                }
+                
                 const currentY = e.touches[0].clientY;
                 const moveDistance = Math.abs(currentY - startY);
                 
@@ -1979,6 +1989,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }, { passive: true });
             
             card.addEventListener('touchend', (e) => {
+                // Don't interfere with button clicks - CRITICAL FIX
+                if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
+                    return;
+                }
+                
                 const touchDuration = Date.now() - touchStartTime;
                 
                 // Only toggle if it was a quick tap (not a scroll)
@@ -2152,6 +2167,7 @@ between making something and manufacturing nothing.`;
     document.querySelectorAll('.btn-neural-secondary.inject-button').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation(); // Prevent event bubbling to card
             const injector = e.target.closest('.consciousness-injector');
             const audio = injector.querySelector('audio');
             const progressContainer = injector.querySelector('.consciousness-progress');
@@ -2234,6 +2250,7 @@ between making something and manufacturing nothing.`;
     document.querySelectorAll('.btn-neural-secondary.extract-button').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation(); // Prevent event bubbling to card
             const injector = e.target.closest('.consciousness-injector');
             const audio = injector.querySelector('audio');
             const source = audio.querySelector('source');
