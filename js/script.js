@@ -1476,45 +1476,45 @@ function initializeMobileCardInteractions() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (isMobile) {
-        // Fragment cards mobile tap handling
+        // Fragment cards mobile tap handling - use mobile-specific class
         document.querySelectorAll('.fragment-card').forEach(card => {
             let tapTimeout;
+            let startY = 0;
+            let hasMoved = false;
             
             card.addEventListener('touchstart', (e) => {
-                // Single tap to expand/collapse
+                startY = e.touches[0].clientY;
+                hasMoved = false;
+                
+                // Single tap to expand/collapse - only if not scrolling
                 tapTimeout = setTimeout(() => {
-                    if (!card.classList.contains('expanded')) {
-                        // Expand card
-                        card.classList.add('expanded');
-                        const details = card.querySelector('.fragment-details');
-                        if (details) {
-                            details.style.maxHeight = '400px';
-                            details.style.opacity = '1';
-                            details.style.paddingTop = 'var(--space-md)';
-                            details.style.borderTop = '1px solid var(--color-accent)';
+                    if (!hasMoved) {
+                        if (!card.classList.contains('mobile-tap-expanded')) {
+                            // Expand card
+                            card.classList.add('mobile-tap-expanded');
+                            if (Config.debugMode) console.log('Fragment card expanded via mobile tap');
+                        } else {
+                            // Collapse card
+                            card.classList.remove('mobile-tap-expanded');
+                            if (Config.debugMode) console.log('Fragment card collapsed via mobile tap');
                         }
-                        if (Config.debugMode) console.log('Fragment card expanded via touch');
-                    } else {
-                        // Collapse card
-                        card.classList.remove('expanded');
-                        const details = card.querySelector('.fragment-details');
-                        if (details) {
-                            details.style.maxHeight = '0px';
-                            details.style.opacity = '0';
-                            details.style.paddingTop = '0';
-                            details.style.borderTop = '1px solid transparent';
-                        }
-                        if (Config.debugMode) console.log('Fragment card collapsed via touch');
                     }
-                }, 50); // Short delay to handle scroll
+                }, 100); // Longer delay to better detect scroll vs tap
+            }, { passive: true });
+            
+            card.addEventListener('touchmove', (e) => {
+                const currentY = e.touches[0].clientY;
+                const deltaY = Math.abs(currentY - startY);
+                
+                // If finger moved more than 10px, consider it scrolling
+                if (deltaY > 10) {
+                    hasMoved = true;
+                    clearTimeout(tapTimeout); // Cancel tap if user is scrolling
+                }
             }, { passive: true });
             
             card.addEventListener('touchend', () => {
                 clearTimeout(tapTimeout);
-            }, { passive: true });
-            
-            card.addEventListener('touchmove', () => {
-                clearTimeout(tapTimeout); // Cancel tap if user starts scrolling
             }, { passive: true });
         });
         
