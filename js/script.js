@@ -1470,6 +1470,65 @@ function initializeUnifiedScrollHandler() {
     if (Config.debugMode) console.log('Unified scroll handler initialized');
 }
 
+// Glitch Toggle System - for testing Safari iOS rendering issues
+function initializeGlitchToggle() {
+    const glitchToggle = document.getElementById('glitch-toggle');
+    let glitchesEnabled = true;
+    
+    if (!glitchToggle) return;
+    
+    function updateGlitchState() {
+        if (glitchesEnabled) {
+            document.body.classList.remove('glitches-disabled');
+            glitchToggle.classList.remove('disabled');
+            glitchToggle.innerHTML = '<span class="neural-data-icon">⚡</span>[glitch_sys]';
+            if (Config.debugMode) console.log('Glitch effects enabled');
+        } else {
+            document.body.classList.add('glitches-disabled');
+            glitchToggle.classList.add('disabled');
+            glitchToggle.innerHTML = '<span class="neural-data-icon">❌</span>[glitch_off]';
+            if (Config.debugMode) console.log('Glitch effects disabled');
+        }
+    }
+    
+    glitchToggle.addEventListener('click', () => {
+        glitchesEnabled = !glitchesEnabled;
+        
+        // Update both CSS classes AND config settings
+        Config.enableEffects = glitchesEnabled;
+        Config.scanLines.enableScanLines = glitchesEnabled;
+        
+        updateGlitchState();
+        
+        // Force update scan lines based on new config
+        if (typeof updateScanLines === 'function') {
+            updateScanLines();
+        }
+        
+        // Store preference in localStorage
+        localStorage.setItem('glitchesEnabled', glitchesEnabled.toString());
+        
+        if (Config.debugMode) console.log('Config.enableEffects set to:', glitchesEnabled);
+    });
+    
+    // Load saved preference
+    const savedPreference = localStorage.getItem('glitchesEnabled');
+    if (savedPreference !== null) {
+        glitchesEnabled = savedPreference === 'true';
+        
+        // Apply saved preference to config
+        Config.enableEffects = glitchesEnabled;
+        Config.scanLines.enableScanLines = glitchesEnabled;
+        
+        updateGlitchState();
+        
+        // Update scan lines based on saved preference
+        if (typeof updateScanLines === 'function') {
+            updateScanLines();
+        }
+    }
+}
+
 // Modern touch interaction system - REMOVED
 // Replaced by unified fragment interaction system
 
@@ -1785,6 +1844,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize unified scroll handler (replaces separate scroll systems)
     initializeUnifiedScrollHandler();
+    
+    // Initialize glitch toggle system
+    initializeGlitchToggle();
     
     // Initialize unified fragment card interactions
     initializeUnifiedFragmentInteractions();

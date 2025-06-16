@@ -2317,6 +2317,44 @@ header {
     animation-play-state: paused !important;
 }
 
+/* Glitch Toggle Button */
+.glitch-toggle {
+    position: relative;
+}
+
+.glitch-toggle.disabled {
+    background: rgba(255, 107, 107, 0.2) !important;
+    border-color: #ff6b6b !important;
+    color: #ff6b6b !important;
+}
+
+.glitch-toggle.disabled:hover {
+    background: rgba(255, 107, 107, 0.3) !important;
+    color: #ff6b6b !important;
+}
+
+/* Glitch System Disabled State */
+.glitches-disabled .glitch,
+.glitches-disabled .glitch-intense,
+.glitches-disabled .glitch-subtle {
+    animation: none !important;
+}
+
+.glitches-disabled .glitch::before,
+.glitches-disabled .glitch::after,
+.glitches-disabled .glitch-intense::before,
+.glitches-disabled .glitch-intense::after,
+.glitches-disabled .glitch-subtle::before,
+.glitches-disabled .glitch-subtle::after {
+    display: none !important;
+}
+
+.glitches-disabled .scan-line,
+.glitches-disabled .scan-line-2,
+.glitches-disabled .corrupted-scan-line {
+    display: none !important;
+}
+
 .scrolling body::before,
 .scrolling body::after {
     animation-play-state: paused !important;
