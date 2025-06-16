@@ -238,8 +238,7 @@ main {
     transition: all 0.3s ease;
     text-transform: lowercase;
     letter-spacing: 0.04em;
-    /* will-change: transform; - removed for GPU optimization */
-    transform: translate3d(0, 0, 0);
+    /* GPU compositing removed to fix Safari iOS disappearing elements */
 }
 
 .btn-neural-primary:hover {
@@ -312,8 +311,7 @@ main {
     padding: var(--space-lg);
     box-shadow: 0 2px 16px 2px rgba(122, 155, 184, 0.12);
     transition: all 0.3s ease;
-    /* will-change: transform; - removed for GPU optimization */
-    transform: translate3d(0, 0, 0);
+    /* GPU compositing removed to fix Safari iOS disappearing elements */
 }
 
 .neural-card:hover {
@@ -420,7 +418,6 @@ main {
     border-radius: var(--radius-lg);
     box-shadow: 0 2px 16px 2px rgba(122, 155, 184, 0.12);
     transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-    transform: translate3d(0, 0, 0);
 }
 
 /* Only apply hover effects on devices that support proper hover (not touch) */
@@ -628,9 +625,7 @@ footer {
     position: relative;
     display: inline-block;
     animation: glitch-animation 0.3s infinite;
-    will-change: transform;
     contain: layout style;
-    transform: translate3d(0, 0, 0);
 }
 
 .glitch::before,
@@ -641,8 +636,6 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
 }
 
 .glitch::before {
@@ -661,9 +654,7 @@ footer {
     position: relative;
     display: inline-block;
     animation: glitch-animation-1 0.2s infinite, glitch-animation-2 0.15s infinite;
-    will-change: transform;
     contain: layout style;
-    transform: translate3d(0, 0, 0);
 }
 
 .glitch-intense::before,
@@ -695,9 +686,7 @@ footer {
     position: relative;
     display: inline-block;
     animation: glitch-animation 0.5s infinite;
-    will-change: transform;
     contain: layout style;
-    transform: translate3d(0, 0, 0);
 }
 
 .glitch-subtle::before,
@@ -1043,9 +1032,7 @@ footer {
     pointer-events: none;
     z-index: 1000;
     opacity: 0.8;
-    will-change: transform;
     contain: layout;
-    transform: translate3d(0, 0, 0);
 }
 
 .scan-line-2 {
@@ -1062,9 +1049,7 @@ footer {
     pointer-events: none;
     z-index: 999;
     opacity: 0.6;
-    will-change: transform;
     contain: layout;
-    transform: translate3d(0, 0, 0);
 }
 
 @keyframes scan {
@@ -1104,7 +1089,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 /* MODERN HOVER SOLUTION: Only apply hover on devices that support precise hover */
 @media (hover: hover) and (pointer: fine) {
     .image-card:hover {
-        transform: scale(2) translate3d(0, 0, 0);
+        transform: scale(2);
         box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
         border-color: var(--color-accent);
         z-index: 1000;
@@ -1116,7 +1101,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 /* TOUCH DEVICE SOLUTION: Tap to expand */
 @media not all and (hover: hover) and (pointer: fine) {
     .image-card.tap-expanded {
-        transform: scale(1.8) translate3d(0, 0, 0);
+        transform: scale(1.8);
         z-index: 1000;
         box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
         border-color: var(--color-accent);
@@ -1233,8 +1218,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    /* GPU-accelerated transforms for smooth animation */
-    transform: translate3d(0, 0, 0);
+    /* Smooth animation without unnecessary GPU compositing */
     transition: opacity 0.4s ease, transform 0.4s ease;
     opacity: 1;
 }
@@ -1285,7 +1269,6 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         right: 10px;
         max-width: calc(100vw - 20px);
         /* Ensure it's positioned relative to viewport, not the transformed body */
-        transform: translateZ(0); /* Force new stacking context */
     }
 }
 
@@ -1985,7 +1968,7 @@ header {
     
     /* Restore hover effects for desktop */
     .image-card:hover {
-        transform: scale(2) translate3d(0, 0, 0);
+        transform: scale(2);
         z-index: 1000;
         box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
         border-color: var(--color-accent);
