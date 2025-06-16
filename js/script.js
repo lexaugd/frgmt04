@@ -10,6 +10,11 @@ let lastCorruptionTime = 0;
 let isCorrupting = false;
 let corruptionTimeout = null;
 
+// Mobile and Safari detection
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 // Glitch characters for text corruption
 const glitchCharacters = ['█', '▓', '░', '▒', '▄', '▀', '■', '□', '▪', '▫', '◆', '◇', '◼', '◻', '⬛', '⬜'];
 
@@ -1361,7 +1366,13 @@ function corruptText(element, duration = 2000, intensity = 0.1) {
         isRestored = true;
         
         // Cancel any pending animation or timeout
-        if (animationId) cancelAnimationFrame(animationId);
+        if (animationId) {
+            if (isSafari || isIOS) {
+                clearTimeout(animationId); // Safari sometimes needs timeout fallback
+            } else {
+                cancelAnimationFrame(animationId);
+            }
+        }
         if (backupTimeoutId) clearTimeout(backupTimeoutId);
         
         // Restore text from data attribute (more reliable)
@@ -1389,7 +1400,13 @@ function corruptText(element, duration = 2000, intensity = 0.1) {
         });
         
         element.textContent = corruptedArray.join('');
-        animationId = requestAnimationFrame(corrupt);
+        
+        // Use setTimeout for Safari/iOS instead of requestAnimationFrame
+        if (isSafari || isIOS) {
+            animationId = setTimeout(corrupt, 16); // ~60fps
+        } else {
+            animationId = requestAnimationFrame(corrupt);
+        }
     }
     
     // Backup restoration timer - ensures text ALWAYS gets restored
@@ -1400,8 +1417,70 @@ function corruptText(element, duration = 2000, intensity = 0.1) {
         }
     }, adjustedDuration + 500); // Add 500ms buffer
     
-    if (Config.debugMode) console.log('Corrupting text:', originalText.substring(0, 20) + '...');
+    if (Config.debugMode) console.log('Corrupting text:', originalText.substring(0, 20) + '...', isSafari ? '(Safari mode)' : isIOS ? '(iOS mode)' : '');
     corrupt();
+}
+
+// Mobile touch event handling to fix hover state issues
+function initializeMobileInteractions() {
+    if (!isMobile) return;
+    
+    // Fix fragment card touch interactions
+    const fragmentCards = document.querySelectorAll('.fragment-card');
+    fragmentCards.forEach(card => {
+        // Remove hover classes on touch start/end
+        card.addEventListener('touchstart', function() {
+            this.classList.remove('hover-stuck');
+        });
+        
+        card.addEventListener('touchend', function() {
+            // Small delay to prevent flash
+            setTimeout(() => {
+                this.classList.remove('hover-stuck');
+            }, 50);
+        });
+        
+        // Handle card expansion for mobile
+        const viewButton = card.querySelector('.btn-neural-primary');
+        if (viewButton) {
+            viewButton.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const card = this.closest('.fragment-card');
+                if (card.classList.contains('expanded')) {
+                    card.classList.remove('expanded');
+                } else {
+                    // Close other expanded cards first
+                    fragmentCards.forEach(c => c.classList.remove('expanded'));
+                    card.classList.add('expanded');
+                }
+            });
+        }
+    });
+    
+    // Fix image card touch interactions
+    const imageCards = document.querySelectorAll('.image-card');
+    imageCards.forEach(card => {
+        card.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            
+            if (this.classList.contains('mobile-expanded')) {
+                this.classList.remove('mobile-expanded');
+            } else {
+                // Close other expanded cards first
+                imageCards.forEach(c => c.classList.remove('mobile-expanded'));
+                this.classList.add('mobile-expanded');
+            }
+        });
+    });
+    
+    // Fix general touch interactions to prevent stuck hover states
+    document.addEventListener('touchstart', function() {
+        document.body.classList.add('using-touch');
+    });
+    
+    if (Config.debugMode) console.log('Mobile interactions initialized for', isMobile ? 'mobile' : 'desktop');
 }
 
 function applyTextCorruption() {
@@ -1749,6 +1828,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize unified scroll manager
     scrollManager.init();
     scrollManager.setCursorPossession(cursorPossession);
+    
+    // Initialize mobile touch interactions
+    initializeMobileInteractions();
     
     const passwordPrompt = document.getElementById('password-prompt');
     const passwordInput = document.getElementById('password-input');

@@ -336,9 +336,12 @@ main {
     transform: translate3d(0, 0, 0);
 }
 
-.fragment-card:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 4px 20px 4px rgba(122, 155, 184, 0.2);
+/* Only apply hover effects on devices that support proper hover (not touch) */
+@media (hover: hover) {
+    .fragment-card:hover {
+        transform: translate3d(0, -2px, 0);
+        box-shadow: 0 4px 20px 4px rgba(122, 155, 184, 0.2);
+    }
 }
 
 .fragment-preview {
@@ -493,9 +496,11 @@ main {
     transition: all 0.3s ease;
 }
 
-.lore-entry:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 0 10px rgba(107, 229, 226, 0.2);
+@media (hover: hover) {
+    .lore-entry:hover {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 10px rgba(107, 229, 226, 0.2);
+    }
 }
 
 .lore-entry h3 {
@@ -1006,12 +1011,14 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     contain: layout style;
 }
 
-.image-card:hover {
-    transform: scale(2) translate3d(0, 0, 0);
-    box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
-    border-color: var(--color-accent);
-    z-index: 1000;
-    background-color: var(--color-bg);
+@media (hover: hover) {
+    .image-card:hover {
+        transform: scale(2) translate3d(0, 0, 0);
+        box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
+        border-color: var(--color-accent);
+        z-index: 1000;
+        background-color: var(--color-bg);
+    }
 }
 
 .image-card img {
@@ -2065,4 +2072,35 @@ header {
 
 .neural-fade-out {
     animation: fadeOut 1s forwards;
+}
+
+/* Mobile touch interaction improvements */
+.using-touch .fragment-card,
+.using-touch .image-card,
+.using-touch .lore-entry {
+    -webkit-tap-highlight-color: rgba(107, 229, 226, 0.2);
+    tap-highlight-color: rgba(107, 229, 226, 0.2);
+}
+
+/* Remove focus outlines on touch devices for better mobile experience */
+.using-touch *:focus {
+    outline: none;
+}
+
+/* Better touch target sizes on mobile */
+@media (max-width: 767px) {
+    .fragment-card .btn-neural-primary,
+    .fragment-card .btn-neural-secondary {
+        min-height: 44px; /* iOS recommended touch target size */
+        padding: 12px 16px;
+    }
+    
+    .image-card {
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+    
+    .fragment-card {
+        touch-action: manipulation;
+    }
 }
