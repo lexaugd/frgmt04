@@ -2321,6 +2321,9 @@ between making something and manufacturing nothing.`;
         });
     }
 
+    // Initialize matrix rain background
+    initializeMatrixRain();
+    
     // Start glitch effects
     randomGlitchTrigger();
     
@@ -2372,3 +2375,55 @@ between making something and manufacturing nothing.`;
         if (Config.debugMode) console.warn('%c[SW] Service workers not supported - consciousness preservation disabled', 'color: #ffaa00;');
     }
 }); 
+
+// Matrix Rain Background Effect
+function initializeMatrixRain() {
+    const matrixContainer = document.getElementById('matrix-rain');
+    if (!matrixContainer) return;
+    
+    // Matrix characters (mix of katakana, numbers, symbols, and Russian)
+    const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюяПИДОР';
+    
+    // Calculate number of columns based on screen width
+    const columnWidth = 20;
+    const numColumns = Math.floor(window.innerWidth / columnWidth);
+    
+    // Create matrix columns
+    for (let i = 0; i < numColumns; i++) {
+        const column = document.createElement('div');
+        column.className = 'matrix-column';
+        column.style.left = (i * columnWidth) + 'px';
+        
+        // Generate random characters for this column
+        let columnText = '';
+        const columnHeight = Math.floor(Math.random() * 20) + 10; // 10-30 characters
+        
+        for (let j = 0; j < columnHeight; j++) {
+            columnText += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
+        }
+        
+        column.innerHTML = columnText;
+        matrixContainer.appendChild(column);
+        
+        // Randomize animation delay and duration
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 10 + 8; // 8-18 seconds
+        
+        column.style.animationDelay = `-${delay}s`;
+        column.style.animationDuration = `${duration}s`;
+    }
+    
+    // Update matrix rain on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            matrixContainer.innerHTML = '';
+            initializeMatrixRain();
+        }, 250);
+    });
+    
+    if (Config.debugMode) {
+        console.log('🌧️ Matrix rain initialized with', numColumns, 'columns');
+    }
+}
