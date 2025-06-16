@@ -1965,6 +1965,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Touch event handling (mobile) - EXCLUDE BUTTONS
             card.addEventListener('touchstart', (e) => {
+                // Reset cursor possession idle timer on any touch
+                if (cursorPossession) {
+                    cursorPossession.resetIdle();
+                }
+                
                 // Don't interfere with button clicks
                 if (e.target.closest('button') || e.target.closest('.btn-neural-primary') || e.target.closest('.btn-neural-secondary')) {
                     return;
@@ -1991,6 +1996,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }, { passive: true });
             
             card.addEventListener('touchend', (e) => {
+                // Reset cursor possession idle timer on any touch
+                if (cursorPossession) {
+                    cursorPossession.resetIdle();
+                }
+                
                 // Improved button detection - check if touch is on button or its children
                 const touchedElement = e.target;
                 const isButton = touchedElement.closest('button') || 
@@ -2015,6 +2025,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Click event handling (desktop + mobile fallback)
             button.addEventListener('click', (e) => {
+                // Reset cursor possession idle timer on button click
+                if (cursorPossession) {
+                    cursorPossession.resetIdle();
+                }
+                
                 e.preventDefault();
                 e.stopPropagation();
                 toggleFragment();
