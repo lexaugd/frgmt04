@@ -2237,6 +2237,11 @@ header {
         opacity: 1 !important;
         padding: var(--space-md) !important;
         border-top: 1px solid var(--color-accent) !important;
+        overflow: visible !important; /* Override hidden */
+        transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    opacity 0.4s ease,
+                    padding 0.4s ease,
+                    border-color 0.4s ease 0.2s !important;
     }
     
     /* Visual feedback for mobile touch */

@@ -1938,11 +1938,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.classList.remove('expanded');
                         card.classList.remove('neural-active');
                         button.textContent = '[view fragment]';
+                        if (Config.debugMode) console.log('Fragment collapsed, classes removed');
                     } else {
                         // Expand
                         card.classList.add('expanded');
                         card.classList.add('neural-active');
                         button.textContent = '[collapse fragment]';
+                        if (Config.debugMode) console.log('Fragment expanded, classes added:', card.classList.toString());
                     }
                     
                     // Increase corruption on fragment interaction
