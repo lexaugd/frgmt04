@@ -369,21 +369,22 @@ main {
 
 .fragment-details {
     max-height: 0;
-    opacity: 0;
+    padding: 0 var(--space-md) var(--space-md) var(--space-md); /* Keep bottom padding for consistent spacing */
     overflow: hidden;
-    padding: var(--space-md);
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s ease-out, 
-                padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: max-height, opacity, padding;
-    transform: translate3d(0, 0, 0);
+    opacity: 0;
+    border-top: 1px solid transparent; /* Invisible border to prevent jumping */
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                opacity 0.4s ease,
+                padding-top 0.4s ease,
+                border-color 0.4s ease 0.2s; /* Delay border color change */
+    will-change: max-height, opacity;
 }
 
 .fragment-card.expanded .fragment-details {
-    max-height: 300px;
-    opacity: 1;
+    max-height: 400px; /* Generous but specific value for smooth animation */
     padding: var(--space-md);
-    border-top: 1px solid var(--color-accent);
+    opacity: 1;
+    border-top-color: var(--color-accent); /* Only change the color, border exists */
 }
 
 .audio-player {
@@ -2089,6 +2090,7 @@ header {
 
 /* Better touch target sizes on mobile */
 @media (max-width: 767px) {
+    /* Better touch targets for all buttons on mobile */
     .fragment-card .btn-neural-primary,
     .fragment-card .btn-neural-secondary {
         min-height: 44px; /* iOS recommended touch target size */
@@ -2102,5 +2104,13 @@ header {
     
     .fragment-card {
         touch-action: manipulation;
+    }
+    
+    /* Show fragment details by default on mobile since no expand button */
+    .fragment-card .fragment-details {
+        max-height: none !important;
+        padding: var(--space-md) !important;
+        opacity: 1 !important;
+        border-top: 1px solid var(--color-accent);
     }
 }

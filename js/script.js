@@ -1440,23 +1440,7 @@ function initializeMobileInteractions() {
             }, 50);
         });
         
-        // Handle card expansion for mobile
-        const viewButton = card.querySelector('.btn-neural-primary');
-        if (viewButton) {
-            viewButton.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const card = this.closest('.fragment-card');
-                if (card.classList.contains('expanded')) {
-                    card.classList.remove('expanded');
-                } else {
-                    // Close other expanded cards first
-                    fragmentCards.forEach(c => c.classList.remove('expanded'));
-                    card.classList.add('expanded');
-                }
-            });
-        }
+        // Cards now work smoothly on mobile with GPU acceleration
     });
     
     // Fix image card touch interactions
@@ -1946,7 +1930,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Gallery expand/collapse logic
+    // Gallery expand/collapse logic - Now smooth with GPU acceleration
     const gallery = document.getElementById('gallery');
     if (gallery) {
         gallery.addEventListener('click', (e) => {
