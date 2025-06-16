@@ -70,7 +70,8 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: var(--font-mono);
-    background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%), url('../assets/images/bg.jpg') center/cover no-repeat, var(--color-bg);
+    /* background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%), url('../assets/images/bg.jpg') center/cover no-repeat, var(--color-bg); */
+    background: var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
     min-height: 100vh; /* Fallback */
@@ -121,6 +122,77 @@ body::after {
     );
     pointer-events: none;
     z-index: -1;
+}
+
+/* MATRIX RAIN BACKGROUND EFFECT */
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.matrix-column {
+    position: absolute;
+    top: -100%;
+    width: 20px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-accent);
+    text-shadow: 0 0 5px var(--color-accent);
+    animation: matrix-fall linear infinite;
+    opacity: 0.8;
+}
+
+.matrix-column:nth-child(odd) {
+    animation-duration: 8s;
+    color: var(--color-tertiary);
+    text-shadow: 0 0 3px var(--color-tertiary);
+}
+
+.matrix-column:nth-child(even) {
+    animation-duration: 12s;
+    animation-delay: -2s;
+}
+
+.matrix-column:nth-child(3n) {
+    animation-duration: 10s;
+    animation-delay: -4s;
+    opacity: 0.6;
+}
+
+.matrix-column:nth-child(4n) {
+    animation-duration: 15s;
+    animation-delay: -6s;
+    color: rgba(107, 229, 226, 0.7);
+}
+
+.matrix-column:nth-child(5n) {
+    animation-duration: 9s;
+    animation-delay: -1s;
+    opacity: 0.9;
+}
+
+@keyframes matrix-fall {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
 }
 
 /* Third corrupted scan line */
