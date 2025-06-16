@@ -741,8 +741,7 @@ class CursorPossession {
             this.trackClick(e);
         });
         
-        // Scroll events (handled by scroll manager but also reset idle)
-        document.addEventListener('scroll', () => this.resetIdle(), { passive: true });
+        // Scroll events now handled by unified scroll handler
         
         // Keyboard events for mobile keyboards
         document.addEventListener('input', () => this.resetIdle());
@@ -1410,12 +1409,24 @@ function corruptText(element, duration = 2000, intensity = 0.1) {
 // Legacy mobile interaction system - REMOVED
 // Replaced by unified fragment interaction system
 
-// Scroll performance optimization - pause animations during scroll
-function initializeScrollOptimization() {
+// Unified scroll handler - consolidates all scroll functionality
+function initializeUnifiedScrollHandler() {
     let isScrolling = false;
     let scrollTimeout;
     
-    function pauseAnimationsDuringScroll() {
+    function unifiedScrollHandler() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // 1. Scroll-to-top button visibility (handled by scrollManager)
+        if (scrollManager.scrollToTopButton) {
+            if (scrollTop > 200) {
+                scrollManager.scrollToTopButton.classList.add('visible');
+            } else {
+                scrollManager.scrollToTopButton.classList.remove('visible');
+            }
+        }
+        
+        // 2. Performance optimization - pause animations during scroll
         if (!isScrolling) {
             isScrolling = true;
             document.body.classList.add('scrolling');
@@ -1446,12 +1457,17 @@ function initializeScrollOptimization() {
             
             if (Config.debugMode) console.log('Animations resumed after scroll');
         }, 150);
+        
+        // 3. Cursor possession idle reset
+        if (cursorPossession) {
+            cursorPossession.resetIdle();
+        }
     }
     
-    // Use passive listener for better performance
-    document.addEventListener('scroll', pauseAnimationsDuringScroll, { passive: true });
+    // Single throttled scroll listener for all functionality
+    window.addEventListener('scroll', throttle(unifiedScrollHandler, 16), { passive: true });
     
-    if (Config.debugMode) console.log('Scroll optimization initialized');
+    if (Config.debugMode) console.log('Unified scroll handler initialized');
 }
 
 // Modern touch interaction system - REMOVED
@@ -1707,10 +1723,9 @@ if (typeof window !== 'undefined') {
     window.fixStuckText = fixStuckCorruptedText;
 }
 
-// Unified scroll manager - consolidates all scroll listeners for performance
+// Simplified scroll manager - now only handles scroll-to-top button
 let scrollManager = {
     scrollToTopButton: null,
-    cursorPossession: null,
     
     init() {
         this.scrollToTopButton = document.getElementById('scroll-to-top');
@@ -1721,29 +1736,7 @@ let scrollManager = {
             });
         }
         
-        // Single throttled scroll listener for all functionality
-        window.addEventListener('scroll', throttle(() => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            // Handle scroll-to-top visibility
-            if (this.scrollToTopButton) {
-                if (scrollTop > 200) {
-                    this.scrollToTopButton.classList.add('visible');
-                } else {
-                    this.scrollToTopButton.classList.remove('visible');
-                }
-            }
-            
-            // Handle cursor possession idle reset
-            if (this.cursorPossession) {
-                this.cursorPossession.resetIdle();
-            }
-            
-        }, 100), { passive: true });
-    },
-    
-    setCursorPossession(instance) {
-        this.cursorPossession = instance;
+        if (Config.debugMode) console.log('Scroll manager initialized (scroll-to-top only)');
     }
 };
 
@@ -1787,12 +1780,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize audio stream indicator
     initializeAudioStreamIndicator();
     
-    // Initialize unified scroll manager
+    // Initialize scroll manager (scroll-to-top button only)
     scrollManager.init();
-    scrollManager.setCursorPossession(cursorPossession);
     
-    // Initialize scroll performance optimization
-    initializeScrollOptimization();
+    // Initialize unified scroll handler (replaces separate scroll systems)
+    initializeUnifiedScrollHandler();
     
     // Initialize unified fragment card interactions
     initializeUnifiedFragmentInteractions();
