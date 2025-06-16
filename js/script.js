@@ -1913,7 +1913,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeMobileTouchOptimizations();
     
     // Initialize enhanced mobile card interactions (Phase 3 & 4)
-    if (Config.isTouchPrimary) {
+    // TEMPORARILY DISABLED FOR SAFARI IOS DEBUGGING
+    if (Config.isTouchPrimary && false) {
         initializeEnhancedImageCardInteractions();
         initializeEnhancedFragmentCardInteractions();
     }
@@ -2688,13 +2689,13 @@ function initializeEnhancedImageCardInteractions() {
             
             // Only process if it was a quick tap (not a scroll)
             if (!hasMoved && touchDuration < 500) {
-                this.handleImageCardTap(card);
+                handleImageCardTap(card);
             }
         }, { passive: true });
     });
     
     // Handle image card tap interactions
-    this.handleImageCardTap = function(card) {
+    function handleImageCardTap(card) {
         const isCurrentPreview = card === currentPreviewCard;
         const hasPreview = card.classList.contains('mobile-preview');
         const hasExpanded = card.classList.contains('mobile-expanded');
@@ -2727,7 +2728,7 @@ function initializeEnhancedImageCardInteractions() {
         if (consciousnessMapper) {
             consciousnessMapper.increaseCorruption();
         }
-    };
+    }
     
     // Click outside to collapse expanded cards
     document.addEventListener('click', (e) => {
@@ -2765,12 +2766,12 @@ function initializeEnhancedFragmentCardInteractions() {
             Config.mobileInteraction.fragmentCardMode === 'hybrid') {
             
             card.classList.add('swipe-enabled');
-            this.addSwipeGestures(card);
+            addSwipeGestures(card);
         }
     });
     
     // Add swipe gesture functionality
-    this.addSwipeGestures = function(card) {
+    function addSwipeGestures(card) {
         let startY = 0;
         let startTime = 0;
         let hasMoved = false;
@@ -2819,19 +2820,19 @@ function initializeEnhancedFragmentCardInteractions() {
                 
                 if (deltaY < 0 && !isExpanded) {
                     // Swipe up to expand
-                    this.toggleFragmentCard(card, true);
+                    toggleFragmentCard(card, true);
                     if (Config.debugMode) console.log('Swipe up: expand fragment');
                 } else if (deltaY > 0 && isExpanded) {
                     // Swipe down to collapse
-                    this.toggleFragmentCard(card, false);
+                    toggleFragmentCard(card, false);
                     if (Config.debugMode) console.log('Swipe down: collapse fragment');
                 }
             }
         }, { passive: true });
-    };
+    }
     
     // Toggle fragment card (preserves existing functionality)
-    this.toggleFragmentCard = function(card, expand) {
+    function toggleFragmentCard(card, expand) {
         const button = card.querySelector('.btn-neural-primary');
         if (!button) return;
         
@@ -2854,7 +2855,7 @@ function initializeEnhancedFragmentCardInteractions() {
         if (cursorPossession) {
             cursorPossession.resetIdle();
         }
-    };
+    }
     
     if (Config.debugMode) {
         console.log('Enhanced fragment card interactions initialized for', fragmentCards.length, 'cards');
