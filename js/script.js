@@ -696,12 +696,15 @@ class CursorPossession {
         const isTouchPrimary = navigator.maxTouchPoints > 0 && window.innerWidth < 768;
         
         if (isTouchPrimary) {
-            // Mobile/tablet - simplified neural breach effect
+            // Mobile/tablet - optimized neural breach effect
             return { 
                 ...baseConfig, 
-                skipCursorMovement: true,  // Skip erratic movement
-                showInConsole: true,       // Show messages in console instead
-                idleThreshold: 8000        // Longer threshold for touch devices
+                skipCursorMovement: false,  // Enable cursor movement for mobile too
+                showInConsole: true,        // Show messages in console AND on screen
+                idleThreshold: 5000,        // Shorter threshold - mobile users go idle faster
+                possessionCooldown: 6000,   // Shorter cooldown for more frequent possessions
+                messageDuration: 4000,      // Longer message duration for touch reading
+                erraticMovementDuration: 2000  // Shorter movement for mobile attention spans
             };
         }
         
@@ -720,16 +723,34 @@ class CursorPossession {
     setupIdleDetection() {
         if (!this.config.enable) return;
         
-        // Track mouse movement
+        // UNIFIED ACTIVITY DETECTION - Works on both desktop and mobile
+        
+        // Desktop mouse events
         document.addEventListener('mousemove', () => this.resetIdle());
         document.addEventListener('mousedown', () => this.resetIdle());
         document.addEventListener('keypress', () => this.resetIdle());
-        // Scroll handled by unified scroll manager
+        
+        // Mobile touch events - CRITICAL for mobile possession
+        document.addEventListener('touchstart', () => this.resetIdle(), { passive: true });
+        document.addEventListener('touchmove', () => this.resetIdle(), { passive: true });
+        document.addEventListener('touchend', () => this.resetIdle(), { passive: true });
+        
+        // Universal events
         document.addEventListener('click', (e) => {
             this.resetIdle();
             this.trackClick(e);
         });
-
+        
+        // Scroll events (handled by scroll manager but also reset idle)
+        document.addEventListener('scroll', () => this.resetIdle(), { passive: true });
+        
+        // Keyboard events for mobile keyboards
+        document.addEventListener('input', () => this.resetIdle());
+        document.addEventListener('focus', () => this.resetIdle());
+        
+        // Device orientation changes (mobile specific)
+        window.addEventListener('orientationchange', () => this.resetIdle());
+        
         // Check for idle state - removed spammy debug logs
         setInterval(() => {
             const now = Date.now();
@@ -740,6 +761,11 @@ class CursorPossession {
                 this.startPossession();
             }
         }, 1000);
+        
+        if (Config.debugMode) {
+            console.log('🔍 Cursor possession activity detection initialized for:', 
+                navigator.maxTouchPoints > 0 ? 'touch device' : 'desktop device');
+        }
     }
 
     resetIdle() {
@@ -1381,51 +1407,8 @@ function corruptText(element, duration = 2000, intensity = 0.1) {
     corrupt();
 }
 
-// Mobile touch event handling to fix hover state issues
-function initializeMobileInteractions() {
-    if (!isMobile) return;
-    
-    // Fix fragment card touch interactions
-    const fragmentCards = document.querySelectorAll('.fragment-card');
-    fragmentCards.forEach(card => {
-        // Remove hover classes on touch start/end
-        card.addEventListener('touchstart', function() {
-            this.classList.remove('hover-stuck');
-        });
-        
-        card.addEventListener('touchend', function() {
-            // Small delay to prevent flash
-            setTimeout(() => {
-                this.classList.remove('hover-stuck');
-            }, 50);
-        });
-        
-        // Cards now work smoothly on mobile with GPU acceleration
-    });
-    
-    // Fix image card touch interactions
-    const imageCards = document.querySelectorAll('.image-card');
-    imageCards.forEach(card => {
-        card.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            
-            if (this.classList.contains('mobile-expanded')) {
-                this.classList.remove('mobile-expanded');
-            } else {
-                // Close other expanded cards first
-                imageCards.forEach(c => c.classList.remove('mobile-expanded'));
-                this.classList.add('mobile-expanded');
-            }
-        });
-    });
-    
-    // Fix general touch interactions to prevent stuck hover states
-    document.addEventListener('touchstart', function() {
-        document.body.classList.add('using-touch');
-    });
-    
-    if (Config.debugMode) console.log('Mobile interactions initialized for', isMobile ? 'mobile' : 'desktop');
-}
+// Legacy mobile interaction system - REMOVED
+// Replaced by unified fragment interaction system
 
 // Scroll performance optimization - pause animations during scroll
 function initializeScrollOptimization() {
@@ -1471,83 +1454,8 @@ function initializeScrollOptimization() {
     if (Config.debugMode) console.log('Scroll optimization initialized');
 }
 
-// Mobile card interaction system - proper touch/tap handling
-function initializeMobileCardInteractions() {
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-        // Fragment cards mobile tap handling - use mobile-specific class
-        document.querySelectorAll('.fragment-card').forEach(card => {
-            let tapTimeout;
-            let startY = 0;
-            let hasMoved = false;
-            
-            card.addEventListener('touchstart', (e) => {
-                startY = e.touches[0].clientY;
-                hasMoved = false;
-                
-                // Single tap to expand/collapse - only if not scrolling
-                tapTimeout = setTimeout(() => {
-                    if (!hasMoved) {
-                        if (!card.classList.contains('mobile-tap-expanded')) {
-                            // Expand card
-                            card.classList.add('mobile-tap-expanded');
-                            if (Config.debugMode) console.log('Fragment card expanded via mobile tap');
-                        } else {
-                            // Collapse card
-                            card.classList.remove('mobile-tap-expanded');
-                            if (Config.debugMode) console.log('Fragment card collapsed via mobile tap');
-                        }
-                    }
-                }, 100); // Longer delay to better detect scroll vs tap
-            }, { passive: true });
-            
-            card.addEventListener('touchmove', (e) => {
-                const currentY = e.touches[0].clientY;
-                const deltaY = Math.abs(currentY - startY);
-                
-                // If finger moved more than 10px, consider it scrolling
-                if (deltaY > 10) {
-                    hasMoved = true;
-                    clearTimeout(tapTimeout); // Cancel tap if user is scrolling
-                }
-            }, { passive: true });
-            
-            card.addEventListener('touchend', () => {
-                clearTimeout(tapTimeout);
-            }, { passive: true });
-        });
-        
-        // Image cards mobile tap handling
-        document.querySelectorAll('.image-card').forEach(card => {
-            let tapTimeout;
-            
-            card.addEventListener('touchstart', (e) => {
-                tapTimeout = setTimeout(() => {
-                    if (!card.classList.contains('mobile-expanded')) {
-                        // Expand image card
-                        card.classList.add('mobile-expanded');
-                        if (Config.debugMode) console.log('Image card expanded via touch');
-                    } else {
-                        // Collapse image card
-                        card.classList.remove('mobile-expanded');
-                        if (Config.debugMode) console.log('Image card collapsed via touch');
-                    }
-                }, 50);
-            }, { passive: true });
-            
-            card.addEventListener('touchend', () => {
-                clearTimeout(tapTimeout);
-            }, { passive: true });
-            
-            card.addEventListener('touchmove', () => {
-                clearTimeout(tapTimeout);
-            }, { passive: true });
-        });
-        
-        if (Config.debugMode) console.log('Mobile card interactions initialized');
-    }
-}
+// Modern touch interaction system - REMOVED
+// Replaced by unified fragment interaction system
 
 function applyTextCorruption() {
     if (!Config.enableEffects) return;
@@ -1883,14 +1791,11 @@ document.addEventListener('DOMContentLoaded', function() {
     scrollManager.init();
     scrollManager.setCursorPossession(cursorPossession);
     
-    // Initialize mobile touch interactions
-    initializeMobileInteractions();
-    
     // Initialize scroll performance optimization
     initializeScrollOptimization();
     
-    // Initialize mobile card interactions
-    initializeMobileCardInteractions();
+    // Initialize unified fragment card interactions
+    initializeUnifiedFragmentInteractions();
     
     const passwordPrompt = document.getElementById('password-prompt');
     const passwordInput = document.getElementById('password-input');
@@ -2006,59 +1911,101 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Gallery expand/collapse logic - Now smooth with GPU acceleration
-    const gallery = document.getElementById('gallery');
-    if (gallery) {
-        gallery.addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-neural-primary') && (e.target.textContent.includes('[view fragment]') || e.target.textContent.includes('[collapse fragment]'))) {
-                const card = e.target.closest('.fragment-card');
-                if (card) {
-                    // Use requestAnimationFrame for smooth transition
-                    requestAnimationFrame(() => {
-                        card.classList.toggle('expanded');
-                        
-                        // Update button text and add neural state
-                        const button = card.querySelector('.btn-neural-primary');
-                        if (button) {
-                            if (card.classList.contains('expanded')) {
-                                button.textContent = '[collapse fragment]';
-                                card.classList.add('neural-active');
-                            } else {
-                                button.textContent = '[view fragment]';
-                                card.classList.remove('neural-active');
-                            }
-                        }
-                        
-                        // Increase corruption on fragment interaction
-                        if (consciousnessMapper) {
-                            consciousnessMapper.increaseCorruption();
-                        }
-                        
-                        if (Config.debugMode) {
-                            console.log('Fragment card toggled:', card.classList.contains('expanded') ? 'expanded' : 'collapsed');
-                        }
-                    });
-                }
-            }
+    // UNIFIED FRAGMENT CARD INTERACTION SYSTEM - Replaces all conflicting systems
+    function initializeUnifiedFragmentInteractions() {
+        const fragmentCards = document.querySelectorAll('.fragment-card');
+        
+        fragmentCards.forEach(card => {
+            const button = card.querySelector('.btn-neural-primary');
+            if (!button) return;
             
-            // Image card click-to-expand for mobile/touch devices
-            if (e.target.closest('.image-card') && 'ontouchstart' in window) {
-                const imageCard = e.target.closest('.image-card');
-                if (imageCard) {
-                    // Toggle expanded state for mobile
-                    imageCard.classList.toggle('mobile-expanded');
+            let touchStartTime = 0;
+            let startY = 0;
+            let hasMoved = false;
+            let isProcessing = false;
+            
+            // Unified toggle function
+            function toggleFragment() {
+                if (isProcessing) return;
+                isProcessing = true;
+                
+                // Use requestAnimationFrame for smooth transition
+                requestAnimationFrame(() => {
+                    const isExpanded = card.classList.contains('expanded');
                     
-                    // Increase corruption on image interaction
+                    if (isExpanded) {
+                        // Collapse
+                        card.classList.remove('expanded');
+                        card.classList.remove('neural-active');
+                        button.textContent = '[view fragment]';
+                    } else {
+                        // Expand
+                        card.classList.add('expanded');
+                        card.classList.add('neural-active');
+                        button.textContent = '[collapse fragment]';
+                    }
+                    
+                    // Increase corruption on fragment interaction
                     if (consciousnessMapper) {
                         consciousnessMapper.increaseCorruption();
                     }
                     
                     if (Config.debugMode) {
-                        console.log('Image card toggled on mobile:', imageCard.classList.contains('mobile-expanded') ? 'expanded' : 'collapsed');
+                        console.log('Fragment card toggled:', isExpanded ? 'collapsed' : 'expanded');
                     }
-                }
+                    
+                    // Reset processing flag after animation frame
+                    setTimeout(() => {
+                        isProcessing = false;
+                    }, 50);
+                });
             }
+            
+            // Touch event handling (mobile)
+            card.addEventListener('touchstart', (e) => {
+                touchStartTime = Date.now();
+                startY = e.touches[0].clientY;
+                hasMoved = false;
+            }, { passive: true });
+            
+            card.addEventListener('touchmove', (e) => {
+                const currentY = e.touches[0].clientY;
+                const moveDistance = Math.abs(currentY - startY);
+                
+                // If moved more than 10px, it's a scroll not a tap
+                if (moveDistance > 10) {
+                    hasMoved = true;
+                }
+            }, { passive: true });
+            
+            card.addEventListener('touchend', (e) => {
+                const touchDuration = Date.now() - touchStartTime;
+                
+                // Only toggle if it was a quick tap (not a scroll)
+                if (!hasMoved && touchDuration < 500) {
+                    e.preventDefault();
+                    toggleFragment();
+                }
+            }, { passive: false });
+            
+            // Click event handling (desktop + mobile fallback)
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFragment();
+            });
+            
+            // Prevent double-tap zoom on mobile
+            card.addEventListener('touchend', (e) => {
+                if (e.touches.length === 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
         });
+        
+        if (Config.debugMode) {
+            console.log('Unified fragment card interactions initialized for', fragmentCards.length, 'cards');
+        }
     }
 
     // Hint button functionality
