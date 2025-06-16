@@ -70,7 +70,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: var(--font-mono);
-    background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%), url('../assets/images/bg.png') center/cover no-repeat, var(--color-bg);
+    background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%), url('../assets/images/bg.jpg') center/cover no-repeat, var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
     min-height: 100vh; /* Fallback */
@@ -1100,6 +1100,8 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     border-radius: var(--radius-md);
     font-family: var(--font-mono);
     font-size: var(--text-base);
+    text-align: center; /* Center all content */
+    word-wrap: break-word; /* Handle long text */
 }
 
 #password-result.success {
@@ -1487,6 +1489,15 @@ header {
     .terminal-password {
         padding: var(--mobile-padding);
         font-size: 1.1rem;
+        text-align: center; /* Center all password terminal content */
+    }
+    
+    /* Password result mobile centering */
+    #password-result {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+        text-align: center !important;
     }
     
     /* Consciousness widget mobile positioning */
@@ -2132,12 +2143,35 @@ header {
         touch-action: manipulation;
     }
     
-    /* Show fragment details by default on mobile since no expand button */
+    /* Fragment details collapsed by default on mobile - use tap to expand */
     .fragment-card .fragment-details {
-        max-height: none !important;
-        padding: var(--space-md) !important;
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding: 0 var(--space-md) 0 var(--space-md) !important;
+        border-top: 1px solid transparent !important;
+        transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    opacity 0.4s ease,
+                    padding-top 0.4s ease,
+                    border-color 0.4s ease 0.2s;
+    }
+    
+    /* Expanded state for mobile tap interactions */
+    .fragment-card.expanded .fragment-details {
+        max-height: 400px !important;
         opacity: 1 !important;
-        border-top: 1px solid var(--color-accent);
+        padding: var(--space-md) !important;
+        border-top: 1px solid var(--color-accent) !important;
+    }
+    
+    /* Visual feedback for mobile touch */
+    .fragment-card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    .image-card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
     }
 }
 

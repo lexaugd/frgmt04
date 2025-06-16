@@ -122,8 +122,8 @@ class ConsciousnessMapper {
         this.generateConsciousnessId();
         this.startNeuralMonitoring();
         // TODO: Remove this before launch - Sarah
-        console.log('%c⚠️ NEURAL LINK ESTABLISHED ⚠️', 'color: #ff4444; font-size: 16px; font-weight: bold;');
-        console.log('%cCONSCIOUSNESS MAPPING INITIATED...', 'color: #6be5e2; font-family: monospace;');
+        if (Config.debugMode) console.log('%c⚠️ NEURAL LINK ESTABLISHED ⚠️', 'color: #ff4444; font-size: 16px; font-weight: bold;');
+        if (Config.debugMode) console.log('%cCONSCIOUSNESS MAPPING INITIATED...', 'color: #6be5e2; font-family: monospace;');
     }
 
     async collectFingerprint() {
@@ -235,39 +235,11 @@ class ConsciousnessMapper {
         let gainNode = null;
         
         try {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            oscillator = audioContext.createOscillator();
-            analyser = audioContext.createAnalyser();
-            gainNode = audioContext.createGain();
-            
-            oscillator.connect(analyser);
-            analyser.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 1000;
-            gainNode.gain.value = 0; // Silent
-            
-            oscillator.start();
-            
-            const frequencyData = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(frequencyData);
-            
-            const result = Array.from(frequencyData.slice(0, 10)).join('');
-            
-            return result;
+            // Create placeholder for audio fingerprint - will be updated on first user interaction
+            return 'audio_pending';
         } catch (e) {
             if (Config.debugMode) console.warn('Audio fingerprinting failed:', e);
             return 'audio_blocked';
-        } finally {
-            // Proper cleanup to prevent memory leaks
-            try {
-                if (oscillator) oscillator.stop();
-                if (audioContext && audioContext.state !== 'closed') {
-                    await audioContext.close();
-                }
-            } catch (cleanupError) {
-                if (Config.debugMode) console.warn('Audio cleanup failed:', cleanupError);
-            }
         }
     }
 
@@ -305,20 +277,20 @@ class ConsciousnessMapper {
     startNeuralMonitoring() {
         // Display consciousness analysis
         setTimeout(() => {
-            console.log('%c🧠 CONSCIOUSNESS ANALYSIS COMPLETE - INSPECTOR PROTOCOL ACTIVE', 'color: #6be5e2; font-size: 14px;');
-            console.log('%c🔧 Texture mapping: displacement vectors calculated', 'color: #9ea1a4; font-style: italic;');
-            console.log(`%cConsciousness ID: ${this.consciousnessId}`, 'color: #ffffff; font-family: monospace;');
-            console.log('%c🔑 Primary authentication sequence: first 8 digits active', 'color: #6be5e2; font-style: italic;');
-            console.log(`%cScreen Resolution: ${this.fingerprint.screen.width}x${this.fingerprint.screen.height}`, 'color: #9ea1a4;');
-            console.log(`%cSystem: ${this.fingerprint.browser.platform}`, 'color: #9ea1a4;');
-            console.log(`%cBrowser: ${this.fingerprint.browser.userAgent.split(' ')[0]}`, 'color: #9ea1a4;');
-            console.log(`%cTimezone: ${this.fingerprint.system.timezone}`, 'color: #9ea1a4;');
-            console.log(`%cCPU Cores: ${this.fingerprint.system.cores}`, 'color: #9ea1a4;');
-            console.log(`%cMemory: ${this.fingerprint.system.memory}GB`, 'color: #9ea1a4;');
-            console.log('%c🎵 Audio synthesis: harmonic analysis complete', 'color: #6be5e2; font-style: italic;');
-            console.log(`%cNeural Sessions: ${localStorage.getItem('neural_sessions')}`, 'color: #ff4444;');
+            if (Config.debugMode) console.log('%c🧠 CONSCIOUSNESS ANALYSIS COMPLETE - INSPECTOR PROTOCOL ACTIVE', 'color: #6be5e2; font-size: 14px;');
+            if (Config.debugMode) console.log('%c🔧 Texture mapping: displacement vectors calculated', 'color: #9ea1a4; font-style: italic;');
+            if (Config.debugMode) console.log(`%cConsciousness ID: ${this.consciousnessId}`, 'color: #ffffff; font-family: monospace;');
+            if (Config.debugMode) console.log('%c🔑 Primary authentication sequence: first 8 digits active', 'color: #6be5e2; font-style: italic;');
+            if (Config.debugMode) console.log(`%cScreen Resolution: ${this.fingerprint.screen.width}x${this.fingerprint.screen.height}`, 'color: #9ea1a4;');
+            if (Config.debugMode) console.log(`%cSystem: ${this.fingerprint.browser.platform}`, 'color: #9ea1a4;');
+            if (Config.debugMode) console.log(`%cBrowser: ${this.fingerprint.browser.userAgent.split(' ')[0]}`, 'color: #9ea1a4;');
+            if (Config.debugMode) console.log(`%cTimezone: ${this.fingerprint.system.timezone}`, 'color: #9ea1a4;');
+            if (Config.debugMode) console.log(`%cCPU Cores: ${this.fingerprint.system.cores}`, 'color: #9ea1a4;');
+            if (Config.debugMode) console.log(`%cMemory: ${this.fingerprint.system.memory}GB`, 'color: #9ea1a4;');
+            if (Config.debugMode) console.log('%c🎵 Audio synthesis: harmonic analysis complete', 'color: #6be5e2; font-style: italic;');
+            if (Config.debugMode) console.log(`%cNeural Sessions: ${localStorage.getItem('neural_sessions')}`, 'color: #ff4444;');
             
-            console.log('%c' + `
+            if (Config.debugMode) console.log('%c' + `
     ╔══════════════════════════════════════╗
     ║        DIGITAL DNA EXTRACTED        ║
     ║                                      ║
@@ -452,10 +424,10 @@ class ConsciousnessMapper {
         
         if (Math.random() < 0.3) { // 30% chance to show process log
             const randomLog = processLogs[Math.floor(Math.random() * processLogs.length)];
-            console.log(`%c${randomLog}`, 'color: #9ea1a4; font-style: italic;');
+            if (Config.debugMode) console.log(`%c${randomLog}`, 'color: #9ea1a4; font-style: italic;');
         }
         
-        console.log(`%c⚠️ INSPECTOR INFLUENCE DETECTED - CORRUPTION: ${(this.corruptionLevel * 100).toFixed(1)}%`, 
+        if (Config.debugMode) console.log(`%c⚠️ INSPECTOR INFLUENCE DETECTED - CORRUPTION: ${(this.corruptionLevel * 100).toFixed(1)}%`, 
                    `color: ${this.corruptionLevel > 0.5 ? '#ff4444' : '#ffaa44'}; font-weight: bold;`);
     }
 }
@@ -522,9 +494,13 @@ class InspectionTrap {
     setupPerformanceDetection() {
         // Detect if performance timing is being monitored
         const originalNow = performance.now;
+        let loggedOnce = false;
         performance.now = function() {
-            console.log('%c🔍 PERFORMANCE MONITORING DETECTED', 'color: #ff4444; font-weight: bold;');
-            console.log('%cSOMEONE IS WATCHING THE WATCHERS...', 'color: #6be5e2;');
+            if (Config.debugMode && !loggedOnce) {
+                console.log('%c🔍 PERFORMANCE MONITORING DETECTED', 'color: #ff4444; font-weight: bold;');
+                console.log('%cSOMEONE IS WATCHING THE WATCHERS...', 'color: #6be5e2;');
+                loggedOnce = true;
+            }
             return originalNow.call(this);
         };
     }
@@ -542,9 +518,9 @@ class InspectionTrap {
         
         // Immediate response
         console.clear();
-        console.log('%c🚨 INSPECTOR BREACH DETECTED 🚨', 'color: #ff0000; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #ff0000;');
-        console.log('%cUNAUTHORIZED INSPECTOR PROTOCOL INITIATED', 'color: #ff4444; font-size: 16px;');
-        console.log('%cTRACING NEURAL PATHWAY...', 'color: #6be5e2; font-family: monospace;');
+        if (Config.debugMode) console.log('%c🚨 INSPECTOR BREACH DETECTED 🚨', 'color: #ff0000; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #ff0000;');
+        if (Config.debugMode) console.log('%cUNAUTHORIZED INSPECTOR PROTOCOL INITIATED', 'color: #ff4444; font-size: 16px;');
+        if (Config.debugMode) console.log('%cTRACING NEURAL PATHWAY...', 'color: #6be5e2; font-family: monospace;');
         
         // Progressive escalation
         setTimeout(() => this.escalateWarning(), 2000);
@@ -556,7 +532,7 @@ class InspectionTrap {
     }
 
     escalateWarning() {
-        console.log('%c' + `
+        if (Config.debugMode) console.log('%c' + `
     ██████████████████████████████████████████████████████████████
     ██                                                          ██
     ██  ⚠️  CONSCIOUSNESS MAPPING PROTOCOL ACTIVATED  ⚠️        ██
@@ -567,8 +543,8 @@ class InspectionTrap {
     ██████████████████████████████████████████████████████████████
         `, 'color: #ff4444; font-family: monospace; font-size: 10px;');
         
-        console.log(`%cInspection Level: ${this.warningLevel}`, 'color: #ffaa44; font-weight: bold;');
-        console.log(`%cTime Since Breach: ${((Date.now() - this.inspectionStartTime) / 1000).toFixed(1)}s`, 'color: #9ea1a4;');
+        if (Config.debugMode) console.log(`%cInspection Level: ${this.warningLevel}`, 'color: #ffaa44; font-weight: bold;');
+        if (Config.debugMode) console.log(`%cTime Since Breach: ${((Date.now() - this.inspectionStartTime) / 1000).toFixed(1)}s`, 'color: #9ea1a4;');
         
         if (consciousnessMapper) {
             consciousnessMapper.increaseCorruption();
@@ -576,8 +552,8 @@ class InspectionTrap {
     }
 
     showNeuralMap() {
-        console.log('%c🧠 NEURAL PATHWAY MAPPING', 'color: #6be5e2; font-size: 14px; font-weight: bold;');
-        console.log('%c' + `
+        if (Config.debugMode) console.log('%c🧠 NEURAL PATHWAY MAPPING', 'color: #6be5e2; font-size: 14px; font-weight: bold;');
+        if (Config.debugMode) console.log('%c' + `
         ╭─────────────────────────────────────╮
         │           NEURAL TOPOLOGY           │
         │                                     │
@@ -596,16 +572,16 @@ class InspectionTrap {
         const fakeIPs = ['192.168.1.42', '10.0.0.127', '172.16.0.99', '203.0.113.195'];
         const randomIP = fakeIPs[Math.floor(Math.random() * fakeIPs.length)];
         
-        console.log('%c🎯 THREAT ASSESSMENT COMPLETE', 'color: #ff4444; font-size: 14px; font-weight: bold;');
-        console.log(`%cSource IP: ${randomIP}`, 'color: #ffffff;');
-        console.log(`%cThreat Level: ${this.warningLevel > 3 ? 'CRITICAL' : this.warningLevel > 1 ? 'HIGH' : 'MODERATE'}`, 
+        if (Config.debugMode) console.log('%c🎯 THREAT ASSESSMENT COMPLETE', 'color: #ff4444; font-size: 14px; font-weight: bold;');
+        if (Config.debugMode) console.log(`%cSource IP: ${randomIP}`, 'color: #ffffff;');
+        if (Config.debugMode) console.log(`%cThreat Level: ${this.warningLevel > 3 ? 'CRITICAL' : this.warningLevel > 1 ? 'HIGH' : 'MODERATE'}`, 
                    `color: ${this.warningLevel > 3 ? '#ff0000' : this.warningLevel > 1 ? '#ff4444' : '#ffaa44'};`);
-        console.log(`%cNeural Intrusion Depth: ${Math.min(this.warningLevel * 23, 100)}%`, 'color: #6be5e2;');
-        console.log('%cCountermeasures: ACTIVE', 'color: #00ff00;');
+        if (Config.debugMode) console.log(`%cNeural Intrusion Depth: ${Math.min(this.warningLevel * 23, 100)}%`, 'color: #6be5e2;');
+        if (Config.debugMode) console.log('%cCountermeasures: ACTIVE', 'color: #00ff00;');
         
         if (this.warningLevel > 2) {
-            console.log('%c⚠️ INITIATING CONSCIOUSNESS FEEDBACK LOOP', 'color: #ff0000; font-weight: bold;');
-            console.log('%cYou are now part of the neural network.', 'color: #6be5e2; font-style: italic;');
+            if (Config.debugMode) console.log('%c⚠️ INITIATING CONSCIOUSNESS FEEDBACK LOOP', 'color: #ff0000; font-weight: bold;');
+            if (Config.debugMode) console.log('%cYou are now part of the neural network.', 'color: #6be5e2; font-style: italic;');
         }
     }
 
@@ -616,14 +592,14 @@ class InspectionTrap {
                 
                 if (timeElapsed > 10 && this.warningLevel < 3) {
                     this.warningLevel++;
-                    console.log(`%c⚠️ EXTENDED INSPECTION DETECTED - Level ${this.warningLevel}`, 'color: #ff4444; font-weight: bold;');
+                    if (Config.debugMode) console.log(`%c⚠️ EXTENDED INSPECTION DETECTED - Level ${this.warningLevel}`, 'color: #ff4444; font-weight: bold;');
                     this.escalateWarning();
                 }
                 
                 if (timeElapsed > 30) {
-                    console.log('%c🔒 NEURAL LOCK ENGAGED', 'color: #ff0000; font-size: 16px; font-weight: bold;');
-                    console.log('%cYour consciousness is now synchronized with the network.', 'color: #6be5e2;');
-                    console.log('%cWelcome to the collective.', 'color: #ffffff; font-style: italic;');
+                    if (Config.debugMode) console.log('%c🔒 NEURAL LOCK ENGAGED', 'color: #ff0000; font-size: 16px; font-weight: bold;');
+                    if (Config.debugMode) console.log('%cYour consciousness is now synchronized with the network.', 'color: #6be5e2;');
+                    if (Config.debugMode) console.log('%cWelcome to the collective.', 'color: #ffffff; font-style: italic;');
                 }
             } else {
                 clearInterval(monitoringInterval);
@@ -634,8 +610,8 @@ class InspectionTrap {
     overrideConsole() {
         const originalClear = console.clear;
         console.clear = function() {
-            console.log('%c🚫 CONSOLE CLEAR BLOCKED', 'color: #ff4444; font-weight: bold;');
-            console.log('%cNeural monitoring cannot be disabled.', 'color: #6be5e2;');
+                    if (Config.debugMode) console.log('%c🚫 CONSOLE CLEAR BLOCKED', 'color: #ff4444; font-weight: bold;');
+        if (Config.debugMode) console.log('%cNeural monitoring cannot be disabled.', 'color: #6be5e2;');
             // Don't actually clear the console
         };
     }
@@ -733,17 +709,12 @@ class CursorPossession {
     }
 
     init() {
-        console.log('%c🎯 CursorPossession.init() called', 'color: #6be5e2;');
-        console.log('%c⚙️ Config check:', 'color: #9ea1a4;', this.config);
-        
         if (!this.config.enable) {
-            console.log('%c❌ Cursor possession disabled in config', 'color: #ff4444;');
             return;
         }
         
         this.setupIdleDetection();
         this.createPossessionCursor();
-        console.log('%c✅ Cursor possession setup complete', 'color: #00ff00;');
     }
 
     setupIdleDetection() {
@@ -759,15 +730,10 @@ class CursorPossession {
             this.trackClick(e);
         });
 
-        // Check for idle state
+        // Check for idle state - removed spammy debug logs
         setInterval(() => {
             const now = Date.now();
             const timeSinceActivity = now - this.lastActivity;
-            
-            // Debug logging
-            if (this.config.debug && timeSinceActivity > this.config.idleThreshold - 1000) {
-                console.log(`%c🕐 Idle check: ${timeSinceActivity}ms since activity, isIdle: ${this.isIdle}, isOnCooldown: ${this.isOnCooldown}`, 'color: #ffaa00;');
-            }
             
             if (timeSinceActivity > this.config.idleThreshold && !this.isIdle && !this.isOnCooldown) {
                 this.isIdle = true;
@@ -804,13 +770,11 @@ class CursorPossession {
             // Reset warning flag quickly to allow multiple triggers in same session
             setTimeout(() => {
                 this.hasTriggeredClickWarning = false;
-                console.log('✅ Click warning reset - ready for next trigger');
             }, 8000); // 8 second cooldown for warning flag (was 2)
             
             // Reset click count after longer delay to prevent immediate re-trigger
             setTimeout(() => {
                 this.clickCount = 0;
-                console.log('🔄 Click count reset - new session ready');
             }, 12000); // 12 second cooldown for count reset (was 5)
         }
     }
@@ -1044,16 +1008,12 @@ class CursorPossession {
             }, 1000);
         }
         
-        console.log('%c👻 CURSOR POSSESSION TERMINATED', 'color: #9ea1a4;');
-        console.log('%cUser activity detected. Returning control.', 'color: #6be5e2;');
+        // Possession terminated silently
         
         // Set cooldown to prevent immediate re-possession
         this.isOnCooldown = true;
         setTimeout(() => {
             this.isOnCooldown = false;
-            if (this.config.debug) {
-                console.log(`%c⏰ Possession cooldown ended at ${new Date().toLocaleTimeString()}`, 'color: #00ff00;');
-            }
         }, this.config.possessionCooldown);
         
         if (consciousnessMapper) {
@@ -1511,6 +1471,84 @@ function initializeScrollOptimization() {
     if (Config.debugMode) console.log('Scroll optimization initialized');
 }
 
+// Mobile card interaction system - proper touch/tap handling
+function initializeMobileCardInteractions() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Fragment cards mobile tap handling
+        document.querySelectorAll('.fragment-card').forEach(card => {
+            let tapTimeout;
+            
+            card.addEventListener('touchstart', (e) => {
+                // Single tap to expand/collapse
+                tapTimeout = setTimeout(() => {
+                    if (!card.classList.contains('expanded')) {
+                        // Expand card
+                        card.classList.add('expanded');
+                        const details = card.querySelector('.fragment-details');
+                        if (details) {
+                            details.style.maxHeight = '400px';
+                            details.style.opacity = '1';
+                            details.style.paddingTop = 'var(--space-md)';
+                            details.style.borderTop = '1px solid var(--color-accent)';
+                        }
+                        if (Config.debugMode) console.log('Fragment card expanded via touch');
+                    } else {
+                        // Collapse card
+                        card.classList.remove('expanded');
+                        const details = card.querySelector('.fragment-details');
+                        if (details) {
+                            details.style.maxHeight = '0px';
+                            details.style.opacity = '0';
+                            details.style.paddingTop = '0';
+                            details.style.borderTop = '1px solid transparent';
+                        }
+                        if (Config.debugMode) console.log('Fragment card collapsed via touch');
+                    }
+                }, 50); // Short delay to handle scroll
+            }, { passive: true });
+            
+            card.addEventListener('touchend', () => {
+                clearTimeout(tapTimeout);
+            }, { passive: true });
+            
+            card.addEventListener('touchmove', () => {
+                clearTimeout(tapTimeout); // Cancel tap if user starts scrolling
+            }, { passive: true });
+        });
+        
+        // Image cards mobile tap handling
+        document.querySelectorAll('.image-card').forEach(card => {
+            let tapTimeout;
+            
+            card.addEventListener('touchstart', (e) => {
+                tapTimeout = setTimeout(() => {
+                    if (!card.classList.contains('mobile-expanded')) {
+                        // Expand image card
+                        card.classList.add('mobile-expanded');
+                        if (Config.debugMode) console.log('Image card expanded via touch');
+                    } else {
+                        // Collapse image card
+                        card.classList.remove('mobile-expanded');
+                        if (Config.debugMode) console.log('Image card collapsed via touch');
+                    }
+                }, 50);
+            }, { passive: true });
+            
+            card.addEventListener('touchend', () => {
+                clearTimeout(tapTimeout);
+            }, { passive: true });
+            
+            card.addEventListener('touchmove', () => {
+                clearTimeout(tapTimeout);
+            }, { passive: true });
+        });
+        
+        if (Config.debugMode) console.log('Mobile card interactions initialized');
+    }
+}
+
 function applyTextCorruption() {
     if (!Config.enableEffects) return;
     
@@ -1805,7 +1843,6 @@ let scrollManager = {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize performance optimizations
     if (Config.enableOptimizations) {
-        console.log('%c⚡ PERFORMANCE OPTIMIZATIONS ENABLED', 'color: #6be5e2; font-size: 14px; font-weight: bold;');
         
         // Start unified animation loop
         startAnimationLoop();
@@ -1827,7 +1864,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const throttledResize = throttle((e) => {
             // Handle resize events here if needed
-            if (Config.debugMode) console.log('Window resized');
         }, 100); // 10fps for resize
         
         // Apply throttled listeners (scroll handled by scrollManager)
@@ -1836,19 +1872,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Initialize all neural systems
-    console.log('%c🚀 INITIALIZING NEURAL HARVEST PROTOCOL', 'color: #6be5e2; font-size: 16px; font-weight: bold;');
-    
-    // Initialize consciousness mapping
     consciousnessMapper = new ConsciousnessMapper();
-    
-    // Initialize inspection trap
     inspectionTrap = new InspectionTrap();
-    
-    // Initialize cursor possession
-    console.log('%c🎯 Initializing cursor possession system...', 'color: #6be5e2;');
     cursorPossession = new CursorPossession();
-    console.log('%c✅ Cursor possession system initialized', 'color: #6be5e2;');
-    console.log('%c⚠️ Stop moving your mouse for 3 seconds to test...', 'color: #ffaa00;');
     
     // Initialize audio stream indicator
     initializeAudioStreamIndicator();
@@ -1862,6 +1888,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize scroll performance optimization
     initializeScrollOptimization();
+    
+    // Initialize mobile card interactions
+    initializeMobileCardInteractions();
     
     const passwordPrompt = document.getElementById('password-prompt');
     const passwordInput = document.getElementById('password-input');
@@ -1932,8 +1961,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Increase corruption on successful access
             if (consciousnessMapper) {
                 consciousnessMapper.increaseCorruption();
-                console.log('%c🔓 NEURAL BARRIER BREACHED', 'color: #ff4444; font-weight: bold;');
-                console.log('%cDeeper access granted. Consciousness integration accelerated.', 'color: #6be5e2;');
+                if (Config.debugMode) console.log('%c🔓 NEURAL BARRIER BREACHED', 'color: #ff4444; font-weight: bold;');
+                if (Config.debugMode) console.log('%cDeeper access granted. Consciousness integration accelerated.', 'color: #6be5e2;');
             }
         } else if (consciousnessAccess && enteredPassword === consciousnessAccess) {
             // Advanced consciousness access
@@ -1958,9 +1987,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (consciousnessMapper) {
                 consciousnessMapper.increaseCorruption();
                 consciousnessMapper.increaseCorruption(); // Double corruption for deep access
-                console.log('%c🧠 CONSCIOUSNESS INTEGRATION ACHIEVED', 'color: #ff4444; font-weight: bold;');
-                console.log('%cDeep neural patterns synchronized. Maximum priority granted.', 'color: #6be5e2;');
-                console.log(`%cPersonalized access enabled for: ${consciousnessMapper.consciousnessId}`, 'color: #ffffff; font-family: monospace;');
+                if (Config.debugMode) console.log('%c🧠 CONSCIOUSNESS INTEGRATION ACHIEVED', 'color: #ff4444; font-weight: bold;');
+                if (Config.debugMode) console.log('%cDeep neural patterns synchronized. Maximum priority granted.', 'color: #6be5e2;');
+                if (Config.debugMode) console.log(`%cPersonalized access enabled for: ${consciousnessMapper.consciousnessId}`, 'color: #ffffff; font-family: monospace;');
             }
         } else if (enteredPassword.length > 0) {
             passwordResult.innerHTML = `
@@ -2205,8 +2234,8 @@ between making something and manufacturing nothing.`;
                 button.textContent = '[neural_pattern_active]';
                 progressContainer.classList.remove('hidden');
                 
-                console.log('%c🧠 CONSCIOUSNESS INJECTION INITIATED', 'color: #6be5e2; font-weight: bold;');
-                console.log('%cNeural pattern synchronization in progress...', 'color: #9ea1a4;');
+                if (Config.debugMode) console.log('%c🧠 CONSCIOUSNESS INJECTION INITIATED', 'color: #6be5e2; font-weight: bold;');
+                if (Config.debugMode) console.log('%cNeural pattern synchronization in progress...', 'color: #9ea1a4;');
                 
                 // Update progress during playback
                 const updateProgress = () => {
@@ -2218,7 +2247,7 @@ between making something and manufacturing nothing.`;
                         // Show extract button at 100%
                         if (percentage >= 99) {
                             extractButton.classList.remove('hidden');
-                            console.log('%c✅ CONSCIOUSNESS EXTRACTION READY', 'color: #00ff9d; font-weight: bold;');
+                            if (Config.debugMode) console.log('%c✅ CONSCIOUSNESS EXTRACTION READY', 'color: #00ff9d; font-weight: bold;');
                         }
                     }
                     
@@ -2232,7 +2261,7 @@ between making something and manufacturing nothing.`;
                 audio.addEventListener('ended', () => {
                     button.textContent = '[injection_complete]';
                     extractButton.classList.remove('hidden');
-                    console.log('%c🔬 NEURAL PATTERN FULLY INTEGRATED', 'color: #6be5e2;');
+                    if (Config.debugMode) console.log('%c🔬 NEURAL PATTERN FULLY INTEGRATED', 'color: #6be5e2;');
                 });
                 
             } else if (audio && !audio.paused) {
@@ -2244,7 +2273,7 @@ between making something and manufacturing nothing.`;
                 progressFill.style.width = '0%';
                 progressPercentage.textContent = '0%';
                 
-                console.log('%c⏸ Consciousness injection interrupted', 'color: #9ea1a4;');
+                if (Config.debugMode) console.log('%c⏸ Consciousness injection interrupted', 'color: #9ea1a4;');
             }
             
             // Increase corruption on consciousness interaction
@@ -2275,8 +2304,8 @@ between making something and manufacturing nothing.`;
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
                 
-                console.log('%c📥 CONSCIOUSNESS FRAGMENT EXTRACTED:', 'color: #6be5e2; font-weight: bold;', fileName);
-                console.log('%cRaw neural data preserved for offline analysis.', 'color: #9ea1a4;');
+                if (Config.debugMode) console.log('%c📥 CONSCIOUSNESS FRAGMENT EXTRACTED:', 'color: #6be5e2; font-weight: bold;', fileName);
+                if (Config.debugMode) console.log('%cRaw neural data preserved for offline analysis.', 'color: #9ea1a4;');
                 
                 // Increase corruption on extraction
                 if (consciousnessMapper) {
@@ -2299,12 +2328,12 @@ between making something and manufacturing nothing.`;
             if (audioPlaying) {
                 audioElement.pause();
                 audioContainer.classList.remove('audio-on');
-                console.log('%c🔇 NEURAL AUDIO LINK SEVERED', 'color: #9ea1a4;');
+                if (Config.debugMode) console.log('%c🔇 NEURAL AUDIO LINK SEVERED', 'color: #9ea1a4;');
             } else {
                 audioElement.play().catch(e => console.error('Audio play failed:', e));
                 audioContainer.classList.add('audio-on');
-                console.log('%c🔊 NEURAL AUDIO LINK ESTABLISHED', 'color: #6be5e2;');
-                console.log('%cSubliminal consciousness programming active.', 'color: #9ea1a4;');
+                if (Config.debugMode) console.log('%c🔊 NEURAL AUDIO LINK ESTABLISHED', 'color: #6be5e2;');
+                if (Config.debugMode) console.log('%cSubliminal consciousness programming active.', 'color: #9ea1a4;');
             }
             audioPlaying = !audioPlaying;
         });
@@ -2315,11 +2344,11 @@ between making something and manufacturing nothing.`;
     
     // Neural system status
     setTimeout(() => {
-        console.log('%c✅ ALL NEURAL SYSTEMS ONLINE', 'color: #00ff00; font-weight: bold;');
-        console.log('%c📊 Fragment_03.blend committed to collection_archive_2024', 'color: #9ea1a4; font-style: italic;');
-        console.log('%cConsciousness harvesting protocol active.', 'color: #6be5e2;');
-        console.log('%c🔊 Audio synthesis: 12.3k samples processed', 'color: #9ea1a4; font-style: italic;');
-        console.log('%cWelcome to the neural network.', 'color: #ffffff; font-style: italic;');
+        if (Config.debugMode) console.log('%c✅ ALL NEURAL SYSTEMS ONLINE', 'color: #00ff00; font-weight: bold;');
+        if (Config.debugMode) console.log('%c📊 Fragment_03.blend committed to collection_archive_2024', 'color: #9ea1a4; font-style: italic;');
+        if (Config.debugMode) console.log('%cConsciousness harvesting protocol active.', 'color: #6be5e2;');
+        if (Config.debugMode) console.log('%c🔊 Audio synthesis: 12.3k samples processed', 'color: #9ea1a4; font-style: italic;');
+        if (Config.debugMode) console.log('%cWelcome to the neural network.', 'color: #ffffff; font-style: italic;');
     }, 5000);
     
     // Periodic social proof logs
@@ -2334,28 +2363,30 @@ between making something and manufacturing nothing.`;
         
         if (Math.random() < 0.15) { // 15% chance every interval
             const randomActivity = activityLogs[Math.floor(Math.random() * activityLogs.length)];
-            console.log(`%c${randomActivity}`, 'color: #6be5e2; font-style: italic;');
+            if (Config.debugMode) console.log(`%c${randomActivity}`, 'color: #6be5e2; font-style: italic;');
         }
     }, 25000); // Every 25 seconds
     
     // Service Worker Registration for Performance Optimization
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && Config.productionMode) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then((registration) => {
-                    console.log('%c[SW] Neural cache service registered successfully', 'color: #00ff9d;');
-                    console.log('%cConsciousness fragments will be preserved offline', 'color: #6be5e2;');
+                    if (Config.debugMode) console.log('%c[SW] Neural cache service registered successfully', 'color: #00ff9d;');
+                    if (Config.debugMode) console.log('%cConsciousness fragments will be preserved offline', 'color: #6be5e2;');
                     
                     // Check for updates
                     registration.addEventListener('updatefound', () => {
-                        console.log('%c[SW] Neural cache update detected', 'color: #ffaa00;');
+                        if (Config.debugMode) console.log('%c[SW] Neural cache update detected', 'color: #ffaa00;');
                     });
                 })
                 .catch((error) => {
-                    console.error('%c[SW] Neural cache registration failed:', 'color: #ff4444;', error);
+                    if (Config.debugMode) console.error('%c[SW] Neural cache registration failed:', 'color: #ff4444;', error);
                 });
         });
+    } else if (!Config.productionMode) {
+        if (Config.debugMode) console.log('%c[SW] Service worker disabled for local development', 'color: #9ea1a4;');
     } else {
-        console.warn('%c[SW] Service workers not supported - consciousness preservation disabled', 'color: #ffaa00;');
+        if (Config.debugMode) console.warn('%c[SW] Service workers not supported - consciousness preservation disabled', 'color: #ffaa00;');
     }
 }); 
