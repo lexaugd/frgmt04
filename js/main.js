@@ -442,6 +442,15 @@ end_transmission.`;
     }
 };
 
+// Unregister service worker if disabled in config
+if (!Config.enableServiceWorker && 'serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+            registration.unregister();
+        }
+    });
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => App.init());
