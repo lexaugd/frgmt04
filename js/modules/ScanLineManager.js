@@ -32,7 +32,11 @@ export const ScanLineManager = {
             scanLine.style.height = `${Config.scanLines.large.height}px`;
             if (Config.scanLines.large.color) {
                 scanLine.style.background = `linear-gradient(90deg, transparent 0%, ${Config.scanLines.large.color} 50%, transparent 100%)`;
-                scanLine.style.boxShadow = `0 0 ${Config.scanLines.large.glowSize}px 5px ${Config.scanLines.large.color}`;
+                if (Config.scanLines.large.glowSize > 0) {
+                    scanLine.style.boxShadow = `0 0 ${Config.scanLines.large.glowSize}px 1px ${Config.scanLines.large.color}`;
+                } else {
+                    scanLine.style.boxShadow = 'none';
+                }
             }
         } else if (type === 'small') {
             scanLine.className = 'scan-line-2';
@@ -42,7 +46,11 @@ export const ScanLineManager = {
             scanLine.style.height = `${Config.scanLines.small.height}px`;
             if (Config.scanLines.small.color) {
                 scanLine.style.background = `linear-gradient(90deg, transparent 20%, ${Config.scanLines.small.color} 50%, transparent 80%)`;
-                scanLine.style.boxShadow = `0 0 ${Config.scanLines.small.glowSize}px 5px ${Config.scanLines.small.color}`;
+                if (Config.scanLines.small.glowSize > 0) {
+                    scanLine.style.boxShadow = `0 0 ${Config.scanLines.small.glowSize}px 1px ${Config.scanLines.small.color}`;
+                } else {
+                    scanLine.style.boxShadow = 'none';
+                }
             }
         } else if (type === 'corrupted') {
             scanLine.className = 'corrupted-scan-line';

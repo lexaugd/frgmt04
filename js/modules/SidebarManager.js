@@ -17,7 +17,7 @@ export class SidebarManager {
     
     init() {
         this.sidebar = document.getElementById('neural-sidebar');
-        this.sidebarToggle = document.getElementById('sidebar-toggle');
+        this.sidebarToggle = document.getElementById('mobile-menu-toggle');
         this.secondaryToggle = document.getElementById('secondary-toggle');
         this.secondarySection = document.querySelector('.sidebar-secondary');
         
@@ -30,15 +30,24 @@ export class SidebarManager {
         this.setupResponsiveBehavior();
         this.initializeActiveStates();
         
-        if (Config.debugMode) {
-            console.log('🧠 SidebarManager initialized');
-        }
+
     }
     
     setupEventListeners() {
         // Main sidebar toggle
         if (this.sidebarToggle) {
-            this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+            this.sidebarToggle.addEventListener('click', () => {
+                if (Config.debugMode) {
+                    console.log('🔄 Sidebar toggle clicked', {
+                        isExpanded: this.isExpanded,
+                        isMobile: window.matchMedia('(max-width: 767px)').matches,
+                        sidebarClasses: Array.from(this.sidebar.classList)
+                    });
+                }
+                this.toggleSidebar();
+            });
+        } else {
+            console.error('❌ Sidebar toggle button not found!');
         }
         
         // Secondary menu toggle
@@ -218,7 +227,7 @@ export class SidebarManager {
         this.isExpanded = true;
         
         // Update toggle icon
-        const toggleIcon = this.sidebarToggle?.querySelector('.sidebar-icon');
+        const toggleIcon = this.sidebarToggle?.querySelector('.menu-icon');
         if (toggleIcon) {
             toggleIcon.textContent = '◀';
         }
@@ -233,7 +242,7 @@ export class SidebarManager {
         this.isExpanded = false;
         
         // Update toggle icon
-        const toggleIcon = this.sidebarToggle?.querySelector('.sidebar-icon');
+        const toggleIcon = this.sidebarToggle?.querySelector('.menu-icon');
         if (toggleIcon) {
             toggleIcon.textContent = '≡';
         }

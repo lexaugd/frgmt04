@@ -16,7 +16,7 @@ import { SidebarManager } from './modules/SidebarManager.js';
 
 const App = {
     async init() {
-        console.log('🧠 Initializing frgmnt_04 neural interface...');
+    
         
         // Initialize core modules first
         if (Config.enableEffects) {
@@ -47,7 +47,7 @@ const App = {
         this.initAudioSystem();
         this.initIntroSequence();
         
-        console.log('✅ Neural interface online');
+
     },
 
     initGlitchToggle() {

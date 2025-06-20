@@ -3,7 +3,7 @@
 const Config = {
     // Master switches
     enableOptimizations: true,
-    debugMode: true,  // Enable debug mode to see what's happening
+    debugMode: false,  // Enable debug mode to see what's happening
     productionMode: window.location.protocol === 'https:', // Auto-detect production vs local
     enableServiceWorker: false, // Dedicated toggle for service worker (disabled due to caching issues)
     
@@ -48,22 +48,22 @@ const Config = {
         // Large scan lines
         large: {
             count: 1,                    // number of large scan lines
-            height: 1,                   // height in pixels (thinner)
+            height: 4,                   // height in pixels (thinner)
             speed: 8000,                 // animation duration in milliseconds (slower: 7 seconds)
-            opacity: 0.1,                // opacity (0.0-1.0)
+            opacity: 0.3,                // opacity (0.0-1.0)
             color: 'rgba(255, 255, 255, 0.3)', // color of the scan line
-            glowSize: 2,                 // glow/shadow size in pixels (minimal glow)
+            glowSize: 0,                 // NO glow to prevent doubling effect
             enable: true                 // enable/disable large scan lines
         },
         
         // Small scan lines  
         small: {
             count: 1,                    // number of small scan lines
-            height: 1,                   // height in pixels
+            height: 2,                   // height in pixels
             speed: 6500,                 // animation duration in milliseconds (slower: 5.5 seconds)
-            opacity: 0.6,                // opacity (0.0-1.0)
+            opacity: 0.2,                // opacity (0.0-1.0)
             color: 'rgba(255, 255, 255, 0.15)', // color of the scan line
-            glowSize: 10,                // glow/shadow size in pixels
+            glowSize: 0,                 // NO glow to prevent doubling effect
             enable: true                 // enable/disable small scan lines
         },
         
