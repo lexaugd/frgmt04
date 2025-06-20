@@ -40,7 +40,7 @@
     <style>
         .container {
             margin-top: 100px; /* Add space for fixed logo */
-            padding: 0 20px;
+            padding: 0 min(20px, 5vw);
         }
         
         .studies-header {
@@ -75,16 +75,18 @@
         
         .study-items {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 85vw), 1fr));
+            gap: min(30px, 5vw);
         }
         
         .study-card {
             background: var(--color-glassy);
             border: 1px solid var(--color-tertiary);
             border-radius: var(--radius-lg);
-            padding: 30px;
+            padding: min(30px, 6vw);
             transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .study-card:hover {
@@ -170,20 +172,79 @@
             .container {
                 margin-top: 80px;
                 padding: 0 15px;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            
+            .studies-grid {
+                max-width: 100%;
+                padding: 0;
             }
             
             .study-items {
                 grid-template-columns: 1fr;
                 gap: 20px;
+                max-width: 100%;
             }
             
             .study-card {
                 padding: 20px;
+                max-width: 100%;
+                box-sizing: border-box;
+                word-wrap: break-word;
             }
             
             .archive-status {
                 margin-top: 60px;
                 padding: 30px 20px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .study-items {
+                grid-template-columns: 1fr !important;
+                gap: 15px;
+            }
+            
+            .study-card {
+                padding: 15px;
+                width: 100%;
+                min-width: 0;
+            }
+            
+            .study-meta {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .boot-sequence {
+                font-size: 12px !important;
+                padding: 0 5px;
+            }
+        }
+        
+        @media (max-width: 460px) {
+            .study-items {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+            
+            .study-card {
+                padding: 12px;
+                margin: 0;
+                width: 100%;
+                min-width: 0;
+                max-width: 100%;
+            }
+            
+            .container {
+                padding: 0 8px;
             }
         }
     </style>

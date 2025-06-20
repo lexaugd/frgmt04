@@ -338,20 +338,30 @@ end_transmission.`;
         ];
 
         if (Dom.terminalOutput && Dom.introText && Dom.mainCursor) {
-            // Clear any existing content
-            Dom.terminalOutput.innerHTML = '';
+            // Pre-populate with invisible placeholder to reserve space
+            const placeholder = lines.map(line => `<span style="visibility: hidden;">${line}<br></span>`).join('');
+            Dom.terminalOutput.innerHTML = placeholder;
+            
+            // Set a fixed height to maintain space
+            const terminalContainer = Dom.terminalOutput.parentElement;
+            terminalContainer.style.minHeight = terminalContainer.offsetHeight + 'px';
             
             // Show cursor
             Dom.mainCursor.style.display = 'inline-block';
             
             // Start typing after a delay
-                    setTimeout(() => {
+            setTimeout(() => {
+                // Don't clear - start typing over the placeholder
                 this.typeLines(Dom.terminalOutput, lines, () => {
                     // Hide cursor and show intro text
                     Dom.mainCursor.style.display = 'none';
-                    Dom.introText.classList.remove('hidden');
-                    Dom.introText.classList.add('visible');
-                });
+                    if (Dom.introText) {
+                        Dom.introText.style.visibility = 'visible';
+                        Dom.introText.style.opacity = '1';
+                        Dom.introText.style.display = 'block';
+                        console.log('Intro text should now be visible', Dom.introText);
+                    }
+                }, true); // Add flag to indicate we should clear first
             }, 3000);
         }
     },
@@ -393,6 +403,7 @@ end_transmission.`;
         const corruptChars = ['█', '▓', '▒', '░', '■', '□', '▪', '▫', '●', '○'];
         
         const corruptText = (element, original) => {
+            // Store original content and create corrupted version
             const chars = original.split('');
             const corrupted = chars.map(char => {
                 // 25% chance to corrupt each character (except spaces, underscores, and HTML)
@@ -402,11 +413,17 @@ end_transmission.`;
                 return char;
             }).join('');
             
+            // Use monospace font and fixed width to prevent layout shifts
+            const originalFontFamily = element.style.fontFamily;
+            element.style.fontFamily = 'var(--font-mono)';
+            element.style.whiteSpace = 'pre-wrap';
             element.innerHTML = corrupted;
             
             // Restore original after 300-800ms
             setTimeout(() => {
                 element.innerHTML = original;
+                element.style.fontFamily = originalFontFamily;
+                element.style.whiteSpace = '';
             }, 300 + Math.random() * 500);
         };
         
@@ -425,6 +442,34 @@ end_transmission.`;
             // Restore original after 300-800ms
             setTimeout(() => {
                 element.textContent = original;
+            }, 300 + Math.random() * 500);
+        };
+        
+        const corruptTextSafe = (element, original) => {
+            // Use same-width corruption characters to prevent layout shifts
+            const safeCorruptChars = ['█', '▓', '▒', '░', '■', '□'];
+            
+            // Temporarily set to monospace font to ensure consistent character widths
+            const originalFont = element.style.fontFamily;
+            element.style.fontFamily = 'var(--font-mono)';
+            
+            const chars = original.split('');
+            const corrupted = chars.map(char => {
+                // 20% chance to corrupt each character (except spaces, HTML tags, and punctuation)
+                if (char !== ' ' && char !== '<' && char !== '>' && char !== '/' && 
+                    char !== '.' && char !== ',' && char !== '-' && char !== ':' && 
+                    Math.random() < 0.2) {
+                    return safeCorruptChars[Math.floor(Math.random() * safeCorruptChars.length)];
+                }
+                return char;
+            }).join('');
+            
+            element.innerHTML = corrupted;
+            
+            // Restore original after 300-800ms
+            setTimeout(() => {
+                element.innerHTML = original;
+                element.style.fontFamily = originalFont;
             }, 300 + Math.random() * 500);
         };
         
@@ -449,20 +494,20 @@ end_transmission.`;
                 }
             });
             
-            // Corrupt intro text paragraphs (20% chance each)
+            // Corrupt intro text paragraphs with layout-safe method (20% chance each)
             introTextPs.forEach(p => {
                 if (Math.random() < 0.2) {
                     const original = originalIntroTexts.get(p);
                     setTimeout(() => {
-                        corruptText(p, original);
+                        corruptTextSafe(p, original);
                     }, Math.random() * 1200);
                 }
             });
             
-            // Corrupt terminal output (15% chance)
+            // Corrupt terminal output with layout-safe method (15% chance)
             if (terminalOutput && originalTerminalText && Math.random() < 0.15) {
                 setTimeout(() => {
-                    corruptText(terminalOutput, originalTerminalText);
+                    corruptTextSafe(terminalOutput, originalTerminalText);
                 }, Math.random() * 800);
             }
         };
@@ -486,9 +531,14 @@ end_transmission.`;
         }, 2000);
     },
 
-    typeLines(element, lines, onComplete) {
+    typeLines(element, lines, onComplete, shouldClearFirst = false) {
         let lineIndex = 0;
         let charIndex = 0;
+        
+        // Clear content if requested
+        if (shouldClearFirst) {
+            element.innerHTML = '';
+        }
         
         const type = () => {
             if (lineIndex < lines.length) {
