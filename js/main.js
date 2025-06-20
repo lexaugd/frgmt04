@@ -40,7 +40,7 @@ const App = {
             State.sidebarManager = new SidebarManager();
             
                         // Initialize UI interactions
-        this.initGlitchToggle();
+            this.initGlitchToggle();
         await this.initTypewriters();
         this.initPasswordSystem();
         this.initScrollBehavior();
@@ -287,10 +287,10 @@ end_transmission.`;
             });
         }
         
-        if (audioElement && audioToggle) {
-            audioElement.volume = 0.4;
+            if (audioElement && audioToggle) {
+                audioElement.volume = 0.4;
             
-            audioToggle.addEventListener('click', () => {
+                audioToggle.addEventListener('click', () => {
                 if (audioPlaying) {
                     audioElement.pause();
                     audioContainer.classList.remove('audio-on');
@@ -324,9 +324,9 @@ end_transmission.`;
                     if (Config.debugMode) console.log('%cSubliminal consciousness programming active.', 'color: #9ea1a4;');
                 }
                 audioPlaying = !audioPlaying;
-            });
-        }
-    },
+                });
+            }
+        },
 
     initIntroSequence() {
         // Start intro terminal typewriter effect
@@ -345,7 +345,7 @@ end_transmission.`;
             Dom.mainCursor.style.display = 'inline-block';
             
             // Start typing after a delay
-            setTimeout(() => {
+                    setTimeout(() => {
                 this.typeLines(Dom.terminalOutput, lines, () => {
                     // Hide cursor and show intro text
                     Dom.mainCursor.style.display = 'none';
@@ -360,14 +360,57 @@ end_transmission.`;
         const logoText = document.querySelector('.logo-text');
         const logoSubtitle = document.querySelector('.logo-subtitle');
         
+        // Get all sidebar navigation labels
+        const sidebarLabels = document.querySelectorAll('.sidebar-label');
+        
+        // Get intro text elements
+        const introTextPs = document.querySelectorAll('#intro-text p');
+        const terminalOutput = document.getElementById('terminal-output');
+        
         if (!logoText || !logoSubtitle) return;
         
         const originalText = logoText.textContent;
         const originalSubtitle = logoSubtitle.textContent;
         
+        // Store original sidebar label texts
+        const originalSidebarTexts = new Map();
+        sidebarLabels.forEach(label => {
+            originalSidebarTexts.set(label, label.textContent);
+        });
+        
+        // Store original intro text
+        const originalIntroTexts = new Map();
+        introTextPs.forEach(p => {
+            originalIntroTexts.set(p, p.innerHTML); // Use innerHTML to preserve <br> tags
+        });
+        
+        // Store original terminal output
+        let originalTerminalText = '';
+        if (terminalOutput) {
+            originalTerminalText = terminalOutput.innerHTML;
+        }
+        
         const corruptChars = ['█', '▓', '▒', '░', '■', '□', '▪', '▫', '●', '○'];
         
         const corruptText = (element, original) => {
+            const chars = original.split('');
+            const corrupted = chars.map(char => {
+                // 25% chance to corrupt each character (except spaces, underscores, and HTML)
+                if (char !== ' ' && char !== '_' && char !== '<' && char !== '>' && char !== '/' && Math.random() < 0.25) {
+                    return corruptChars[Math.floor(Math.random() * corruptChars.length)];
+                }
+                return char;
+            }).join('');
+            
+            element.innerHTML = corrupted;
+            
+            // Restore original after 300-800ms
+            setTimeout(() => {
+                element.innerHTML = original;
+            }, 300 + Math.random() * 500);
+        };
+        
+        const corruptTextContent = (element, original) => {
             const chars = original.split('');
             const corrupted = chars.map(char => {
                 // 25% chance to corrupt each character (except spaces and underscores)
@@ -387,13 +430,40 @@ end_transmission.`;
         
         const startCorruption = () => {
             // Always corrupt logo text
-            corruptText(logoText, originalText);
+            corruptTextContent(logoText, originalText);
             
             // Corrupt subtitle 50% of the time
             if (Math.random() < 0.5) {
                 setTimeout(() => {
-                    corruptText(logoSubtitle, originalSubtitle);
+                    corruptTextContent(logoSubtitle, originalSubtitle);
                 }, 200 + Math.random() * 400);
+            }
+            
+            // Corrupt random sidebar labels (30% chance each)
+            sidebarLabels.forEach(label => {
+                if (Math.random() < 0.3) {
+                    const original = originalSidebarTexts.get(label);
+                    setTimeout(() => {
+                        corruptTextContent(label, original);
+                    }, Math.random() * 1000);
+                }
+            });
+            
+            // Corrupt intro text paragraphs (20% chance each)
+            introTextPs.forEach(p => {
+                if (Math.random() < 0.2) {
+                    const original = originalIntroTexts.get(p);
+                    setTimeout(() => {
+                        corruptText(p, original);
+                    }, Math.random() * 1200);
+                }
+            });
+            
+            // Corrupt terminal output (15% chance)
+            if (terminalOutput && originalTerminalText && Math.random() < 0.15) {
+                setTimeout(() => {
+                    corruptText(terminalOutput, originalTerminalText);
+                }, Math.random() * 800);
             }
         };
         

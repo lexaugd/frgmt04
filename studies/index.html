@@ -36,6 +36,158 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../css/style.css">
     
+    <!-- Studies Page Specific Styles -->
+    <style>
+        .container {
+            margin-top: 100px; /* Add space for fixed logo */
+            padding: 0 20px;
+        }
+        
+        .studies-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .studies-header h1 {
+            margin-bottom: 20px;
+        }
+        
+        .consciousness-text {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: var(--color-secondary);
+        }
+        
+        .studies-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .study-category {
+            margin-bottom: 60px;
+        }
+        
+        .study-category h2 {
+            margin-bottom: 30px;
+            color: var(--color-accent);
+        }
+        
+        .study-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .study-card {
+            background: var(--color-glassy);
+            border: 1px solid var(--color-tertiary);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .study-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(107, 229, 226, 0.1);
+        }
+        
+        .study-card h3 {
+            color: var(--color-accent);
+            margin-bottom: 15px;
+            font-family: var(--font-mono);
+        }
+        
+        .study-card p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--color-text);
+        }
+        
+        .study-meta {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .study-type, .study-status {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+        }
+        
+        .study-type {
+            background: rgba(107, 229, 226, 0.1);
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+        }
+        
+        .study-status {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-secondary);
+            border: 1px solid var(--color-tertiary);
+        }
+        
+        .archive-status {
+            text-align: center;
+            margin-top: 80px;
+            padding: 40px;
+            background: rgba(107, 229, 226, 0.05);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-tertiary);
+        }
+        
+        .status-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-text {
+            font-family: var(--font-mono);
+            color: var(--color-accent);
+        }
+        
+        .archive-note {
+            color: var(--color-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 767px) {
+            .container {
+                margin-top: 80px;
+                padding: 0 15px;
+            }
+            
+            .study-items {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .study-card {
+                padding: 20px;
+            }
+            
+            .archive-status {
+                margin-top: 60px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+    
     <!-- Structured Data for Studies -->
     <script type="application/ld+json">
     {
@@ -81,22 +233,41 @@
     <!-- Scan Line Effect -->
     <div class="scan-line"></div>
     
+    <!-- Site Logo - Top Right -->
+    <div id="site-logo" class="site-logo" aria-label="FRGMT_04 Digital Consciousness Archive">
+        <span class="logo-text">FRGMT_04</span>
+        <span class="logo-subtitle">CONSCIOUSNESS_ARCHIVE</span>
+    </div>
+
+
+
     <!-- Main Container -->
     <div class="container">
         <header>
             <nav>
                 <div class="nav-links">
-                    <a href="../index.html" class="nav-link glitch-subtle" data-text="gallery">gallery</a>
-                    <a href="../index.html#about" class="nav-link glitch-subtle" data-text="about">about</a>
-                    <a href="index.html" class="nav-link active glitch-subtle" data-text="studies">studies</a>
-                    <a href="../index.html#contact" class="nav-link glitch-subtle" data-text="contact">contact</a>
+                    <a href="../index.html" class="nav-link glitch-subtle" data-text="← back">← back</a>
                 </div>
             </nav>
         </header>
 
         <main>
+            <!-- Boot Sequence -->
+            <section class="boot-sequence" style="margin-bottom: 40px; font-family: var(--font-mono); color: var(--color-accent); font-size: 14px; line-height: 1.8;">
+                <div>booting fragment_04...</div>
+                <div>loading inspector_protocols...</div>
+                <div>protocol initialized...</div>
+                <div>unauthorized access granted</div>
+                <div style="margin-top: 20px; color: var(--color-text);">The machine spoke.</div>
+                <div style="color: #ff6b6b;">WARNING: It is not what we expected.</div>
+                <div style="margin-top: 15px; color: var(--color-secondary);">It failed - the right way.</div>
+                <div>It became a reflection of us.</div>
+                <div style="margin-top: 15px; color: var(--color-tertiary);">Deconstructed.</div>
+                <div style="text-align: right; margin-top: 10px; color: var(--color-accent);">- frgmnt_04</div>
+            </section>
+
             <section class="studies-header">
-                <h1 class="glitch-intense" data-text="fragment_studies">fragment_studies</h1>
+                <h1 id="studies-title">fragment_studies</h1>
                 <p class="consciousness-text">
                     Deep analysis of consciousness fragments — process documentation, 
                     philosophical exploration, technical breakdowns. Each study maps 
@@ -201,5 +372,86 @@
     <!-- JavaScript -->
     <script src="../js/config.js"></script>
     <script src="../js/main.js"></script>
+    
+    <!-- Character Corruption for Studies Page -->
+    <script>
+        function initStudiesCorruption() {
+            const navLink = document.querySelector('.nav-link');
+            const studiesTitle = document.getElementById('studies-title');
+            
+            const elements = [];
+            const originalTexts = new Map();
+            
+            // Add nav link if exists
+            if (navLink) {
+                elements.push(navLink);
+                originalTexts.set(navLink, navLink.textContent);
+            }
+            
+            // Add studies title if exists
+            if (studiesTitle) {
+                elements.push(studiesTitle);
+                originalTexts.set(studiesTitle, studiesTitle.textContent);
+            }
+            
+            if (elements.length === 0) return;
+            
+            const corruptChars = ['█', '▓', '▒', '░', '■', '□', '▪', '▫', '●', '○'];
+            
+            const corruptText = (element, original) => {
+                const chars = original.split('');
+                const corrupted = chars.map(char => {
+                    // 25% chance to corrupt each character (except spaces, arrows, underscores)
+                    if (char !== ' ' && char !== '←' && char !== '_' && Math.random() < 0.25) {
+                        return corruptChars[Math.floor(Math.random() * corruptChars.length)];
+                    }
+                    return char;
+                }).join('');
+                
+                element.textContent = corrupted;
+                
+                // Restore original after 400-700ms
+                setTimeout(() => {
+                    element.textContent = original;
+                }, 400 + Math.random() * 300);
+            };
+            
+            const startCorruption = () => {
+                // Corrupt each element with 40% chance
+                elements.forEach(element => {
+                    if (Math.random() < 0.4) {
+                        const original = originalTexts.get(element);
+                        setTimeout(() => {
+                            corruptText(element, original);
+                        }, Math.random() * 800);
+                    }
+                });
+            };
+            
+            const scheduleNext = () => {
+                setTimeout(() => {
+                    if (window.Config && window.Config.enableEffects) {
+                        startCorruption();
+                    }
+                    scheduleNext();
+                }, 3000 + Math.random() * 3000); // Every 3-6 seconds
+            };
+            
+            // Start first corruption after 2 seconds
+            setTimeout(() => {
+                if (window.Config && window.Config.enableEffects) {
+                    startCorruption();
+                }
+                scheduleNext();
+            }, 2000);
+        }
+        
+        // Initialize when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initStudiesCorruption);
+        } else {
+            initStudiesCorruption();
+        }
+    </script>
 </body>
 </html> 
