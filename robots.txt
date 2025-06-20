@@ -6,6 +6,11 @@ Allow: /
 Allow: /css/
 Allow: /js/
 Allow: /assets/
+Allow: /studies/
+
+# Image-specific crawling directives
+Allow: /assets/images/
+Allow: /assets/images/galery/
 
 # Block any potential admin or development files
 Disallow: /_context/
@@ -17,8 +22,9 @@ Disallow: /temp/
 # Crawl delay to be respectful to server resources
 Crawl-delay: 1
 
-# Sitemap location
+# Sitemap locations
 Sitemap: https://frgmt04.com/sitemap.xml
+Sitemap: https://frgmt04.com/sitemap-images.xml
 
 # Special directives for AI crawlers and search engines
 User-agent: GPTBot

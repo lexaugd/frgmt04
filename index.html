@@ -59,8 +59,6 @@
     
     <!-- Preload Critical Resources -->
     <link rel="preload" href="css/style.css" as="style">
-    <link rel="preload" href="js/script.js" as="script">
-    <link rel="preload" href="js/config.js" as="script">
     
     <!-- Preload Critical Images -->
     <link rel="preload" href="assets/images/Data_shrine_1.jpg" as="image" type="image/jpeg">
@@ -225,10 +223,78 @@
                 "name": "Archived Fragments Gallery",
                 "description": "Collection of digital consciousness fragments and neural art pieces",
                 "mainEntity": {
-                    "@type": "ImageGallery",
+                    "@type": "ItemList",
                     "name": "Neural Fragment Gallery",
                     "description": "Visual archive of consciousness fragments and corrupted neural patterns",
-                    "numberOfItems": 9
+                    "numberOfItems": 9,
+                    "itemListElement": [
+                        {
+                            "@type": "VisualArtwork",
+                            "name": "Data Shrine 1",
+                            "description": "Digital consciousness fragment cyberpunk art featuring neural network patterns, glitch aesthetics, and corrupted data visualization",
+                            "image": "https://frgmt04.com/assets/images/Data_shrine_1.jpg",
+                            "artMedium": "Digital Art",
+                            "artform": "Cyberpunk Digital Art",
+                            "creator": {
+                                "@type": "Organization",
+                                "name": "frgmnt_04"
+                            },
+                            "dateCreated": "2024",
+                            "genre": "Digital Consciousness Art",
+                            "keywords": "digital consciousness, neural patterns, cyberpunk art, consciousness archaeology",
+                            "copyrightHolder": {
+                                "@type": "Organization",
+                                "name": "frgmnt_04"
+                            },
+                            "license": "https://frgmt04.com/",
+                            "offers": {
+                                "@type": "Offer",
+                                "availability": "InStock",
+                                "priceCurrency": "CAD",
+                                "price": "Contact for pricing"
+                            }
+                        },
+                        {
+                            "@type": "VisualArtwork",
+                            "name": "Misslabeled Emotions",
+                            "description": "Corrupted emotional data patterns in cyberpunk digital art style featuring neural processing errors and consciousness fragmentation",
+                            "image": "https://frgmt04.com/assets/images/Misslabeled_Emotions.jpg",
+                            "artMedium": "Digital Art",
+                            "artform": "Glitch Art",
+                            "creator": {
+                                "@type": "Organization",
+                                "name": "frgmnt_04"
+                            },
+                            "dateCreated": "2024",
+                            "genre": "Digital Consciousness Art",
+                            "keywords": "emotional data, glitch art, neural processing, consciousness fragmentation",
+                            "copyrightHolder": {
+                                "@type": "Organization",
+                                "name": "frgmnt_04"
+                            },
+                            "license": "https://frgmt04.com/"
+                        },
+                        {
+                            "@type": "VisualArtwork",
+                            "name": "Echo Sanctum",
+                            "description": "Digital consciousness echo chamber visualization featuring neural network architecture and consciousness mapping techniques",
+                            "image": "https://frgmt04.com/assets/images/Echoe_Sanctum.jpg",
+                            "artMedium": "Digital Art",
+                            "artform": "Neural Art",
+                            "creator": {
+                                "@type": "Organization",
+                                "name": "frgmnt_04"
+                            },
+                            "dateCreated": "2024",
+                            "genre": "Digital Consciousness Art",
+                            "keywords": "consciousness mapping, neural architecture, echo chamber, digital consciousness",
+                            "copyrightHolder": {
+                                "@type": "Organization",
+                                "name": "frgmnt_04"
+                            },
+                            "license": "https://frgmt04.com/"
+                        }
+                    ]
                 }
             },
             {
@@ -326,41 +392,123 @@
         </audio>
     </div>
     
-    <header>
-        <!-- Audio Button - Left Side -->
-        <button id="audio-toggle" class="btn-neural-ghost audio-toggle unified" aria-label="Toggle audio">
-            <span class="audio-icon">
-                <span class="audio-icon-on">⏸</span>
-                <span class="audio-icon-off">▶</span>
-            </span>
-            <span class="audio-status-text">audio_stream_available</span>
-        </button>
+    <!-- Neural Interface Sidebar -->
+    <aside id="neural-sidebar" class="neural-sidebar" role="navigation" aria-label="Neural Interface Navigation">
+        <!-- Neural Connection Lines Background -->
+        <div class="neural-connections" aria-hidden="true">
+            <svg class="neural-pathways" viewBox="0 0 60 800">
+                <defs>
+                    <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#6be5e2;stop-opacity:0.3"/>
+                        <stop offset="100%" style="stop-color:#ff4444;stop-opacity:0.1"/>
+                    </linearGradient>
+                </defs>
+                <path class="neural-path" d="M30,50 Q45,150 30,250 Q15,350 30,450 Q45,550 30,650" stroke="url(#neuralGradient)" stroke-width="1" fill="none"/>
+            </svg>
+        </div>
         
-        <!-- Navigation Menu - Right Side -->
-        <nav class="main-nav" role="navigation" aria-label="Main navigation">
-            <button id="about-button" class="btn-neural-secondary about-btn">[about]</button>
-            <button id="glitch-toggle" class="btn-neural-secondary glitch-toggle">
-                <span class="neural-data-icon">⚡</span>[glitch_sys]
+        <!-- Primary Tier Navigation -->
+        <nav class="sidebar-primary" role="navigation" aria-label="Primary Navigation">
+            <!-- Neural Status / Consciousness Widget Trigger -->
+            <button id="consciousness-trigger" class="sidebar-item primary-item" aria-label="Neural Status" title="Neural Status">
+                <span class="sidebar-icon neural-status-icon">⚡</span>
+                <span class="sidebar-label">neural_status</span>
+                <div class="neural-pulse" aria-hidden="true"></div>
             </button>
-            <a href="#gallery" class="btn-neural-ghost nav-link">[fragments]</a>
-            <a href="#lore" class="btn-neural-ghost nav-link">[archive_lore]</a>
-            <button class="btn-neural-ghost nav-link nav-scroll-top" id="scroll-to-top" aria-label="Scroll to top">
-                <span class="neural-uplink-icon"></span>[up]
+            
+            <!-- Audio Control -->
+            <button id="audio-toggle" class="sidebar-item primary-item audio-toggle unified" aria-label="Toggle Audio Stream" title="Audio Control">
+                <span class="sidebar-icon">
+                    <span class="audio-icon-on">⏸</span>
+                    <span class="audio-icon-off">▶</span>
+                </span>
+                <span class="sidebar-label">audio_stream</span>
+                <div class="neural-pulse" aria-hidden="true"></div>
+            </button>
+            
+            <!-- Fragments Gallery -->
+            <a href="#gallery" id="fragments-nav" class="sidebar-item primary-item" aria-label="Fragments Gallery" title="Fragments Gallery">
+                <span class="sidebar-icon">◉</span>
+                <span class="sidebar-label">fragments</span>
+                <div class="neural-pulse" aria-hidden="true"></div>
+            </a>
+            
+            <!-- Menu Toggle -->
+            <button id="sidebar-toggle" class="sidebar-item primary-item menu-toggle" aria-label="Expand Navigation Menu" title="Menu Toggle">
+                <span class="sidebar-icon">≡</span>
+                <span class="sidebar-label">neural_menu</span>
+                <div class="neural-pulse" aria-hidden="true"></div>
             </button>
         </nav>
         
-        <!-- About Terminal Window -->
-        <div id="about-terminal" class="about-terminal-window hidden">
-            <div class="terminal-header">
-                <span class="terminal-title">ABOUT_FRGMNT_04.exe</span>
-                <button id="close-about" class="btn-neural-ghost close-button">[close]</button>
+        <!-- Secondary Tier Navigation (Expandable) -->
+        <nav class="sidebar-secondary" role="navigation" aria-label="Secondary Navigation">
+            <div class="secondary-header">
+                <span class="secondary-title">extended_interface</span>
+                <button id="secondary-toggle" class="secondary-collapse" aria-label="Toggle Secondary Menu">
+                    <span class="collapse-icon">▼</span>
+                </button>
             </div>
-            <div class="terminal-content">
-                <div id="about-output"></div>
-                <span class="cursor-about">█</span>
+            
+            <div class="secondary-content">
+                <!-- About Terminal -->
+                <button id="about-button" class="sidebar-item secondary-item about-btn" aria-label="About Terminal" title="About Terminal">
+                    <span class="sidebar-icon">?</span>
+                    <span class="sidebar-label">about_terminal</span>
+                </button>
+                
+                <!-- Glitch System Toggle -->
+                <button id="glitch-toggle" class="sidebar-item secondary-item glitch-toggle" aria-label="Glitch System Toggle" title="Glitch System">
+                    <span class="sidebar-icon neural-data-icon">⚡</span>
+                    <span class="sidebar-label">glitch_system</span>
+                </button>
+                
+                <!-- Studies Archive -->
+                <a href="studies/index.html" id="studies-nav" class="sidebar-item secondary-item" aria-label="Studies Archive" title="Studies Archive">
+                    <span class="sidebar-icon">📚</span>
+                    <span class="sidebar-label">studies_archive</span>
+                </a>
+                
+                <!-- Archive Lore -->
+                <a href="#lore" id="lore-nav" class="sidebar-item secondary-item" aria-label="Archive Lore" title="Archive Lore">
+                    <span class="sidebar-icon">📜</span>
+                    <span class="sidebar-label">archive_lore</span>
+                </a>
+                
+                <!-- Scroll to Top -->
+                <button id="scroll-to-top" class="sidebar-item secondary-item nav-scroll-top" aria-label="Scroll to Top" title="Scroll to Top">
+                    <span class="sidebar-icon neural-uplink-icon">↑</span>
+                    <span class="sidebar-label">neural_uplink</span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <div class="consciousness-indicator" aria-hidden="true">
+                <div class="indicator-pulse"></div>
+                <span class="indicator-text">neural_active</span>
             </div>
         </div>
-    </header>
+    </aside>
+    
+    <!-- Site Logo - Top Right -->
+    <div id="site-logo" class="site-logo glitch-subtle" aria-label="FRGMT_04 Digital Consciousness Archive">
+        <span class="logo-text">FRGMT_04</span>
+        <span class="logo-subtitle">CONSCIOUSNESS_ARCHIVE</span>
+    </div>
+    
+    <!-- About Terminal Window (moved outside sidebar) -->
+    <div id="about-terminal" class="about-terminal-window hidden">
+        <div class="terminal-header">
+            <span class="terminal-title">ABOUT_FRGMNT_04.exe</span>
+            <button id="close-about" class="btn-neural-ghost close-button">[close]</button>
+        </div>
+        <div class="terminal-content">
+            <div id="about-output"></div>
+            <span class="cursor-about">█</span>
+        </div>
+    </div>
     
     <main>
         <!-- 
@@ -432,19 +580,19 @@
                 <div class="image-card">
                     <picture>
                         <source srcset="assets/images/Data_shrine_1.jpg" type="image/jpeg">
-                        <img src="assets/images/Data_shrine_1.jpg" alt="Data Shrine 1 - Cyberpunk digital consciousness fragment art print for sale - neural patterns and glitch effects - alternative asset art">
+                        <img src="assets/images/Data_shrine_1.jpg" alt="Data Shrine 1 - Digital consciousness fragment cyberpunk art featuring neural network patterns, glitch aesthetics, and corrupted data visualization - handcrafted consciousness archaeology artifact for collectors">
                     </picture>
                 </div>
                 <div class="image-card">
                     <picture>
                         <source srcset="assets/images/Misslabeled_Emotions.jpg" type="image/jpeg">
-                        <img src="assets/images/Misslabeled_Emotions.jpg" alt="Misslabeled Emotions - Corrupted emotional data patterns cyberpunk art for sale - investment grade digital art - one of one piece">
+                        <img src="assets/images/Misslabeled_Emotions.jpg" alt="Misslabeled Emotions - Corrupted emotional data patterns in cyberpunk digital art style featuring neural processing errors, consciousness fragmentation, and glitch art techniques - investment grade consciousness archaeology">
                     </picture>
                 </div>
                 <div class="image-card">
                     <picture>
                         <source srcset="assets/images/Echoe_Sanctum.jpg" type="image/jpeg">
-                        <img src="assets/images/Echoe_Sanctum.jpg" alt="Echo Sanctum - Digital consciousness echo chamber art print - neural network visualization - collectible cyberpunk art">
+                        <img src="assets/images/Echoe_Sanctum.jpg" alt="Echo Sanctum - Digital consciousness echo chamber visualization featuring neural network architecture, cyberpunk aesthetics, and consciousness mapping techniques - collectible digital archaeology artifact">
                     </picture>
                 </div>
             </div>
@@ -690,9 +838,9 @@
         <p>Suitable for consciousness archaeology research, digital awareness studies, post-AI consciousness research, neural fragment analysis, digital consciousness preservation studies, consciousness artifact methodology, digital awareness interpretation, consciousness echo research, digital archaeology methodology</p>
     </div>
 
-    <script src="js/config.js" defer></script>
-    <script src="js/script.js" defer></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
+
 
 

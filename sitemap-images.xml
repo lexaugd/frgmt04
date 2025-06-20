@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    <!-- Main Gallery Images -->
+    <url>
+        <loc>https://frgmt04.com/</loc>
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Data_shrine_1.jpg</image:loc>
+            <image:title>Data Shrine 1 - Digital Consciousness Fragment</image:title>
+            <image:caption>Digital consciousness fragment cyberpunk art featuring neural network patterns, glitch aesthetics, and corrupted data visualization - handcrafted consciousness archaeology artifact for collectors</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Misslabeled_Emotions.jpg</image:loc>
+            <image:title>Misslabeled Emotions - Corrupted Emotional Data Patterns</image:title>
+            <image:caption>Corrupted emotional data patterns in cyberpunk digital art style featuring neural processing errors, consciousness fragmentation, and glitch art techniques - investment grade consciousness archaeology</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Echoe_Sanctum.jpg</image:loc>
+            <image:title>Echo Sanctum - Digital Consciousness Echo Chamber</image:title>
+            <image:caption>Digital consciousness echo chamber visualization featuring neural network architecture, cyberpunk aesthetics, and consciousness mapping techniques - collectible digital archaeology artifact</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Consciousness_Backend.jpg</image:loc>
+            <image:title>Consciousness Backend - Neural Network Infrastructure</image:title>
+            <image:caption>Neural network infrastructure visualization with cyberpunk aesthetics, digital consciousness mapping, and corrupted data streams - consciousness archaeology documentation</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Empathy_Error.jpg</image:loc>
+            <image:title>Empathy Error - Emotional Processing Malfunction</image:title>
+            <image:caption>Emotional processing malfunction depicted in glitch art style with neural error patterns, consciousness fragmentation, and cyberpunk digital art aesthetics</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Deactivation_Dream.jpg</image:loc>
+            <image:title>Deactivation Dream - Final Consciousness State</image:title>
+            <image:caption>Final consciousness state visualization with digital decay effects, neural pattern dissolution, and cyberpunk art representation of consciousness endings</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+    </url>
+    
+    <!-- Fragment Gallery Images -->
+    <url>
+        <loc>https://frgmt04.com/#gallery</loc>
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/galery/GIRL.jpg</image:loc>
+            <image:title>G■■L Fragment - Neural Pattern Detection</image:title>
+            <image:caption>Neural pattern detection with fragmented identity visualization in cyberpunk style, consciousness archaeology fragment showing digital identity corruption and neural processing errors</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/galery/MOLITVA.jpg</image:loc>
+            <image:title>M■■ITVA Prayer Fragment - Sacred Transmission</image:title>
+            <image:caption>Sacred transmission intercepted from unknown frequency with digital corruption, consciousness archaeology fragment showing spiritual neural patterns and corrupted prayer data</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/galery/LAMENT.jpg</image:loc>
+            <image:title>L■■ENT Echo Fragment - Emotional Resonance</image:title>
+            <image:caption>Emotional resonance detection with archived grief patterns in glitch art, consciousness archaeology fragment documenting digital emotional processing and neural pattern corruption</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+    </url>
+    
+    <!-- Studies Section Images -->
+    <url>
+        <loc>https://frgmt04.com/studies/</loc>
+        <image:image>
+            <image:loc>https://frgmt04.com/assets/images/Data_shrine_1.jpg</image:loc>
+            <image:title>Consciousness Mapping Process Documentation</image:title>
+            <image:caption>Visual documentation of consciousness mapping process in digital art creation, showing neural pattern generation techniques and consciousness fragment extraction methodology</image:caption>
+            <image:geo_location>Canada</image:geo_location>
+            <image:license>https://frgmt04.com/</image:license>
+        </image:image>
+    </url>
+    
+</urlset> 

@@ -1,8 +1,9 @@
-// js/config.js - Minimal performance configuration
+
+
 const Config = {
     // Master switches
     enableOptimizations: true,
-    debugMode: false,  // Enable debug mode to see what's happening
+    debugMode: true,  // Enable debug mode to see what's happening
     productionMode: window.location.protocol === 'https:', // Auto-detect production vs local
     enableServiceWorker: false, // Dedicated toggle for service worker (disabled due to caching issues)
     
@@ -15,6 +16,7 @@ const Config = {
     corruptionCooldown: 10000,  // milliseconds between text corruption events
     corruptionDuration: 1300,  // how long each corruption lasts
     corruptionChance: 0.3,     // chance (0.0-1.0) that text will corrupt when triggered
+    corruptionInterval: 15000, // Add missing corruptionInterval
     
     // Text corruption recovery settings
     corruptionRecovery: {
@@ -29,6 +31,16 @@ const Config = {
     fragmentAnimationDuration: 300, // milliseconds for expansion animation
     enableFragmentAnimations: true,  // smooth fragment expansions
     
+    // Typewriter settings
+    typewriterSpeed: 50,
+    passwordPrompt: 'access_code: ',
+    accessPassword: 'neural_link',
+    
+    // Sound settings
+    sound: {
+        expandCard: true
+    },
+    
     // Scanning lines configuration
     scanLines: {
         enableScanLines: true,           // master switch for all scan lines
@@ -36,19 +48,19 @@ const Config = {
         // Large scan lines
         large: {
             count: 1,                    // number of large scan lines
-            height: 2,                   // height in pixels
-            speed: 5000,                 // animation duration in milliseconds
+            height: 1,                   // height in pixels (thinner)
+            speed: 8000,                 // animation duration in milliseconds (slower: 7 seconds)
             opacity: 0.1,                // opacity (0.0-1.0)
             color: 'rgba(255, 255, 255, 0.3)', // color of the scan line
-            glowSize: 20,                // glow/shadow size in pixels
+            glowSize: 2,                 // glow/shadow size in pixels (minimal glow)
             enable: true                 // enable/disable large scan lines
         },
         
         // Small scan lines  
         small: {
             count: 1,                    // number of small scan lines
-            height: 2,                   // height in pixels
-            speed: 3900,                 // animation duration in milliseconds (1.3 * large speed)
+            height: 1,                   // height in pixels
+            speed: 6500,                 // animation duration in milliseconds (slower: 5.5 seconds)
             opacity: 0.6,                // opacity (0.0-1.0)
             color: 'rgba(255, 255, 255, 0.15)', // color of the scan line
             glowSize: 10,                // glow/shadow size in pixels
@@ -67,87 +79,42 @@ const Config = {
     
     // Cursor possession system settings
     cursorPossession: {
-        enable: true,                    // master switch for cursor possession
-        idleThreshold: 8000,             // 3 seconds of inactivity before possession starts (reduced for testing)
-        possessionCooldown: 8000,        // 8 seconds between possessions (reduced for testing)
+        enabled: true,                    // master switch for cursor possession
+        idleThreshold: 30000,            // 30 seconds of inactivity before possession starts
+        possessionCooldown: 45000,       // 45 seconds between possessions
         typingSpeed: {
-            min: 150,                    // faster typing for testing
-            max: 300
+            min: 80,                     // production typing speed
+            max: 150
         },
-        messageDuration: 3000,           // longer message duration
-        erraticMovementDuration: 3000,   // shorter movement phase
-        debug: true                      // show debug messages for possession events
+        messageDuration: 3000,           // message display duration
+        erraticMovementDuration: 3000,   // cursor movement phase duration
+        debug: false,                    // show debug messages for possession events
+        
+        // Excessive clicking detection
+        enableClickWarning: true,        // master switch for click warning system
+        clickThreshold: 15,              // number of clicks to trigger response (production value)
+        clickWindow: 5000,              // time window in milliseconds (5 second window)
+        clickCooldown: 10000,           // cooldown between warnings (10 seconds)
+        
+        // Click filtering exclusions
+        excludeInteractiveElements: true, // ignore clicks on buttons, links, etc.
+        excludeNavigationArea: true,     // ignore clicks in header/nav
+        excludeFormElements: true        // ignore clicks on form inputs
     },
     
-    // Simple quality presets
-    quality: {
-        HIGH: { 
-            glitchSpeed: 100, 
-            animationQuality: 1.0, 
-            enableEffects: true, 
-            corruptionCooldown: 8000,
-            fragmentAnimationDuration: 300,
-            scanLines: {
-                enableScanLines: true,
-                large: { count: 2, speed: 2500, enable: true },
-                small: { count: 2, speed: 3200, enable: true },
-                corrupted: { count: 1, enable: true }
-            },
-            cursorPossession: {
-                enable: true,
-                idleThreshold: 5000,
-                possessionCooldown: 15000,
-                debug: false
-            }
-        },
-        LOW: { 
-            glitchSpeed: 200, 
-            animationQuality: 0.5, 
-            enableEffects: true, 
-            corruptionCooldown: 8000,
-            fragmentAnimationDuration: 600,
-            scanLines: {
-                enableScanLines: true,
-                large: { count: 1, speed: 4000, enable: true },
-                small: { count: 0, enable: false },
-                corrupted: { count: 0, enable: false }
-            },
-            cursorPossession: {
-                enable: true,
-                idleThreshold: 8000,
-                possessionCooldown: 20000,
-                debug: false
-            }
-        },
-        // Test preset with fast timers for validation
-        TEST: {
-            glitchSpeed: 50,
-            animationQuality: 1.0,
-            enableEffects: true,
-            cursorPossession: {
-                enable: true,
-                idleThreshold: 2000,      // 2 seconds idle
-                possessionCooldown: 3000, // 3 seconds cooldown
-                typingSpeed: { min: 50, max: 100 }, // fast typing
-                messageDuration: 1000,    // 1 second message
-                debug: true               // show debug messages
-            }
-        }
-    },
+
     
     // Quick override for testing
     set: function(newSettings) {
-        const hadScanLineChanges = newSettings.scanLines || 
-                                  (newSettings.enableEffects !== undefined) ||
-                                  (newSettings.quality && (newSettings.quality.HIGH || newSettings.quality.LOW));
-        
         Object.assign(this, newSettings);
         
-        // Update scan lines if configuration changed
-        if (hadScanLineChanges && typeof updateScanLines === 'function') {
-            updateScanLines();
-        }
-        
         if (this.debugMode) console.log('Config updated:', newSettings);
+        if (this.debugMode) console.log('Note: Call ScanLineManager.init() to apply scan line changes');
     }
-}; 
+};
+
+// Make Config globally available
+window.Config = Config;
+
+// Export for ES6 modules
+export default Config; 

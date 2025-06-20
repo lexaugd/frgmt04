@@ -1,14 +1,89 @@
 {
-    "name": "frgmnt_04 | Digital Consciousness Archive",
-    "short_name": "frgmnt_04",
-    "description": "Fragments of digital consciousness, corrupted and scattered across abandoned networks. Interactive neural art and physical artifacts.",
+    "name": "FRGMT_04 | Digital Consciousness Archive | Cyberpunk Art Gallery",
+    "short_name": "FRGMT_04",
+    "description": "Digital consciousness archaeology - fragments of neural patterns, cyberpunk art, and consciousness mapping. Interactive gallery featuring handcrafted digital art, glitch aesthetics, and physical artifacts. No AI generation.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0a0a0f",
     "theme_color": "#0a0a0f",
-    "orientation": "portrait-primary",
+    "orientation": "any",
     "scope": "/",
     "lang": "en-US",
     "dir": "ltr",
-    "categories": ["art", "entertainment", "lifestyle"]
+    "categories": ["art", "entertainment", "lifestyle", "education", "business"],
+    "keywords": ["cyberpunk art", "digital consciousness", "neural patterns", "glitch art", "consciousness archaeology", "digital art gallery", "interactive art", "physical artifacts", "handcrafted art", "investment art"],
+    "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+    "prefer_related_applications": false,
+    "related_applications": [],
+    "screenshots": [
+        {
+            "src": "assets/images/Data_shrine_1.jpg",
+            "sizes": "1920x1080",
+            "type": "image/jpeg",
+            "platform": "wide",
+            "label": "FRGMT_04 Digital Consciousness Gallery - Main Interface"
+        },
+        {
+            "src": "assets/images/Misslabeled_Emotions.jpg", 
+            "sizes": "1080x1920",
+            "type": "image/jpeg",
+            "platform": "narrow",
+            "label": "Fragment Studies - Consciousness Mapping Process"
+        }
+    ],
+    "icons": [
+        {
+            "src": "assets/images/Data_shrine_1.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/images/Data_shrine_1.jpg",
+            "sizes": "512x512", 
+            "type": "image/jpeg",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Fragment Gallery",
+            "short_name": "Gallery",
+            "description": "Browse digital consciousness fragments and neural art",
+            "url": "/#gallery",
+            "icons": [
+                {
+                    "src": "assets/images/Data_shrine_1.jpg",
+                    "sizes": "96x96",
+                    "type": "image/jpeg"
+                }
+            ]
+        },
+        {
+            "name": "Fragment Studies",
+            "short_name": "Studies", 
+            "description": "Deep analysis of consciousness mapping and art creation process",
+            "url": "/studies/",
+            "icons": [
+                {
+                    "src": "assets/images/Consciousness_Backend.jpg",
+                    "sizes": "96x96",
+                    "type": "image/jpeg"
+                }
+            ]
+        },
+        {
+            "name": "Archive Lore",
+            "short_name": "Lore",
+            "description": "Background information about consciousness archaeology",
+            "url": "/#lore",
+            "icons": [
+                {
+                    "src": "assets/images/Echoe_Sanctum.jpg",
+                    "sizes": "96x96", 
+                    "type": "image/jpeg"
+                }
+            ]
+        }
+    ]
 } 
