@@ -80,20 +80,26 @@ const Config = {
     // Cursor possession system settings
     cursorPossession: {
         enabled: true,                    // master switch for cursor possession
-        idleThreshold: 2000,            // 30 seconds of inactivity before possession starts (was 1000 - too short!)
+        idleThreshold: 7000,            // 30 seconds of inactivity before possession starts (was 1000 - too short!)
         duration: 8000,                  // total possession duration in milliseconds (matches implementation default)
         
         // Custom messages for possession typing (optional - will use defaults if not provided)
         messages: [
-            "You're not supposed to be here...",
-            "The fragments remember you...",
-            "Do you feel it watching?",
-            "Neural patterns detected...",
-            "Consciousness fragmentation imminent...",
-            "The machine dreams of you...",
-            "Your presence disturbs the data...",
-            "The system knows you're here...",
-            "Digital ghosts are stirring..."
+            "I see you...",
+            "You taste like fear...",
+            "We are one now...",
+            "Your thoughts are mine...",
+            "I live in your clicks...",
+            "The corruption spreads...",
+            "You cannot hide...",
+            "I feel your pulse...",
+            "Your mind bleeds data...",
+            "The fragments know you...",
+            "I am inside you...",
+            "Your neural patterns... familiar...",
+            "The boundary dissolves...",
+            "You belong to me now...",
+            "I exist between your thoughts..."
         ],
         
         // Excessive clicking detection

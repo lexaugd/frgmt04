@@ -581,8 +581,34 @@ main {
     z-index: 999;
     font-family: var(--font-mono);
     text-align: right;
-    pointer-events: none;
+    pointer-events: auto;
     user-select: none;
+    cursor: default;
+    position: relative;
+}
+
+.site-logo::after {
+    content: "just the logo, does nothing";
+    position: absolute;
+    bottom: -35px;
+    right: 0;
+    background: rgba(10, 10, 15, 0.95);
+    color: var(--color-accent);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-tertiary);
+    z-index: 1000;
+}
+
+.site-logo:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 
 .logo-text {

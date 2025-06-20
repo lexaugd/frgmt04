@@ -65,10 +65,7 @@ const App = {
                 AnimationLoop.start();
             } else {
                 MatrixRain.stop();
-                // Scan lines are independent - only remove if specifically disabled in config
-                if (!Config.scanLines.enableScanLines) {
-                    ScanLineManager.removeAll();
-                }
+                ScanLineManager.removeAll(); // Always remove scan lines when effects are disabled
                 AnimationLoop.stop();
                 TextEffects.fixStuckText(); // Clean up any lingering glitches
             }

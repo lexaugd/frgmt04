@@ -8,12 +8,21 @@ export class CursorPossession {
         this.idleTimeout = 30000; // 30 seconds
         this.possessionDuration = 8000; // 8 seconds
         this.typingMessages = [
-            "You're not supposed to be here...",
-            "The fragments remember you...",
-            "Do you feel it watching?",
-            "Neural patterns detected...",
-            "Consciousness fragmentation imminent...",
-            "The machine dreams of you..."
+            "I see you...",
+            "You taste like fear...",
+            "We are one now...",
+            "Your thoughts are mine...",
+            "I live in your clicks...",
+            "The corruption spreads...",
+            "You cannot hide...",
+            "I feel your pulse...",
+            "Your mind bleeds data...",
+            "The fragments know you...",
+            "I am inside you...",
+            "Your neural patterns... familiar...",
+            "The boundary dissolves...",
+            "You belong to me now...",
+            "I exist between your thoughts..."
         ];
         this.currentPossession = null;
         
@@ -60,6 +69,7 @@ export class CursorPossession {
         
         this.setupIdleDetection();
         this.createPossessionCursor();
+        this.setupSafetyCleanup();
     }
 
     setupIdleDetection() {
@@ -258,16 +268,31 @@ export class CursorPossession {
         
         this.isActive = true;
         
+        // Initialize possession tracking if needed
+        if (!this.currentPossession) {
+            this.currentPossession = {};
+        }
+        
+        // Clear any existing timeouts
+        if (this.currentPossession.autoEnd) {
+            clearTimeout(this.currentPossession.autoEnd);
+        }
+        if (this.currentPossession.startTyping) {
+            clearTimeout(this.currentPossession.startTyping);
+        }
+        
         // Start scattered character effects
         this.startErraticMovement();
         
         // Start typing after a short delay
-        setTimeout(() => {
-            this.startTypingSequence();
+        this.currentPossession.startTyping = setTimeout(() => {
+            if (this.isActive) {
+                this.startTypingSequence();
+            }
         }, 1500);
         
         // End possession after duration
-        setTimeout(() => {
+        this.currentPossession.autoEnd = setTimeout(() => {
             this.endPossession();
         }, this.config.duration);
     }
@@ -294,6 +319,8 @@ export class CursorPossession {
         if (this.currentPossession) {
             clearTimeout(this.currentPossession.movement);
             clearTimeout(this.currentPossession.typing);
+            clearTimeout(this.currentPossession.autoEnd);
+            clearTimeout(this.currentPossession.startTyping);
         }
         
         // Reset idle detection
@@ -309,6 +336,8 @@ export class CursorPossession {
         if (this.currentPossession) {
             clearTimeout(this.currentPossession.movement);
             clearTimeout(this.currentPossession.typing);
+            clearTimeout(this.currentPossession.autoEnd);
+            clearTimeout(this.currentPossession.startTyping);
         }
         
         // Smoothly fade out message
@@ -582,5 +611,29 @@ export class CursorPossession {
         setTimeout(() => {
             trail.remove();
         }, 600);
+    }
+
+    setupSafetyCleanup() {
+        // Run cleanup every 30 seconds to catch any stuck elements
+        setInterval(() => {
+            // Only clean up if possession is not currently active
+            if (!this.isActive) {
+                // Remove any stuck possession messages
+                const stuckMessages = document.querySelectorAll('.possession-message');
+                stuckMessages.forEach(msg => msg.remove());
+                
+                // Remove any stuck scattered characters
+                const stuckScattered = document.querySelectorAll('.scattered-possession-char');
+                stuckScattered.forEach(char => char.remove());
+                
+                // Remove any stuck floating characters
+                const stuckFloating = document.querySelectorAll('.floating-char');
+                stuckFloating.forEach(char => char.remove());
+                
+                // Remove any stuck click warning messages
+                const stuckWarnings = document.querySelectorAll('.click-warning-message');
+                stuckWarnings.forEach(warning => warning.remove());
+            }
+        }, 30000); // Run every 30 seconds
     }
 } 
