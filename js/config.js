@@ -80,15 +80,21 @@ const Config = {
     // Cursor possession system settings
     cursorPossession: {
         enabled: true,                    // master switch for cursor possession
-        idleThreshold: 30000,            // 30 seconds of inactivity before possession starts
-        possessionCooldown: 45000,       // 45 seconds between possessions
-        typingSpeed: {
-            min: 80,                     // production typing speed
-            max: 150
-        },
-        messageDuration: 3000,           // message display duration
-        erraticMovementDuration: 3000,   // cursor movement phase duration
-        debug: false,                    // show debug messages for possession events
+        idleThreshold: 2000,            // 30 seconds of inactivity before possession starts (was 1000 - too short!)
+        duration: 8000,                  // total possession duration in milliseconds (matches implementation default)
+        
+        // Custom messages for possession typing (optional - will use defaults if not provided)
+        messages: [
+            "You're not supposed to be here...",
+            "The fragments remember you...",
+            "Do you feel it watching?",
+            "Neural patterns detected...",
+            "Consciousness fragmentation imminent...",
+            "The machine dreams of you...",
+            "Your presence disturbs the data...",
+            "The system knows you're here...",
+            "Digital ghosts are stirring..."
+        ],
         
         // Excessive clicking detection
         enableClickWarning: true,        // master switch for click warning system

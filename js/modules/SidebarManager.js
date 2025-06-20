@@ -76,6 +76,9 @@ export class SidebarManager {
             });
         }
         
+        // Click outside to close sidebar
+        this.setupClickOutsideToClose();
+        
         // Active state management for navigation items
         this.setupActiveStates();
         
@@ -179,6 +182,22 @@ export class SidebarManager {
         sections.forEach(section => observer.observe(section));
     }
     
+    setupClickOutsideToClose() {
+        document.addEventListener('click', (e) => {
+            // Only close if sidebar is expanded
+            if (!this.isExpanded) return;
+            
+            // Don't close if clicking on the sidebar itself
+            if (this.sidebar.contains(e.target)) return;
+            
+            // Don't close if clicking on the mobile toggle button
+            if (this.sidebarToggle && this.sidebarToggle.contains(e.target)) return;
+            
+            // Close the sidebar
+            this.collapseSidebar();
+        });
+    }
+
     setupConsciousnessIntegration() {
         const consciousnessTrigger = document.getElementById('consciousness-trigger');
         const consciousnessWidget = document.getElementById('consciousness-widget');

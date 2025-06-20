@@ -39,12 +39,13 @@ const App = {
             // Initialize sidebar navigation
             State.sidebarManager = new SidebarManager();
             
-                // Initialize UI interactions
-            this.initGlitchToggle();
+                        // Initialize UI interactions
+        this.initGlitchToggle();
         await this.initTypewriters();
         this.initPasswordSystem();
         this.initScrollBehavior();
         this.initAudioSystem();
+        this.initLogoCorruption();
         this.initIntroSequence();
         
 
@@ -70,6 +71,11 @@ const App = {
                 }
                 AnimationLoop.stop();
                 TextEffects.fixStuckText(); // Clean up any lingering glitches
+            }
+            
+            // Close sidebar on mobile after glitch toggle
+            if (window.matchMedia('(max-width: 767px)').matches && State.sidebarManager) {
+                setTimeout(() => State.sidebarManager.collapseSidebar(), 300);
             }
         });
     },
@@ -140,6 +146,11 @@ end_transmission.`;
                 void Dom.aboutTerminal.offsetWidth; // Trigger reflow
                 Dom.aboutTerminal.classList.add('show');
                 aboutTyper.start();
+            }
+            
+            // Close sidebar on mobile after about terminal action
+            if (window.matchMedia('(max-width: 767px)').matches && State.sidebarManager) {
+                setTimeout(() => State.sidebarManager.collapseSidebar(), 300);
             }
         });
                 Dom.closeAboutButton.addEventListener('click', () => {
@@ -251,6 +262,11 @@ end_transmission.`;
         
         Dom.scrollToTopButton.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Close sidebar on mobile after scroll action
+            if (window.matchMedia('(max-width: 767px)').matches && State.sidebarManager) {
+                setTimeout(() => State.sidebarManager.collapseSidebar(), 300);
+                }
             });
         },
 
@@ -341,6 +357,66 @@ end_transmission.`;
                 });
             }, 3000);
         }
+    },
+
+    initLogoCorruption() {
+        const logoText = document.querySelector('.logo-text');
+        const logoSubtitle = document.querySelector('.logo-subtitle');
+        
+        if (!logoText || !logoSubtitle) return;
+        
+        const originalText = logoText.textContent;
+        const originalSubtitle = logoSubtitle.textContent;
+        
+        const corruptChars = ['█', '▓', '▒', '░', '■', '□', '▪', '▫', '●', '○'];
+        
+        const corruptText = (element, original) => {
+            const chars = original.split('');
+            const corrupted = chars.map(char => {
+                // 25% chance to corrupt each character (except spaces and underscores)
+                if (char !== ' ' && char !== '_' && Math.random() < 0.25) {
+                    return corruptChars[Math.floor(Math.random() * corruptChars.length)];
+                }
+                return char;
+            }).join('');
+            
+            element.textContent = corrupted;
+            
+            // Restore original after 300-800ms
+            setTimeout(() => {
+                element.textContent = original;
+            }, 300 + Math.random() * 500);
+        };
+        
+        const startCorruption = () => {
+            // Always corrupt logo text
+            corruptText(logoText, originalText);
+            
+            // Corrupt subtitle 50% of the time
+            if (Math.random() < 0.5) {
+                setTimeout(() => {
+                    corruptText(logoSubtitle, originalSubtitle);
+                }, 200 + Math.random() * 400);
+            }
+        };
+        
+        // Start corruption cycles every 3-6 seconds
+        const scheduleNext = () => {
+            setTimeout(() => {
+                if (Config.enableEffects) {
+                    startCorruption();
+                }
+                scheduleNext();
+            }, 3000 + Math.random() * 3000);
+        };
+        
+        // Start first corruption after 2 seconds
+        setTimeout(() => {
+            if (Config.enableEffects) {
+                startCorruption();
+            }
+            scheduleNext();
+        }, 2000);
     },
 
     typeLines(element, lines, onComplete) {
