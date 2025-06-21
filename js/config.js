@@ -3,7 +3,7 @@
 const Config = {
     // Master switches
     enableOptimizations: true,
-    debugMode: false,  // Enable debug mode to see what's happening
+    debugMode: false,  // Disable debug mode for clean production
     productionMode: window.location.protocol === 'https:', // Auto-detect production vs local
     enableServiceWorker: false, // Dedicated toggle for service worker (disabled due to caching issues)
     

@@ -199,37 +199,9 @@ export class SidebarManager {
     }
 
     setupConsciousnessIntegration() {
-        const consciousnessTrigger = document.getElementById('consciousness-trigger');
-        const consciousnessWidget = document.getElementById('consciousness-widget');
-        
+        // Neural status button removed - consciousness widget now operates independently
         if (Config.debugMode) {
-            console.log('🧠 Neural status setup:', {
-                trigger: !!consciousnessTrigger,
-                widget: !!consciousnessWidget
-            });
-        }
-        
-        if (consciousnessTrigger && consciousnessWidget) {
-            consciousnessTrigger.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                consciousnessWidget.classList.toggle('hidden');
-                consciousnessTrigger.classList.toggle('active');
-                
-                if (Config.debugMode) {
-                    console.log('🧠 Consciousness widget toggled:', !consciousnessWidget.classList.contains('hidden'));
-                }
-            });
-            
-            if (Config.debugMode) {
-                console.log('✅ Neural status integration complete');
-            }
-        } else {
-            console.warn('⚠️ Neural status elements not found:', {
-                trigger: consciousnessTrigger ? 'found' : 'missing',
-                widget: consciousnessWidget ? 'found' : 'missing'
-            });
+            console.log('🧠 Neural status button removed - widget operates independently');
         }
     }
     

@@ -10,9 +10,13 @@ export const MatrixRain = {
         this._container = document.getElementById('matrix-rain');
         if (!this._container) return;
 
-        const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&ПИДОРПИДОРПИДОРПИДОР';
+        const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&';
         const columnWidth = 20;
-        const numColumns = Math.floor(window.innerWidth / columnWidth);
+        
+        // Mobile optimization: reduce matrix density on smaller screens for better performance
+        const isMobile = window.innerWidth <= 767;
+        const densityMultiplier = isMobile ? 0.6 : 1; // 40% fewer columns on mobile
+        const numColumns = Math.floor((window.innerWidth / columnWidth) * densityMultiplier);
 
         this._container.innerHTML = ''; // Clear previous
 
@@ -23,14 +27,10 @@ export const MatrixRain = {
 
             let columnText = '';
             const columnHeight = Math.floor(Math.random() * 20) + 10;
-            const includeSpecialWord = Math.random() < 0.2;
 
             for (let j = 0; j < columnHeight; j++) {
-                if (includeSpecialWord && j === Math.floor(columnHeight / 2)) {
-                    columnText += 'ПИДОР<br>';
-                } else {
-                    columnText += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
-                }
+                // Generate random matrix characters only - inappropriate content removed
+                columnText += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
             }
 
             column.innerHTML = columnText;

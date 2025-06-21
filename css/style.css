@@ -360,6 +360,7 @@ main {
     border-bottom: 1px solid rgba(122, 155, 184, 0.2);
     position: relative;
     z-index: 1;
+    margin-top: 60px; /* Allocate space for hamburger menu at top */
 }
 
 /* Secondary Navigation Tier */
@@ -613,7 +614,7 @@ main {
 
 .logo-text {
     display: block;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: 2.5rem; /* Fixed size eliminates viewport recalculation */
     font-weight: bold;
     color: var(--color-accent);
     text-transform: uppercase;
@@ -624,7 +625,7 @@ main {
 
 .logo-subtitle {
     display: block;
-    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    font-size: 0.8rem; /* Fixed size eliminates viewport recalculation */
     color: var(--color-secondary);
     text-transform: uppercase;
     letter-spacing: 0.3em;
@@ -850,10 +851,28 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Fallback */
-    height: 100dvh; /* Dynamic viewport height */
-    height: -webkit-fill-available; /* iOS Safari */
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh; /* Dynamic viewport height */
+    min-height: -webkit-fill-available; /* iOS Safari */
     text-align: center;
+    gap: 4rem; /* Fixed gap between terminal and intro text */
+    padding: 2rem 1rem;
+    z-index: 0;
+}
+
+#intro .terminal {
+    width: 100%;
+    text-align: center;
+    line-height: 1.5;
+    z-index: 1;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#intro #intro-text {
+    width: 90%;
+    max-width: 600px;
+    z-index: 1;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .terminal {
@@ -874,7 +893,6 @@ main {
 }
 
 #intro-text {
-    margin-top: var(--space-xl);
     font-size: var(--text-lg);
     color: var(--color-text);
     opacity: 0;
@@ -917,7 +935,7 @@ main {
 /* Only apply hover effects on devices that support proper hover (not touch) */
 @media (hover: hover) {
     .fragment-card:hover {
-        will-change: transform, box-shadow; /* Only during interaction */
+        will-change: transform, box-shadow; /* Only during interaction for better GPU memory management */
         transform: translate3d(0, -2px, 0);
         box-shadow: 0 4px 20px 4px rgba(122, 155, 184, 0.2);
     }
@@ -1384,7 +1402,7 @@ footer {
     display: none;
 }
 
-.audio-toggle {
+.audio-toggle:not(.unified) {
     background: rgba(10, 10, 15, 0.9);
     border: 1px solid var(--color-tertiary);
     color: var(--color-accent);
@@ -1400,11 +1418,10 @@ footer {
     transition: all 0.3s ease;
 }
 
-.audio-toggle:hover {
+.audio-toggle:not(.unified):hover {
     background: var(--color-accent);
     color: var(--color-bg);
     box-shadow: 0 0 10px rgba(107, 229, 226, 0.5);
-    transform: scale(1.1);
 }
 
 .audio-icon-on,
@@ -1436,173 +1453,160 @@ footer {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
 
-.audio-on .audio-toggle {
+.audio-on .audio-toggle:not(.unified) {
     animation: pulse 2s infinite ease-in-out;
 }
 
-/* Unified Audio Button Styles */
+/* Audio Button - Sidebar Menu Style */
 .audio-toggle.unified {
-    /* Use standardized navigation button padding */
-    padding: var(--space-sm) var(--space-md); /* 0.5rem 1rem - matches other nav buttons */
-    gap: 0.4rem; /* Consistent with nav-button-standard */
-    min-height: var(--button-height-2xl); /* Desktop standard button height */
-    
-    /* Preserve unified functionality */
     display: flex;
     align-items: center;
-    border-radius: 0.5rem; /* Rounded rectangle instead of circle */
-    background: rgba(10, 10, 15, 0.9);
-    border: 1px solid var(--color-tertiary);
-    color: var(--color-accent);
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    width: auto; /* Allow width to adapt to content */
-    height: auto; /* Allow height to adapt to content */
-}
-
-.audio-toggle.unified .audio-icon {
-    color: #ff4444; /* Red color for consistency with neural system */
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    line-height: 1;
-    text-align: center;
-}
-
-.audio-toggle.unified .audio-status-text {
-    color: #ff4444; /* Red color for visibility */
+    width: 100%;
+    padding: var(--space-md) var(--space-sm);
+    background: none;
+    border: none;
+    color: var(--color-text);
+    text-decoration: none;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    font-weight: normal;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .audio-toggle.unified:hover {
+    background: rgba(107, 229, 226, 0.1);
+    color: var(--color-accent);
+}
+
+.audio-toggle.unified:active {
+    background: rgba(107, 229, 226, 0.2);
+}
+
+.audio-toggle.unified.active {
+    background: rgba(107, 229, 226, 0.15);
+    color: var(--color-accent);
+}
+
+.audio-toggle.unified.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
     background: var(--color-accent);
-    color: var(--color-bg);
-    box-shadow: 0 0 10px rgba(107, 229, 226, 0.5);
-    transform: scale(1.05);
 }
 
-.audio-toggle.unified:hover .audio-status-text {
-    color: #ff6666; /* Slightly lighter red on hover */
+.audio-toggle.unified .audio-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-lg);
+    flex-shrink: 0;
+    position: relative;
 }
 
-.audio-on .audio-toggle.unified {
-    animation: pulse 2s infinite;
-}
-
-/* Occasional blinking effect for audio status text */
 .audio-toggle.unified .audio-status-text {
-    animation: statusBlink 8s infinite ease-in-out;
+    margin-left: var(--space-md);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-size: var(--text-sm);
 }
 
-@keyframes statusBlink {
-    0%, 85% { opacity: 1; }
-    86% { opacity: 0.2; }
-    87% { opacity: 1; }
-    88% { opacity: 0.2; }
-    89% { opacity: 1; }
-    90% { opacity: 0.2; }
-    91%, 100% { opacity: 1; }
+.neural-sidebar.expanded .audio-toggle.unified .audio-status-text {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-/* ===== MOBILE MENU TOGGLE - APPEARS WHEN SIDEBAR IS HIDDEN ===== */
+/* Neural Pulse Effect for Audio Button */
+.audio-toggle.unified .neural-pulse {
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: neural-pulse-animation var(--neural-pulse-duration) ease-in-out infinite;
+}
+
+.audio-toggle.unified:hover .neural-pulse {
+    animation-duration: 1s;
+}
+
+/* ===== MOBILE MENU TOGGLE - POSITIONED INSIDE SIDEBAR BORDER ===== */
 .mobile-menu-toggle {
     position: fixed;
     top: 20px;
-    left: 20px;
-    z-index: 1000;
-    width: 50px;
-    height: 50px;
+    left: 10px; /* Inside collapsed sidebar (60px width), touching left border */
+    z-index: 1200; /* Higher than sidebar (1100) to ensure it's always visible */
+    width: 40px; /* Smaller to fit inside collapsed sidebar */
+    height: 40px;
     background: rgba(10, 10, 15, 0.95);
     border: 2px solid var(--color-accent);
     border-radius: var(--radius-sm);
     color: var(--color-accent);
     font-family: var(--font-mono);
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .mobile-menu-toggle:hover {
-    background: rgba(107, 229, 226, 0.1);
-    box-shadow: 0 0 20px rgba(107, 229, 226, 0.4);
-    transform: translateY(-2px);
+    background: rgba(107, 229, 226, 0.15);
+    border-color: rgba(107, 229, 226, 0.8);
+    box-shadow: 0 0 15px rgba(107, 229, 226, 0.4), 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .mobile-menu-toggle .menu-icon {
     color: var(--color-accent);
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1;
 }
 
-/* Smart Visibility Logic - Show only when sidebar is hidden */
-/* On large screens: always show with arrow when sidebar is open */
+/* STATIC POSITIONING: No movement when sidebar expands/collapses */
+
+/* Desktop: static position */
 @media (min-width: 1024px) {
     .mobile-menu-toggle {
-        display: flex; /* Always visible on desktop too */
-    }
-    
-    /* When sidebar is open, move button and change styling */
-    .neural-sidebar.expanded ~ .mobile-menu-toggle {
-        left: 240px; /* Perfectly touch sidebar edge (240px width) */
-        background: rgba(255, 68, 68, 0.9);
-        border-color: #ff4444;
-    }
-    
-    .neural-sidebar.expanded ~ .mobile-menu-toggle:hover {
-        background: rgba(255, 68, 68, 0.2);
-        box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+        display: flex;
+        left: 10px; /* Fixed position - never moves */
     }
 }
 
-/* On medium screens: always show so user can close sidebar */
+/* Tablet: static position */
 @media (min-width: 768px) and (max-width: 1023px) {
     .mobile-menu-toggle {
-        display: flex; /* Always visible */
-    }
-    
-    /* When sidebar is open, move button and change styling */
-    .neural-sidebar.expanded ~ .mobile-menu-toggle {
-        left: 240px; /* Perfectly touch sidebar edge (240px width) */
-        background: rgba(255, 68, 68, 0.9);
-        border-color: #ff4444;
-    }
-    
-    .neural-sidebar.expanded ~ .mobile-menu-toggle:hover {
-        background: rgba(255, 68, 68, 0.2);
-        box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+        display: flex;
+        left: 10px; /* Fixed position - never moves */
     }
 }
 
-/* On mobile: always show so user can close sidebar */
+/* Mobile: static position */
 @media (max-width: 767px) {
     .mobile-menu-toggle {
-        display: flex; /* Always visible on mobile */
-    }
-    
-    /* When sidebar is open, move button to avoid overlap and change styling */
-    .neural-sidebar.expanded ~ .mobile-menu-toggle {
-        left: min(280px, 80vw); /* Match mobile sidebar width: min(280px, 80vw) */
-        background: rgba(255, 68, 68, 0.9); /* Red tint to indicate close */
-        border-color: #ff4444;
-    }
-    
-    .neural-sidebar.expanded ~ .mobile-menu-toggle:hover {
-        background: rgba(255, 68, 68, 0.2);
-        box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+        display: flex;
+        left: 10px; /* Fixed position - never moves */
+        width: 40px;
+        height: 40px;
     }
 }
 
@@ -1668,12 +1672,12 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 /* MODERN HOVER SOLUTION: Only apply hover on devices that support precise hover */
 @media (hover: hover) and (pointer: fine) {
     .image-card:hover {
+        will-change: transform, box-shadow; /* Apply only during interaction for better GPU memory management */
         transform: scale(2);
         box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
         border-color: var(--color-accent);
         z-index: 1000;
         background-color: var(--color-bg);
-        will-change: transform, box-shadow;
     }
 }
 
@@ -1947,11 +1951,11 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     }
     
     .logo-text {
-        font-size: clamp(1.2rem, 6vw, 1.8rem);
+        font-size: 1.6rem; /* Fixed mobile size eliminates viewport recalculation */
     }
     
     .logo-subtitle {
-        font-size: clamp(0.5rem, 2vw, 0.65rem);
+        font-size: 0.6rem; /* Fixed mobile size eliminates viewport recalculation */
     }
     
     /* === CONSCIOUSNESS WIDGET === */
@@ -2193,6 +2197,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     #intro-text {
         font-size: 1rem;
         padding: 0 var(--mobile-padding);
+        width: 95% !important;
     }
     
     .cursor, .cursor-hint, .cursor-about {
@@ -2640,6 +2645,7 @@ header {
     
     /* Restore hover effects for desktop */
     .image-card:hover {
+        will-change: transform, box-shadow; /* Apply only during interaction for better GPU memory management */
         transform: scale(2);
         z-index: 1000;
         box-shadow: 0 16px 64px 8px rgba(107, 229, 226, 0.25);
@@ -2744,7 +2750,7 @@ header {
 }
 
 .image-card, .fragment-card {
-    will-change: transform;
+    /* will-change removed - applied dynamically during interaction for better GPU memory management */
     contain: layout style;
 }
 

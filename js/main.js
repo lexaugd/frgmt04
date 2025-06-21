@@ -338,30 +338,32 @@ end_transmission.`;
         ];
 
         if (Dom.terminalOutput && Dom.introText && Dom.mainCursor) {
-            // Pre-populate with invisible placeholder to reserve space
-            const placeholder = lines.map(line => `<span style="visibility: hidden;">${line}<br></span>`).join('');
-            Dom.terminalOutput.innerHTML = placeholder;
+            if (Config.debugMode) console.log('🔧 LAYOUT SHIFT FIX: Pre-allocating terminal container space');
             
-            // Set a fixed height to maintain space
-            const terminalContainer = Dom.terminalOutput.parentElement;
-            terminalContainer.style.minHeight = terminalContainer.offsetHeight + 'px';
+            // Pre-allocate space on the terminal CONTAINER, not just the output
+            const terminalContainer = Dom.terminalOutput.parentElement; // This is .terminal
+            const fullText = lines.join('<br>');
+            Dom.terminalOutput.innerHTML = fullText;
+            const terminalHeight = Dom.terminalOutput.offsetHeight;
+            Dom.terminalOutput.innerHTML = '';
             
-            // Show cursor
+            // Set height on the container that's positioned, not just the output span
+            terminalContainer.style.height = terminalHeight + 'px';
+            terminalContainer.style.minHeight = terminalHeight + 'px';
+            
+            // Show cursor immediately
             Dom.mainCursor.style.display = 'inline-block';
             
-            // Start typing after a delay
+            // Start typing after delay
             setTimeout(() => {
-                // Don't clear - start typing over the placeholder
                 this.typeLines(Dom.terminalOutput, lines, () => {
-                    // Hide cursor and show intro text
+                    // Hide cursor and reveal intro text
                     Dom.mainCursor.style.display = 'none';
                     if (Dom.introText) {
                         Dom.introText.style.visibility = 'visible';
                         Dom.introText.style.opacity = '1';
-                        Dom.introText.style.display = 'block';
-                        console.log('Intro text should now be visible', Dom.introText);
                     }
-                }, true); // Add flag to indicate we should clear first
+                }, false);
             }, 3000);
         }
     },
@@ -400,71 +402,69 @@ end_transmission.`;
             originalTerminalText = terminalOutput.innerHTML;
         }
         
-        const corruptChars = ['█', '▓', '▒', '░', '■', '□', '▪', '▫', '●', '○'];
-        
-        const corruptText = (element, original) => {
-            // Store original content and create corrupted version
-            const chars = original.split('');
-            const corrupted = chars.map(char => {
-                // 25% chance to corrupt each character (except spaces, underscores, and HTML)
-                if (char !== ' ' && char !== '_' && char !== '<' && char !== '>' && char !== '/' && Math.random() < 0.25) {
-                    return corruptChars[Math.floor(Math.random() * corruptChars.length)];
-                }
-                return char;
-            }).join('');
-            
-            // Use monospace font and fixed width to prevent layout shifts
-            const originalFontFamily = element.style.fontFamily;
-            element.style.fontFamily = 'var(--font-mono)';
-            element.style.whiteSpace = 'pre-wrap';
-            element.innerHTML = corrupted;
-            
-            // Restore original after 300-800ms
-            setTimeout(() => {
-                element.innerHTML = original;
-                element.style.fontFamily = originalFontFamily;
-                element.style.whiteSpace = '';
-            }, 300 + Math.random() * 500);
-        };
+        // LAYOUT-SAFE CORRUPTION: Use same-width characters to preserve glitch philosophy
+        const monoCorruptChars = ['█', '▓', '▒', '░', '■', '□']; // Block chars that work in monospace
         
         const corruptTextContent = (element, original) => {
+            // REAL text corruption - replace characters with same-width corruption chars
             const chars = original.split('');
             const corrupted = chars.map(char => {
                 // 25% chance to corrupt each character (except spaces and underscores)
                 if (char !== ' ' && char !== '_' && Math.random() < 0.25) {
-                    return corruptChars[Math.floor(Math.random() * corruptChars.length)];
+                    return monoCorruptChars[Math.floor(Math.random() * monoCorruptChars.length)];
                 }
                 return char;
             }).join('');
             
+            // Force monospace font to ensure consistent character width
+            const originalFont = element.style.fontFamily;
+            element.style.fontFamily = 'var(--font-mono)';
             element.textContent = corrupted;
             
             // Restore original after 300-800ms
             setTimeout(() => {
                 element.textContent = original;
+                element.style.fontFamily = originalFont;
             }, 300 + Math.random() * 500);
         };
         
         const corruptTextSafe = (element, original) => {
-            // Use same-width corruption characters to prevent layout shifts
-            const safeCorruptChars = ['█', '▓', '▒', '░', '■', '□'];
+            // REAL HTML corruption - replace text content while preserving HTML structure
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = original;
             
-            // Temporarily set to monospace font to ensure consistent character widths
+            // Corrupt only text nodes, not HTML tags
+            const textNodes = [];
+            const walker = document.createTreeWalker(
+                tempDiv,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            
+            let node;
+            while (node = walker.nextNode()) {
+                textNodes.push(node);
+            }
+            
+            // Corrupt text in text nodes
+            textNodes.forEach(textNode => {
+                const text = textNode.textContent;
+                const chars = text.split('');
+                const corrupted = chars.map(char => {
+                    // 20% chance to corrupt (lower for HTML to preserve readability)
+                    if (char !== ' ' && char !== '\n' && char !== '\t' && Math.random() < 0.2) {
+                        return monoCorruptChars[Math.floor(Math.random() * monoCorruptChars.length)];
+                    }
+                    return char;
+                }).join('');
+                textNode.textContent = corrupted;
+            });
+            
+            // Force monospace font to ensure consistent character width
             const originalFont = element.style.fontFamily;
             element.style.fontFamily = 'var(--font-mono)';
-            
-            const chars = original.split('');
-            const corrupted = chars.map(char => {
-                // 20% chance to corrupt each character (except spaces, HTML tags, and punctuation)
-                if (char !== ' ' && char !== '<' && char !== '>' && char !== '/' && 
-                    char !== '.' && char !== ',' && char !== '-' && char !== ':' && 
-                    Math.random() < 0.2) {
-                    return safeCorruptChars[Math.floor(Math.random() * safeCorruptChars.length)];
-                }
-                return char;
-            }).join('');
-            
-            element.innerHTML = corrupted;
+            element.innerHTML = tempDiv.innerHTML;
             
             // Restore original after 300-800ms
             setTimeout(() => {
