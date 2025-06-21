@@ -47,6 +47,15 @@
  */
 
 /* ===== CSS VARIABLES & RESET ===== */
+/* ===== FONT LOADING OPTIMIZATION ===== */
+/* Local font fallbacks with size-adjust to match web fonts */
+@font-face {
+    font-family: 'Fallback Mono';
+    src: local('Courier New'), local('Monaco'), local('Menlo');
+    font-display: swap;
+    size-adjust: 95%; /* Adjust to match IBM Plex Mono metrics */
+}
+
 :root {
     /* Color Variables */
     --color-bg: #0a0a0f;
@@ -58,8 +67,8 @@
     --glitch-blue: #6bb6ff;
     --color-secondary: #9ea1a4;
 
-    /* Typography */
-    --font-mono: 'IBM Plex Mono', 'Space Mono', 'DM Mono', 'Spline Sans Mono', monospace;
+    /* Typography - Optimized fallback stack */
+    --font-mono: 'IBM Plex Mono', 'Space Mono', 'DM Mono', 'Spline Sans Mono', 'Fallback Mono', 'Courier New', monospace;
 
     /* Neural Spacing System (8pt Grid) */
     --neural-unit: 8px;
@@ -340,6 +349,7 @@ main {
     position: relative;
     z-index: 1;
     overflow: hidden;
+    min-height: 300px; /* Fixed height to prevent layout shifts */
 }
 
 .secondary-header {
@@ -1589,7 +1599,7 @@ footer {
     animation: scan infinite linear;
     pointer-events: none;
     z-index: 1100;
-    contain: layout style;
+    /* REMOVED: contain: layout style - was causing scroll-based animation pausing */
     /* height, background, box-shadow, opacity, duration controlled by JavaScript config */
 }
 
@@ -1601,7 +1611,7 @@ footer {
     animation: scan infinite linear;
     pointer-events: none;
     z-index: 1099;
-    contain: layout style;
+    /* REMOVED: contain: layout style - was causing scroll-based animation pausing */
     /* height, background, box-shadow, opacity, duration controlled by JavaScript config */
 }
 
@@ -1709,6 +1719,8 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     border: 1px solid var(--color-tertiary);
     cursor: text;
     transition: border-color 0.3s ease;
+    min-height: 60px; /* Fixed height to prevent layout shifts */
+    min-width: 400px; /* Fixed width to prevent layout shifts */
 }
 
 .terminal-password:hover {

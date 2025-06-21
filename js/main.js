@@ -341,18 +341,26 @@ end_transmission.`;
         ];
 
         if (Dom.terminalOutput && Dom.introText && Dom.mainCursor) {
-            if (Config.debugMode) console.log('🔧 LAYOUT SHIFT FIX: Pre-allocating terminal container space');
+            if (Config.debugMode) console.log('🔧 LAYOUT SHIFT FIX: Pre-allocating ALL intro content space');
             
-            // Pre-allocate space on the terminal CONTAINER, not just the output
+            // COMPLETE SPACE RESERVATION: Pre-allocate space for terminal AND intro text
             const terminalContainer = Dom.terminalOutput.parentElement; // This is .terminal
             const fullText = lines.join('<br>');
             Dom.terminalOutput.innerHTML = fullText;
             const terminalHeight = Dom.terminalOutput.offsetHeight;
             Dom.terminalOutput.innerHTML = '';
             
-            // Set height on the container that's positioned, not just the output span
-            terminalContainer.style.height = terminalHeight + 'px';
-            terminalContainer.style.minHeight = terminalHeight + 'px';
+            // Make intro text visible but transparent to measure its height
+            Dom.introText.style.visibility = 'visible';
+            Dom.introText.style.opacity = '0';
+            const introHeight = Dom.introText.offsetHeight;
+            Dom.introText.style.visibility = 'hidden'; // Hide again until reveal
+            
+            // Set FIXED height on the entire intro section to prevent ANY shifts
+            const introSection = document.getElementById('intro');
+            const totalHeight = terminalHeight + introHeight + 100; // +100px for spacing
+            introSection.style.height = totalHeight + 'px';
+            introSection.style.minHeight = totalHeight + 'px';
             
             // Show cursor immediately
             Dom.mainCursor.style.display = 'inline-block';

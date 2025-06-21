@@ -65,10 +65,11 @@
     <link rel="preload" href="assets/images/Misslabeled_Emotions.jpg" as="image" type="image/jpeg">
     <link rel="preload" href="assets/images/Echoe_Sanctum.jpg" as="image" type="image/jpeg">
     
-    <!-- Font Loading Optimization -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Mono:wght@400;700&family=DM+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Mono:wght@400;700&family=DM+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
-    
+    <!-- Font Loading Best Practice: Progressive Enhancement -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Mono:wght@400;700&family=DM+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&display=optional" rel="stylesheet">
+        
     <!-- Critical CSS - Load Asynchronously -->
     <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/style.css"></noscript>
