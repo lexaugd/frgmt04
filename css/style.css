@@ -217,42 +217,19 @@ body::after {
     top: -100%;
     width: 20px;
     font-family: var(--font-mono);
-    font-size: 14px;
     line-height: 20px;
-    color: var(--color-accent);
-    text-shadow: 0 0 5px var(--color-accent);
     animation: matrix-fall linear infinite;
-    opacity: 0.8;
+    /* All styling now controlled by JavaScript config:
+     * - font-size
+     * - color
+     * - text-shadow
+     * - opacity
+     * - animation-duration
+     * - animation-delay
+     */
 }
 
-.matrix-column:nth-child(odd) {
-    animation-duration: 8s;
-    color: var(--color-tertiary);
-    text-shadow: 0 0 3px var(--color-tertiary);
-}
-
-.matrix-column:nth-child(even) {
-    animation-duration: 12s;
-    animation-delay: -2s;
-}
-
-.matrix-column:nth-child(3n) {
-    animation-duration: 10s;
-    animation-delay: -4s;
-    opacity: 0.6;
-}
-
-.matrix-column:nth-child(4n) {
-    animation-duration: 15s;
-    animation-delay: -6s;
-    color: rgba(107, 229, 226, 0.7);
-}
-
-.matrix-column:nth-child(5n) {
-    animation-duration: 9s;
-    animation-delay: -1s;
-    opacity: 0.9;
-}
+/* Remove all nth-child rules - JavaScript handles all styling variations */
 
 @keyframes matrix-fall {
     0% {
@@ -2123,7 +2100,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         /* Opacity and duration controlled by config.js - no overrides on mobile */
     }
     
-    /* Ensure matrix rain container is visible on mobile */
+    /* Matrix rain container - ensure visibility on mobile */
     .matrix-rain {
         display: block !important;
         visibility: visible !important;
@@ -2131,37 +2108,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         pointer-events: none !important;
     }
     
-    /* Mobile matrix rain optimization */
-    .matrix-column {
-        opacity: 0.8 !important;
-        font-size: 14px !important;
-        animation-duration: 10s !important;
-    }
-    
-    .matrix-column:nth-child(odd) {
-        animation-duration: 12s !important;
-        opacity: 0.7 !important;
-    }
-    
-    .matrix-column:nth-child(even) {
-        animation-duration: 14s !important;
-        opacity: 0.8 !important;
-    }
-    
-    .matrix-column:nth-child(3n) {
-        animation-duration: 11s !important;
-        opacity: 0.6 !important;
-    }
-    
-    .matrix-column:nth-child(4n) {
-        animation-duration: 15s !important;
-        opacity: 0.9 !important;
-    }
-    
-    .matrix-column:nth-child(5n) {
-        animation-duration: 9s !important;
-        opacity: 0.8 !important;
-    }
+    /* All matrix rain styling now controlled by JavaScript config.js */
     
     .corrupted-scan-line {
         opacity: 0.2 !important;

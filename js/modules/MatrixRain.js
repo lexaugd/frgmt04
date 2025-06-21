@@ -6,44 +6,80 @@ export const MatrixRain = {
     _container: null,
 
     start: function() {
-        if (!Config.enableEffects) return;
+        // Check master switches
+        if (!Config.enableEffects || !Config.matrixRain.enabled) return;
+        
         this._container = document.getElementById('matrix-rain');
         if (!this._container) return;
 
-        const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&';
-        const columnWidth = 20;
+        // Get configuration
+        const config = Config.matrixRain;
+        const isMobile = window.innerWidth <= config.performance.mobileBreakpoint;
         
-        // Mobile optimization: reduce matrix density on smaller screens for better performance
-        const isMobile = window.innerWidth <= 767;
-        const densityMultiplier = isMobile ? 0.6 : 1; // 40% fewer columns on mobile
-        const numColumns = Math.floor((window.innerWidth / columnWidth) * densityMultiplier);
+        // Calculate columns based on configuration
+        const densityMultiplier = isMobile ? config.columns.density.mobile : config.columns.density.desktop;
+        const totalColumns = Math.floor(window.innerWidth / config.columns.width);
+        const numColumns = Math.floor(totalColumns * densityMultiplier);
+        
+        // Calculate even spacing across screen width
+        const columnSpacing = window.innerWidth / numColumns;
 
         this._container.innerHTML = ''; // Clear previous
 
         for (let i = 0; i < numColumns; i++) {
             const column = document.createElement('div');
             column.className = 'matrix-column';
-            column.style.left = (i * columnWidth) + 'px';
+            
+            // Position columns evenly across screen width
+            column.style.left = Math.floor(i * columnSpacing) + 'px';
 
+            // Generate column content
             let columnText = '';
-            const columnHeight = Math.floor(Math.random() * 20) + 10;
+            const columnHeight = Math.floor(Math.random() * (config.columns.maxHeight - config.columns.minHeight + 1)) + config.columns.minHeight;
 
             for (let j = 0; j < columnHeight; j++) {
-                // Generate random matrix characters only - inappropriate content removed
-                columnText += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
+                columnText += config.characters[Math.floor(Math.random() * config.characters.length)] + '<br>';
             }
 
             column.innerHTML = columnText;
+            
+            // Apply styling from configuration
+            const fontSize = isMobile ? config.styling.fontSize.mobile : config.styling.fontSize.desktop;
+            column.style.fontSize = fontSize + 'px';
+            
+            // Apply opacity based on column position
+            let opacity = config.styling.opacity.base;
+            if (i % 5 === 0) opacity = config.styling.opacity.fifth;
+            else if (i % 4 === 0) opacity = config.styling.opacity.fourth;
+            else if (i % 3 === 0) opacity = config.styling.opacity.third;
+            else if (i % 2 === 0) opacity = config.styling.opacity.even;
+            else opacity = config.styling.opacity.odd;
+            
+            column.style.opacity = opacity;
+            
+            // Apply colors and text shadows
+            if (i % 2 === 0) {
+                column.style.color = config.styling.colors.primary;
+                column.style.textShadow = config.styling.textShadow.primary;
+            } else {
+                column.style.color = config.styling.colors.secondary;
+                column.style.textShadow = config.styling.textShadow.secondary;
+            }
+            
             this._container.appendChild(column);
 
-            const delay = Math.random() * 5;
-            const duration = Math.random() * 10 + 8;
+            // Apply timing from configuration
+            const timing = isMobile ? config.timing.mobile : config.timing.desktop;
+            const duration = Math.random() * (timing.maxDuration - timing.minDuration) + timing.minDuration;
 
-            column.style.animationDelay = `-${delay}s`;
-            column.style.animationDuration = `${duration}s`;
+            column.style.animationDelay = timing.delay + 's';
+            column.style.animationDuration = duration + 'ms';
         }
 
-        window.addEventListener('resize', this._resizeHandler.bind(this));
+        // Setup resize handler if enabled
+        if (config.performance.enableResize) {
+            window.addEventListener('resize', this._resizeHandler.bind(this));
+        }
     },
 
     stop: function() {
@@ -57,7 +93,8 @@ export const MatrixRain = {
     },
 
     _resizeHandler: function() {
+        const config = Config.matrixRain;
         clearTimeout(this._resizeTimeout);
-        this._resizeTimeout = setTimeout(() => this.start(), 250);
+        this._resizeTimeout = setTimeout(() => this.start(), config.performance.resizeDelay);
     }
 }; 

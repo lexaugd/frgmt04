@@ -77,6 +77,83 @@ const Config = {
         }
     },
     
+    // Matrix Rain configuration
+    matrixRain: {
+        enabled: true,                   // master switch for matrix rain effect
+        
+        // Character set for matrix rain
+        characters: 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>[]{}()+-*/=_|\\~`!@#$%^&',
+        
+        // Column configuration
+        columns: {
+            width: 20,                   // pixel width of each column
+            minHeight: 10,               // minimum column height (characters)
+            maxHeight: 30,               // maximum column height (characters)
+            
+            // Density configuration
+            density: {
+                desktop: 1.0,            // 100% density on desktop
+                mobile: 0.6              // 60% density on mobile (performance)
+            }
+        },
+        
+        // Animation timing
+        timing: {
+            // Desktop timing
+            desktop: {
+                minDuration: 8000,       // minimum animation duration (ms)
+                maxDuration: 18000,      // maximum animation duration (ms)
+                delay: 0                 // animation delay (ms) - 0 for instant start
+            },
+            
+            // Mobile timing (faster for better UX)
+            mobile: {
+                minDuration: 6000,       // minimum animation duration (ms)
+                maxDuration: 12000,      // maximum animation duration (ms)
+                delay: 0                 // animation delay (ms) - 0 for instant start
+            }
+        },
+        
+        // Visual styling
+        styling: {
+            // Base column styling
+            fontSize: {
+                desktop: 14,             // font size in pixels for desktop
+                mobile: 14               // font size in pixels for mobile
+            },
+            
+            // Opacity variations for visual depth
+            opacity: {
+                base: 0.8,               // base opacity
+                odd: 0.7,                // odd columns opacity
+                even: 0.8,               // even columns opacity
+                third: 0.6,              // every 3rd column opacity
+                fourth: 0.9,             // every 4th column opacity
+                fifth: 0.8               // every 5th column opacity
+            },
+            
+            // Colors
+            colors: {
+                primary: 'var(--color-accent)',        // main matrix color
+                secondary: 'var(--color-tertiary)',    // secondary matrix color
+                tertiary: 'rgba(107, 229, 226, 0.7)'   // tertiary matrix color
+            },
+            
+            // Text shadow effects
+            textShadow: {
+                primary: '0 0 5px var(--color-accent)',
+                secondary: '0 0 3px var(--color-tertiary)'
+            }
+        },
+        
+        // Performance settings
+        performance: {
+            enableResize: true,          // automatically resize on window resize
+            resizeDelay: 250,            // delay before resize recalculation (ms)
+            mobileBreakpoint: 767        // pixel width for mobile detection
+        }
+    },
+
     // Cursor possession system settings
     cursorPossession: {
         enabled: true,                    // master switch for cursor possession
@@ -116,6 +193,56 @@ const Config = {
     
 
     
+    // Matrix Rain helper functions
+    setMatrixRain: function(settings) {
+        Object.assign(this.matrixRain, settings);
+        
+        if (this.debugMode) console.log('Matrix Rain config updated:', settings);
+        if (this.debugMode) console.log('Note: Call MatrixRain.start() to apply changes');
+        
+        // Auto-restart matrix rain if it's currently running
+        if (window.MatrixRain && document.getElementById('matrix-rain').children.length > 0) {
+            window.MatrixRain.start();
+        }
+    },
+    
+    // Quick presets for matrix rain
+    matrixPresets: {
+        performance: {
+            columns: { density: { desktop: 0.7, mobile: 0.4 } },
+            timing: { 
+                desktop: { minDuration: 10000, maxDuration: 15000 },
+                mobile: { minDuration: 8000, maxDuration: 12000 }
+            }
+        },
+        
+        cinematic: {
+            columns: { density: { desktop: 1.2, mobile: 0.8 } },
+            timing: { 
+                desktop: { minDuration: 6000, maxDuration: 12000 },
+                mobile: { minDuration: 5000, maxDuration: 10000 }
+            }
+        },
+        
+        minimal: {
+            columns: { density: { desktop: 0.5, mobile: 0.3 } },
+            timing: { 
+                desktop: { minDuration: 15000, maxDuration: 25000 },
+                mobile: { minDuration: 12000, maxDuration: 18000 }
+            }
+        }
+    },
+    
+    // Apply matrix rain preset
+    applyMatrixPreset: function(presetName) {
+        if (this.matrixPresets[presetName]) {
+            this.setMatrixRain(this.matrixPresets[presetName]);
+            if (this.debugMode) console.log(`Applied matrix rain preset: ${presetName}`);
+        } else {
+            console.warn(`Matrix rain preset '${presetName}' not found`);
+        }
+    },
+
     // Quick override for testing
     set: function(newSettings) {
         Object.assign(this, newSettings);

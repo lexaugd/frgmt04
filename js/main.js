@@ -23,6 +23,9 @@ const App = {
             MatrixRain.start();
             AnimationLoop.start();
         }
+        
+        // Make MatrixRain globally accessible for config changes
+        window.MatrixRain = MatrixRain;
                 ScanLineManager.init();
         CardManager.init();
 
