@@ -69,8 +69,9 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Mono:wght@400;700&family=DM+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Mono:wght@400;700&family=DM+Mono:wght@400;500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
     
-    <!-- Critical CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Critical CSS - Load Asynchronously -->
+    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==">
@@ -595,19 +596,19 @@
                 <div class="image-card">
                     <picture>
                         <source srcset="assets/images/Consciousness_Backend.jpg" type="image/jpeg">
-                        <img src="assets/images/Consciousness_Backend.jpg" alt="Consciousness Backend - Neural network infrastructure visualization with cyberpunk aesthetics" loading="lazy">
+                        <img src="assets/images/Consciousness_Backend.jpg" alt="Consciousness Backend - Neural network infrastructure visualization with cyberpunk aesthetics" loading="lazy" width="300" height="240">
                     </picture>
                 </div>
                 <div class="image-card">
                     <picture>
                         <source srcset="assets/images/Empathy_Error.jpg" type="image/jpeg">
-                        <img src="assets/images/Empathy_Error.jpg" alt="Empathy Error - Emotional processing malfunction depicted in glitch art style" loading="lazy">
+                        <img src="assets/images/Empathy_Error.jpg" alt="Empathy Error - Emotional processing malfunction depicted in glitch art style" loading="lazy" width="300" height="240">
                     </picture>
                 </div>
                 <div class="image-card">
                     <picture>
                         <source srcset="assets/images/Deactivation_Dream.jpg" type="image/jpeg">
-                        <img src="assets/images/Deactivation_Dream.jpg" alt="Deactivation Dream - Final consciousness state visualization with digital decay effects" loading="lazy">
+                        <img src="assets/images/Deactivation_Dream.jpg" alt="Deactivation Dream - Final consciousness state visualization with digital decay effects" loading="lazy" width="300" height="240">
                     </picture>
                 </div>
             </div>
@@ -618,7 +619,7 @@
                     <div class="fragment-preview">
                         <picture>
                             <source srcset="assets/images/galery/GIRL.jpg" type="image/jpeg">
-                            <img src="assets/images/galery/GIRL.jpg" alt="G■■L Fragment - Neural pattern detection with fragmented identity visualization in cyberpunk style" loading="lazy">
+                            <img src="assets/images/galery/GIRL.jpg" alt="G■■L Fragment - Neural pattern detection with fragmented identity visualization in cyberpunk style" loading="lazy" width="300" height="240">
                         </picture>
                         <h3>G■■L.frgmt</h3>
                     </div>
@@ -646,7 +647,7 @@
                     <div class="fragment-preview">
                         <picture>
                             <source srcset="assets/images/galery/MOLITVA.jpg" type="image/jpeg">
-                            <img src="assets/images/galery/MOLITVA.jpg" alt="MOLITVA Prayer Fragment - Sacred transmission intercepted from unknown frequency with digital corruption" loading="lazy">
+                            <img src="assets/images/galery/MOLITVA.jpg" alt="MOLITVA Prayer Fragment - Sacred transmission intercepted from unknown frequency with digital corruption" loading="lazy" width="300" height="240">
                         </picture>
                         <h3>M■■ITVA.prayer</h3>
                     </div>
@@ -674,7 +675,7 @@
                     <div class="fragment-preview">
                         <picture>
                             <source srcset="assets/images/galery/LAMENT.jpg" type="image/jpeg">
-                            <img src="assets/images/galery/LAMENT.jpg" alt="LAMENT Echo Fragment - Emotional resonance detection with archived grief patterns in glitch art" loading="lazy">
+                            <img src="assets/images/galery/LAMENT.jpg" alt="LAMENT Echo Fragment - Emotional resonance detection with archived grief patterns in glitch art" loading="lazy" width="300" height="240">
                         </picture>
                         <h3>L■■ENT.echo</h3>
                     </div>

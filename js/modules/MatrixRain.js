@@ -72,7 +72,8 @@ export const MatrixRain = {
             const timing = isMobile ? config.timing.mobile : config.timing.desktop;
             const duration = Math.random() * (timing.maxDuration - timing.minDuration) + timing.minDuration;
 
-            column.style.animationDelay = timing.delay + 's';
+            // NO DELAYS: All columns start immediately
+            column.style.animationDelay = '0s';
             column.style.animationDuration = duration + 'ms';
         }
 

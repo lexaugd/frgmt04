@@ -103,14 +103,16 @@ const Config = {
             desktop: {
                 minDuration: 8000,       // minimum animation duration (ms)
                 maxDuration: 18000,      // maximum animation duration (ms)
-                delay: 0                 // animation delay (ms) - 0 for instant start
+                delay: 0,                // animation delay (ms) - 0 for instant start
+                staggerDelay: 0          // delay between columns (ms) - 0 for simultaneous start
             },
             
             // Mobile timing (faster for better UX)
             mobile: {
                 minDuration: 6000,       // minimum animation duration (ms)
                 maxDuration: 12000,      // maximum animation duration (ms)
-                delay: 0                 // animation delay (ms) - 0 for instant start
+                delay: 0,                // animation delay (ms) - 0 for instant start
+                staggerDelay: 0          // delay between columns (ms) - 0 for simultaneous start
             }
         },
         
@@ -149,7 +151,7 @@ const Config = {
         // Performance settings
         performance: {
             enableResize: true,          // automatically resize on window resize
-            resizeDelay: 250,            // delay before resize recalculation (ms)
+            resizeDelay: 0,              // INSTANT resize - no delay for better UX
             mobileBreakpoint: 767        // pixel width for mobile detection
         }
     },
