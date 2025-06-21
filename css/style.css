@@ -153,6 +153,7 @@ html, body {
     min-height: 100vh; /* Fallback */
     width: 100%;
     overflow-x: hidden;
+    animation: background-flicker var(--flicker-duration) infinite;
 }
 
 /* Fix mobile viewport height issues */
@@ -1245,7 +1246,7 @@ footer {
 
 @keyframes scan-lines {
     0% {
-        transform: translateY(-100vh);
+        transform: translate3d(0, -10px, 0);
         opacity: 0.7;
     }
     10% {
@@ -1255,7 +1256,7 @@ footer {
         opacity: 1;
     }
     100% {
-        transform: translateY(100vh);
+        transform: translate3d(0, 1400px, 0);
         opacity: 0.7;
     }
 }
@@ -1612,11 +1613,11 @@ footer {
     top: 0;
     left: 0;
     width: 100%;
-    animation: scan 5s infinite linear !important;
+    animation: scan infinite linear;
     pointer-events: none;
     z-index: 1100;
-    contain: layout;
-    /* height, background, box-shadow, opacity controlled by JavaScript config */
+    contain: layout style;
+    /* height, background, box-shadow, opacity, duration controlled by JavaScript config */
 }
 
 .scan-line-2 {
@@ -1624,16 +1625,16 @@ footer {
     top: 0;
     left: 0;
     width: 100%;
-    animation: scan 6.5s infinite linear !important;
+    animation: scan infinite linear;
     pointer-events: none;
     z-index: 1099;
-    contain: layout;
-    /* height, background, box-shadow, opacity controlled by JavaScript config */
+    contain: layout style;
+    /* height, background, box-shadow, opacity, duration controlled by JavaScript config */
 }
 
 @keyframes scan {
-    0% { transform: translateY(-10px); }
-    100% { transform: translateY(100vh); }
+    0% { transform: translate3d(0, -10px, 0); }
+    100% { transform: translate3d(0, 1400px, 0); }
 }
 
 main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group input, .form-group textarea {
@@ -2117,10 +2118,9 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     }
     
     /* === VISUAL EFFECTS === */
-    /* Mobile scan line optimization */
+    /* Mobile scan line optimization - respects config.js settings */
     .scan-line, .scan-line-2 {
-        opacity: 0.6 !important;  /* Increased from 0.25 to make them visible */
-        animation-duration: 8s !important;  /* Slightly faster for better visibility */
+        /* Opacity and duration controlled by config.js - no overrides on mobile */
     }
     
     /* Ensure matrix rain container is visible on mobile */
@@ -2166,6 +2166,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     .corrupted-scan-line {
         opacity: 0.2 !important;
         animation-duration: 15s !important;
+        height: 3px !important; /* Reduced height for mobile performance */
     }
     
     /* === CURSOR POSSESSION === */
@@ -2739,7 +2740,7 @@ header {
 
 .scan-line, .scan-line-2 {
     will-change: transform;
-    contain: layout;
+    contain: layout style;
     transform: translate3d(0, 0, 0); /* Force GPU acceleration */
 }
 
@@ -2884,7 +2885,9 @@ header {
 
 .scrolling .glitch,
 .scrolling .glitch-intense,
-.scrolling .glitch-subtle {
+.scrolling .glitch-subtle,
+.scrolling .scan-line,
+.scrolling .scan-line-2 {
     animation-play-state: paused !important;
 }
 
