@@ -156,19 +156,16 @@ html, body {
     animation: background-flicker var(--flicker-duration) infinite;
 }
 
-/* Fix mobile viewport height issues */
-@supports (height: 100dvh) {
-    html, body {
-        min-height: 100dvh; /* Dynamic viewport height for modern browsers */
-    }
-}
-
-/* iOS Safari specific fix */
-@supports (-webkit-touch-callout: none) {
-    html, body {
-        min-height: -webkit-fill-available; /* iOS Safari fallback */
-    }
-}
+/* REMOVED: Dynamic viewport fixes that cause scroll repositioning
+ * These viewport units change during scroll when address bars show/hide,
+ * causing content to shift position - same issue we fixed in intro section
+ *
+ * Previous problematic code:
+ * @supports (height: 100dvh) { min-height: 100dvh; }
+ * @supports (-webkit-touch-callout: none) { min-height: -webkit-fill-available; }
+ *
+ * Solution: Use fixed 100vh for consistent positioning across all browsers
+ */
 
 body::before {
     content: '';
@@ -1851,8 +1848,8 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     }
     
     body {
-        min-height: 100vh;
-        min-height: 100dvh; /* Modern browsers */
+        min-height: 100vh; /* Fixed viewport height - prevents Chrome mobile scroll repositioning */
+        /* Removed: min-height: 100dvh; - Causes content shifts when address bar shows/hides */
         overscroll-behavior-y: none; /* Prevent bounce and pull-to-refresh */
         -webkit-overflow-scrolling: touch;
         background: var(--color-bg); /* Simple solid background */
