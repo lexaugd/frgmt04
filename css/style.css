@@ -821,32 +821,32 @@ main {
 
 /* 1. Intro Screen */
 #intro {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Fallback */
-    min-height: 100dvh; /* Dynamic viewport height */
-    min-height: -webkit-fill-available; /* iOS Safari */
+    position: relative;
+    width: 100%;
+    min-height: 60vh; /* Only take space needed for content */
+    height: auto; /* Allow natural height based on content */
     text-align: center;
-    gap: 4rem; /* Fixed gap between terminal and intro text */
-    padding: 2rem 1rem;
+    padding: 4rem 1rem; /* Adequate padding for content */
     z-index: 0;
+    /* Remove flexbox centering to prevent mobile scroll repositioning */
 }
 
 #intro .terminal {
-    width: 100%;
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto 3rem auto; /* Center with margin bottom */
     text-align: center;
     line-height: 1.5;
     z-index: 1;
-    flex-shrink: 0; /* Prevent shrinking */
 }
 
 #intro #intro-text {
+    position: relative;
     width: 90%;
     max-width: 600px;
+    margin: 0 auto; /* Center horizontally */
     z-index: 1;
-    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .terminal {
