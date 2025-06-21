@@ -153,7 +153,6 @@ html, body {
     min-height: 100vh; /* Fallback */
     width: 100%;
     overflow-x: hidden;
-    animation: background-flicker var(--flicker-duration) infinite;
 }
 
 /* Fix mobile viewport height issues */
@@ -294,11 +293,10 @@ body::after {
 
 /* ===== LAYOUT SECTIONS ===== */
 main {
-    padding-left: calc(var(--sidebar-width-collapsed) + var(--space-xl));
+    padding-left: var(--space-xl);
     padding-right: var(--space-xl);
     padding-top: var(--space-xl);
     padding-bottom: var(--space-xl);
-    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ===== NEURAL SIDEBAR NAVIGATION ===== */
@@ -322,9 +320,7 @@ main {
     width: var(--sidebar-width-expanded);
 }
 
-.neural-sidebar.expanded ~ main {
-    padding-left: calc(var(--sidebar-width-expanded) + var(--space-xl));
-}
+/* Sidebar should not affect main content positioning - it's an overlay */
 
 /* Neural Connection Lines Background */
 .neural-connections {
@@ -2293,11 +2289,10 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         }
         
         .audio-toggle.unified {
-            padding: 0.4rem;
-            min-width: 32px;
-            min-height: 32px;
-            border-radius: 0.5rem;
-            justify-content: center;
+            padding: var(--button-padding-sm);
+            font-size: var(--font-component-sm);
+            min-height: var(--button-height-md);
+            justify-content: flex-start;
         }
         
         .audio-toggle.unified .audio-status-text {
@@ -2331,11 +2326,10 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         }
         
         .audio-toggle.unified {
-            padding: 0.3rem;
-            min-width: 28px;
-            min-height: 28px;
-            border-radius: 0.5rem;
-            justify-content: center;
+            padding: var(--button-padding-xs);
+            font-size: var(--font-component-xs);
+            min-height: var(--button-height-sm);
+            justify-content: flex-start;
         }
         
         .audio-toggle.unified .audio-icon {
