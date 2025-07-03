@@ -142,11 +142,20 @@ export class ContactManager {
             return;
         }
         
-        // reCAPTCHA validation
+        // reCAPTCHA v3 validation
         if (typeof grecaptcha !== 'undefined') {
-            const recaptchaResponse = grecaptcha.getResponse();
-            if (!recaptchaResponse) {
-                this.showError('Please complete the neural verification');
+            try {
+                const token = await grecaptcha.execute('6LfAoHUrAAAAAMjwrfGGrtscAoBDTuUSQ9CFVSDU', {action: 'contact_form'});
+                if (token) {
+                    // Add token to form data
+                    formData.set('g-recaptcha-response', token);
+                } else {
+                    this.showError('Neural verification failed - please try again');
+                    return;
+                }
+            } catch (error) {
+                console.error('reCAPTCHA v3 error:', error);
+                this.showError('Neural verification unavailable - please try again later');
                 return;
             }
         } else {
@@ -260,10 +269,7 @@ export class ContactManager {
                 submitButton.disabled = false;
             }
             
-            // Reset reCAPTCHA
-            if (typeof grecaptcha !== 'undefined') {
-                grecaptcha.reset();
-            }
+            // reCAPTCHA v3 doesn't need manual reset
         }
     }
     

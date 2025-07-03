@@ -3092,31 +3092,7 @@ header {
     border-color: rgba(107, 229, 226, 0.5);
 }
 
-/* Neural reCAPTCHA Styling */
-.g-recaptcha {
-    border: 1px solid var(--color-tertiary);
-    border-radius: var(--radius-sm);
-    background: rgba(10, 10, 15, 0.9);
-    padding: var(--space-sm);
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.g-recaptcha:hover {
-    border-color: rgba(107, 229, 226, 0.5);
-    background: rgba(10, 10, 15, 0.95);
-}
-
-/* Style the reCAPTCHA iframe when it loads */
-.g-recaptcha iframe {
-    border-radius: var(--radius-sm);
-    filter: brightness(0.9) contrast(1.1);
-    transition: all 0.3s ease;
-}
-
-.g-recaptcha iframe:hover {
-    filter: brightness(1) contrast(1.2);
-}
+/* reCAPTCHA v3 - Invisible, no styling needed */
 
 /* Form Submit Section */
 .form-submit {
@@ -3229,17 +3205,7 @@ header {
         font-size: var(--text-sm);
     }
     
-    /* Mobile reCAPTCHA styling */
-    .g-recaptcha {
-        margin: 0 auto;
-        width: fit-content;
-        max-width: 100%;
-    }
-    
-    .g-recaptcha iframe {
-        max-width: 100%;
-        height: auto;
-    }
+    /* reCAPTCHA v3 - Mobile invisible, no styling needed */
     
     /* Nested breakpoints for contact interface */
     @media screen and (max-width: 480px) {
@@ -3253,10 +3219,6 @@ header {
         
         .terminal-line {
             font-size: 0.7rem;
-        }
-        
-        .g-recaptcha {
-            padding: var(--space-xs);
         }
     }
 }
