@@ -13,6 +13,8 @@ import { ConsciousnessMapper } from './modules/ConsciousnessMapper.js';
 import { InspectionTrap } from './modules/InspectionTrap.js';
 import { CursorPossession } from './modules/CursorPossession.js';
 import { SidebarManager } from './modules/SidebarManager.js';
+import { ContactManager } from './modules/ContactManager.js';
+import { validateContactForm } from './modules/FormValidator.js';
 
 const App = {
     async init() {
@@ -41,6 +43,9 @@ const App = {
             
             // Initialize sidebar navigation
             State.sidebarManager = new SidebarManager();
+            
+            // Initialize contact system (will gracefully handle missing elements)
+            State.contactManager = new ContactManager();
             
                         // Initialize UI interactions
             this.initGlitchToggle();

@@ -107,17 +107,14 @@
     Decode it if you dare...
     -->
     
-    <!-- Google Analytics 4 -->
-    <!-- Replace GA_MEASUREMENT_ID with your actual tracking ID -->
-    <!-- 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94ENKCMCW5"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
+        gtag('config', 'G-94ENKCMCW5');
     </script>
-    -->
     
     <!-- Enhanced Structured Data - JSON-LD for AI Search Engines -->
     <script type="application/ld+json">
@@ -459,6 +456,12 @@
                     <span class="sidebar-label">studies_archive</span>
                 </a>
                 
+                <!-- Neural Contact Interface -->
+                <button id="contact-nav" class="sidebar-item secondary-item" aria-label="Neural Contact Interface" title="Neural Contact Interface">
+                    <span class="sidebar-icon">📡</span>
+                    <span class="sidebar-label">neural_contact</span>
+                </button>
+                
                 <!-- Archive Lore -->
                 <a href="#lore" id="lore-nav" class="sidebar-item secondary-item" aria-label="Archive Lore" title="Archive Lore">
                     <span class="sidebar-icon">📜</span>
@@ -795,6 +798,59 @@
         </section>
     </main>
 
+    <!-- Neural Contact Interface Panel -->
+    <div id="neural-contact-panel" class="neural-contact-panel" aria-hidden="true">
+        <div class="contact-panel-content">
+            <div class="contact-panel-header">
+                <h2 class="contact-title">neural_contact_interface</h2>
+                <button id="close-contact-button" class="btn-neural-ghost close-button" aria-label="Close Contact Panel">[close]</button>
+            </div>
+            
+            <div class="contact-panel-body">
+                <div class="contact-terminal">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">root@frgmnt_04:~$</span>
+                        <span class="terminal-text">initiate_neural_link</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-status">status: awaiting_transmission</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-warning">warning: all communications_logged</span>
+                    </div>
+                </div>
+                
+                <form id="neural-contact-form" class="neural-contact-form" action="https://formsubmit.co/4c7658394db08b77f59fdb557e4cbc" method="POST">
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_subject" value="Neural Contact - FRGMNT_04">
+                    <input type="hidden" name="_captcha" value="true">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://frgmt04.com/">
+                    
+                    <div class="form-group">
+                        <label for="contact-email" class="form-label">neural_id:</label>
+                        <input type="email" id="contact-email" name="email" class="form-input" required maxlength="100" placeholder="your@neural.link">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-message" class="form-label">transmission_content:</label>
+                        <textarea id="contact-message" name="message" class="form-textarea" required minlength="10" maxlength="2000" rows="6" placeholder="enter your message... what fragments are you seeking?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">neural_verification:</label>
+                        <div class="form-hint">complete the verification to prove you're human</div>
+                        <div class="g-recaptcha" data-sitekey="6LfAoHUrAAAAAMjwrfGGrtscAoBDTuUSQ9CFVSDU"></div>
+                    </div>
+                    
+                    <div class="form-submit">
+                        <button type="submit" class="btn-neural-primary">transmit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- 5. Footer -->
     <footer>
         <p class="glitch-subtle">protocol active: v1.1<br>verification via label only<br>[©] frgmnt_04 | mem_frgmnt.net</p>
@@ -833,6 +889,9 @@
         <p>Suitable for consciousness archaeology research, digital awareness studies, post-AI consciousness research, neural fragment analysis, digital consciousness preservation studies, consciousness artifact methodology, digital awareness interpretation, consciousness echo research, digital archaeology methodology</p>
     </div>
 
+    <!-- Google reCAPTCHA v2 -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
