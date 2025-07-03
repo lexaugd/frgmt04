@@ -107,6 +107,12 @@
     --mobile-touch-target: 44px;
     --mobile-padding: var(--space-md);
     --mobile-margin: var(--space-sm);
+    
+    /* Responsive Padding System - Smooth scaling across breakpoints */
+    --padding-base-mobile: clamp(12px, 2.5vw, 20px);     /* 12px-20px responsive */
+    --padding-base-tablet: clamp(20px, 3vw, 28px);       /* 20px-28px responsive */
+    --padding-base-desktop: clamp(24px, 4vw, 32px);      /* 24px-32px responsive */
+    --padding-vertical-multiplier: 1.5;                   /* Consistent vertical scaling */
 
     /* Component Sizing System */
     --button-height-sm: 1.8rem;    /* 320px breakpoint */
@@ -277,10 +283,10 @@ body::after {
 
 /* ===== LAYOUT SECTIONS ===== */
 main {
-    padding-left: var(--space-xl);
-    padding-right: var(--space-xl);
-    padding-top: var(--space-xl);
-    padding-bottom: var(--space-xl);
+    padding-left: var(--padding-base-desktop);
+    padding-right: var(--padding-base-desktop);
+    padding-top: calc(var(--padding-base-desktop) * var(--padding-vertical-multiplier));
+    padding-bottom: var(--padding-base-desktop);
 }
 
 /* ===== NEURAL SIDEBAR NAVIGATION ===== */
@@ -1702,10 +1708,13 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 
 /* Password Entry Section */
 #password-entry {
-    padding: var(--space-xl);
+    padding: 0; /* Remove redundant padding - main container handles viewport spacing */
     text-align: center;
+    margin-top: clamp(2rem, 8vh, 4rem); /* Responsive positioning - scales with viewport */
     margin-bottom: var(--space-xl);
-    /* Desktop margin will be set in media query below */
+    max-width: 600px; /* Semantic content constraint */
+    margin-left: auto; /* Auto-center horizontally */
+    margin-right: auto; /* Auto-center horizontally */
 }
 
 .terminal-password {
@@ -1720,7 +1729,9 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     cursor: text;
     transition: border-color 0.3s ease;
     min-height: 60px; /* Fixed height to prevent layout shifts */
-    min-width: 400px; /* Fixed width to prevent layout shifts */
+    width: 100%; /* Fill available container space */
+    max-width: 400px; /* Semantic content constraint */
+    box-sizing: border-box; /* Include padding in width calculations */
 }
 
 .terminal-password:hover {
@@ -1739,14 +1750,16 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     font-family: var(--font-mono);
     font-size: var(--text-xl);
     outline: none;
-    width: 250px;
+    width: 100%; /* Fill available parent space */
+    max-width: 250px; /* Semantic content constraint */
+    min-width: 120px; /* Minimum width for usability */
     min-height: 2rem;
     padding: 0.25rem 0.5rem;
     caret-color: var(--color-accent);
     cursor: text;
-    /* Make it easier to click */
     border-radius: 2px;
     transition: background-color 0.2s ease;
+    box-sizing: border-box; /* Include padding in width calculations */
 }
 
 .password-field::placeholder {
@@ -1782,6 +1795,40 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 #password-result.error {
     color: #ff6b6b;
     border-color: #ff6b6b;
+}
+
+/* Password Result Content Classes - Responsive */
+.password-result-message {
+    margin-bottom: var(--space-md); /* 16px responsive */
+    color: var(--color-accent);
+    font-style: italic;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.password-result-line {
+    margin-top: var(--space-sm); /* 8px responsive */
+    color: var(--color-text);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.password-result-small {
+    margin-top: var(--space-sm); /* 8px responsive */
+    color: var(--color-text);
+    font-size: 0.9rem;
+    opacity: 0.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.password-result-small-first {
+    margin-top: var(--space-md); /* 16px responsive - extra space for first small line */
+    color: var(--color-text);
+    font-size: 0.9rem;
+    opacity: 0.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Hint Section */
@@ -1872,10 +1919,10 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     }
     
     main {
-        padding-left: var(--space-md);
-        padding-right: var(--space-md);
-        padding-top: var(--space-lg);
-        padding-bottom: var(--space-lg);
+        padding-left: var(--padding-base-mobile);
+        padding-right: var(--padding-base-mobile);
+        padding-top: calc(var(--padding-base-mobile) * var(--padding-vertical-multiplier));
+        padding-bottom: var(--padding-base-mobile);
     }
     
     /* Mobile Sidebar Styles */
@@ -1919,10 +1966,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     
     /* Mobile Sidebar Toggle styling moved to global section above */
     
-    /* Fix password entry positioning on mobile */
-    #password-entry {
-        margin-top: var(--space-xl);
-    }
+    /* Mobile logo positioning and password entry spacing already handled by new architecture */
     
     /* Mobile Logo Positioning */
     .site-logo {
@@ -2048,24 +2092,24 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     }
     
     /* === PASSWORD SECTION === */
-    .password-field {
-        width: 220px;
+    .terminal-password {
+        padding: var(--mobile-padding); /* Reduced padding for mobile */
         font-size: 1.1rem;
-        min-height: var(--button-height-2xl); /* Desktop input height */
+        /* width and max-width constraints handled by new architecture */
+    }
+    
+    .password-field {
+        font-size: 1.1rem;
+        min-height: var(--button-height-2xl);
         padding: 0.5rem;
         touch-action: manipulation;
         border: 1px solid rgba(107, 229, 226, 0.2);
+        /* width constraints handled by new architecture */
     }
     
     .password-field:focus {
         border-color: rgba(107, 229, 226, 0.5);
         background-color: rgba(107, 229, 226, 0.1);
-    }
-    
-    .terminal-password {
-        padding: var(--mobile-padding);
-        font-size: 1.1rem;
-        text-align: center;
     }
     
     #password-result {
@@ -2163,9 +2207,11 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         max-width: none;
     }
     
-    #gallery, #lore, #password-entry {
+    #gallery, #lore {
         padding: var(--mobile-padding);
     }
+    
+    /* #password-entry padding removed - handled by new architecture */
     
     .lore-text {
         font-size: 1rem;
@@ -2207,6 +2253,17 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         min-height: var(--button-height-lg); /* Mobile override */
     }
     
+    .btn-neural-ghost {
+        padding: var(--button-padding-md); /* Mobile override */
+        font-size: var(--font-component-md); /* Mobile override */
+        min-height: var(--button-height-lg); /* Mobile override */
+        max-width: 95vw; /* Prevent overflow on mobile */
+        width: auto; /* Allow natural sizing */
+        word-wrap: break-word; /* Break long text if needed */
+        white-space: normal; /* Allow text wrapping */
+        text-align: center; /* Center wrapped text */
+    }
+    
 
     
     /* === NESTED BREAKPOINTS === */
@@ -2220,8 +2277,9 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
         }
         
         .terminal-password {
-            padding: var(--space-xs);
+            /* Use responsive padding system - removed hard-coded override */
             font-size: 1rem;
+            /* width constraints handled by new architecture */
         }
     }
     
@@ -2242,6 +2300,13 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
             padding: var(--button-padding-sm); /* 620px breakpoint override */
             font-size: var(--font-component-sm); /* 620px breakpoint override */
             min-height: var(--button-height-md); /* 620px breakpoint override */
+        }
+        
+        .btn-neural-ghost {
+            padding: var(--button-padding-sm); /* 620px breakpoint override */
+            font-size: var(--font-component-sm); /* 620px breakpoint override */
+            min-height: var(--button-height-md); /* 620px breakpoint override */
+            max-width: 90vw; /* Tighter constraint for 620px */
         }
         
         .audio-toggle.unified {
@@ -2279,6 +2344,13 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
             padding: var(--button-padding-xs); /* 320px breakpoint override */
             font-size: var(--font-component-xs); /* 320px breakpoint override */
             min-height: var(--button-height-sm); /* 320px breakpoint override */
+        }
+        
+        .btn-neural-ghost {
+            padding: var(--button-padding-xs); /* 320px breakpoint override */
+            font-size: var(--font-component-xs); /* 320px breakpoint override */
+            min-height: var(--button-height-sm); /* 320px breakpoint override */
+            max-width: 85vw; /* Very tight constraint for 320px */
         }
         
         .audio-toggle.unified {
@@ -2586,7 +2658,10 @@ header {
     /* .about-btn now uses btn-neural-secondary - tablet responsive handled by neural system */
     
     main {
-        padding-top: 55px;
+        padding-left: var(--padding-base-tablet);
+        padding-right: var(--padding-base-tablet);
+        padding-top: calc(var(--padding-base-tablet) * var(--padding-vertical-multiplier));
+        padding-bottom: var(--padding-base-tablet);
     }
 }
 
@@ -2656,12 +2731,10 @@ header {
     /* .about-btn now uses btn-neural-secondary - desktop responsive handled by neural system */
     
     main {
-        padding-top: 0;
-    }
-    
-    /* CRITICAL FIX: Desktop password entry positioning */
-    #password-entry {
-        margin-top: 120px !important;
+        padding-left: var(--padding-base-desktop);
+        padding-right: var(--padding-base-desktop);
+        padding-top: calc(var(--padding-base-desktop) * var(--padding-vertical-multiplier));
+        padding-bottom: var(--padding-base-desktop);
     }
     
     /* Desktop Logo Enhancement */

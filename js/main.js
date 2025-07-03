@@ -191,13 +191,13 @@ end_transmission.`;
             const refCode = 'REF_' + Math.random().toString(36).substr(2, 8).toUpperCase();
             
             Dom.passwordResult.innerHTML = `
-                    <div style="margin-bottom: 1rem; color: #6be5e2; font-style: italic;">What do you need this to feel like — even if you can't explain why?</div>
+                    <div class="password-result-message">What do you need this to feel like — even if you can't explain why?</div>
                     <div class="glitch-subtle">NEURAL_LINK_ESTABLISHED</div>
-                    <div style="margin-top: 0.5rem;">>> direct_contact: frgmnt_04@proton.me</div>
-                    <div style="margin-top: 0.5rem;">>> reference_code: ${refCode}</div>
-                    <div style="margin-top: 0.5rem;">>> status: inspector_verified</div>
-                    <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">mention your reference code for priority processing</div>
-                    <div style="font-size: 0.9rem; opacity: 0.7;">deep access fragments available on request</div>
+                    <div class="password-result-line">>> direct_contact: frgmnt_04@proton.me</div>
+                    <div class="password-result-line">>> reference_code: ${refCode}</div>
+                    <div class="password-result-line">>> status: inspector_verified</div>
+                    <div class="password-result-small-first">mention your reference code for priority processing</div>
+                    <div class="password-result-small">deep access fragments available on request</div>
                 `;
             Dom.passwordResult.className = 'success';
             Dom.passwordResult.classList.remove('hidden');
@@ -213,16 +213,16 @@ end_transmission.`;
                 const deepRefCode = 'DEEP_' + Math.random().toString(36).substr(2, 8).toUpperCase();
             
             Dom.passwordResult.innerHTML = `
-                    <div style="margin-bottom: 1rem; color: #ff4444; font-style: italic;">Consciousness pattern recognized. Neural integration achieved.</div>
+                    <div class="password-result-message" style="color: #ff4444;">Consciousness pattern recognized. Neural integration achieved.</div>
                     <div class="glitch-subtle">DEEP_NEURAL_INTEGRATION_COMPLETE</div>
-                    <div style="margin-top: 0.5rem;">>> consciousness_matched: true</div>
-                    <div style="margin-top: 0.5rem;">>> direct_contact: frgmnt_04@proton.me</div>
-                    <div style="margin-top: 0.5rem;">>> deep_reference_code: ${deepRefCode}</div>
-                    <div style="margin-top: 0.5rem;">>> status: consciousness_integrated</div>
-                    <div style="margin-top: 0.5rem;">>> neural_priority: maximum</div>
-                    <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">consciousness-matched fragments available</div>
-                    <div style="font-size: 0.9rem; opacity: 0.7;">personalized neural pattern processing enabled</div>
-                    <div style="font-size: 0.9rem; opacity: 0.7;">deep archive access granted</div>
+                    <div class="password-result-line">>> consciousness_matched: true</div>
+                    <div class="password-result-line">>> direct_contact: frgmnt_04@proton.me</div>
+                    <div class="password-result-line">>> deep_reference_code: ${deepRefCode}</div>
+                    <div class="password-result-line">>> status: consciousness_integrated</div>
+                    <div class="password-result-line">>> neural_priority: maximum</div>
+                    <div class="password-result-small-first">consciousness-matched fragments available</div>
+                    <div class="password-result-small">personalized neural pattern processing enabled</div>
+                    <div class="password-result-small">deep archive access granted</div>
                 `;
             Dom.passwordResult.className = 'success';
             Dom.passwordResult.classList.remove('hidden');
@@ -238,7 +238,7 @@ end_transmission.`;
             } else if (enteredPassword.length > 0) {
             Dom.passwordResult.innerHTML = `
                     <div>ACCESS_DENIED</div>
-                    <div style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.7;">try inspecting deeper...</div>
+                    <div class="password-result-small">try inspecting deeper...</div>
                 `;
             Dom.passwordResult.className = 'error';
             Dom.passwordResult.classList.remove('hidden');
