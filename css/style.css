@@ -1889,7 +1889,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 #consciousness-widget {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 20px; /* Moved to left corner to avoid reCAPTCHA conflict */
     z-index: 9998;
     font-family: var(--font-mono);
     transition: all 0.3s ease;
@@ -1988,7 +1988,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
     #consciousness-widget {
         position: fixed; /* Keep fixed but use viewport positioning */
         bottom: 10px;
-        right: 10px;
+        left: 10px; /* Moved to left corner to avoid reCAPTCHA conflict */
         max-width: calc(100vw - 20px);
         /* Ensure it's positioned relative to viewport, not the transformed body */
     }
@@ -2397,7 +2397,7 @@ main, .terminal, .fragment-details, .lore-text, .form-group label, .form-group i
 #widget-expanded {
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: 0; /* Changed from right: 0 to left: 0 for left-corner positioning */
     background: rgba(10, 10, 15, 0.95);
     border: 1px solid var(--color-accent);
     border-radius: var(--radius-md);

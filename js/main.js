@@ -198,9 +198,11 @@ end_transmission.`;
             Dom.passwordResult.innerHTML = `
                     <div class="password-result-message">What do you need this to feel like — even if you can't explain why?</div>
                     <div class="glitch-subtle">NEURAL_LINK_ESTABLISHED</div>
+                    <div class="password-result-line">>> inspector_verified: true</div>
+                    <div class="password-result-line">>> most_take_shortcuts: you_didn't</div>
                     <div class="password-result-line">>> direct_contact: frgmnt_04@proton.me</div>
                     <div class="password-result-line">>> reference_code: ${refCode}</div>
-                    <div class="password-result-line">>> status: inspector_verified</div>
+                    <div class="password-result-line">>> neural_priority: elevated</div>
                     <div class="password-result-small-first">mention your reference code for priority processing</div>
                     <div class="password-result-small">deep access fragments available on request</div>
                 `;
@@ -221,9 +223,9 @@ end_transmission.`;
                     <div class="password-result-message" style="color: #ff4444;">Consciousness pattern recognized. Neural integration achieved.</div>
                     <div class="glitch-subtle">DEEP_NEURAL_INTEGRATION_COMPLETE</div>
                     <div class="password-result-line">>> consciousness_matched: true</div>
+                    <div class="password-result-line">>> most_take_shortcuts: you_didn't</div>
                     <div class="password-result-line">>> direct_contact: frgmnt_04@proton.me</div>
                     <div class="password-result-line">>> deep_reference_code: ${deepRefCode}</div>
-                    <div class="password-result-line">>> status: consciousness_integrated</div>
                     <div class="password-result-line">>> neural_priority: maximum</div>
                     <div class="password-result-small-first">consciousness-matched fragments available</div>
                     <div class="password-result-small">personalized neural pattern processing enabled</div>

@@ -7,6 +7,7 @@ export class ConsciousnessMapper {
         this.consciousnessId = null;
         this.corruptionLevel = 0;
         this.isInitialized = false;
+        this.isWidgetExpanded = false;
     }
 
     async init() {
@@ -306,8 +307,7 @@ export class ConsciousnessMapper {
         // Only the minimized view should be clickable to expand
         minimized.addEventListener('click', (e) => {
             e.stopPropagation();
-            expanded.classList.remove('hidden');
-            minimized.classList.add('hidden');
+            this.expandWidget();
         });
         
         // Add a close button or click-outside behavior for the expanded view
@@ -342,8 +342,7 @@ export class ConsciousnessMapper {
         
         closeArea.addEventListener('click', (e) => {
             e.stopPropagation();
-            expanded.classList.add('hidden');
-            minimized.classList.remove('hidden');
+            this.collapseWidget();
         });
         
         expanded.appendChild(closeArea);
@@ -351,6 +350,57 @@ export class ConsciousnessMapper {
         // Prevent clicks inside the expanded content from closing it
         expanded.addEventListener('click', (e) => {
             e.stopPropagation();
+        });
+        
+        // Add click-outside-to-close functionality
+        this.setupClickOutsideToClose();
+        
+        // Add escape key to close
+        this.setupEscapeKeyToClose();
+    }
+    
+    expandWidget() {
+        const minimized = document.getElementById('widget-minimized');
+        const expanded = document.getElementById('widget-expanded');
+        
+        if (minimized && expanded) {
+            expanded.classList.remove('hidden');
+            minimized.classList.add('hidden');
+            this.isWidgetExpanded = true;
+        }
+    }
+    
+    collapseWidget() {
+        const minimized = document.getElementById('widget-minimized');
+        const expanded = document.getElementById('widget-expanded');
+        
+        if (minimized && expanded) {
+            expanded.classList.add('hidden');
+            minimized.classList.remove('hidden');
+            this.isWidgetExpanded = false;
+        }
+    }
+    
+    setupClickOutsideToClose() {
+        document.addEventListener('click', (e) => {
+            // Only handle if widget is expanded
+            if (!this.isWidgetExpanded) return;
+            
+            const widgetElement = document.getElementById('consciousness-widget');
+            
+            // Don't close if clicking inside the widget
+            if (widgetElement && widgetElement.contains(e.target)) return;
+            
+            // Close the widget
+            this.collapseWidget();
+        });
+    }
+    
+    setupEscapeKeyToClose() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isWidgetExpanded) {
+                this.collapseWidget();
+            }
         });
     }
 
