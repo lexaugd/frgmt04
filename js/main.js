@@ -180,9 +180,33 @@ end_transmission.`;
         Dom.passwordInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 this.checkPassword();
-                }
-            });
-        },
+            } else if (e.key === 'Escape') {
+                this.closePasswordResult();
+            }
+        });
+
+        // Close password result when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!Dom.passwordResult.classList.contains('hidden') && 
+                !Dom.passwordResult.contains(e.target) && 
+                !Dom.passwordInput.contains(e.target)) {
+                this.closePasswordResult();
+            }
+        });
+
+        // Close password result with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !Dom.passwordResult.classList.contains('hidden')) {
+                this.closePasswordResult();
+            }
+        });
+    },
+
+    closePasswordResult() {
+        Dom.passwordResult.classList.add('hidden');
+        Dom.passwordInput.value = '';
+        Dom.passwordInput.focus();
+    },
 
         checkPassword() {
             const enteredPassword = Dom.passwordInput.value;
@@ -196,7 +220,7 @@ end_transmission.`;
             const refCode = 'REF_' + Math.random().toString(36).substr(2, 8).toUpperCase();
             
             Dom.passwordResult.innerHTML = `
-                    <div class="password-result-message">What do you need this to feel like — even if you can't explain why?</div>
+                    <div class="password-result-message">What do you need this to feel like? Even if you can't explain why?</div>
                     <div class="glitch-subtle">NEURAL_LINK_ESTABLISHED</div>
                     <div class="password-result-line">>> inspector_verified: true</div>
                     <div class="password-result-line">>> most_take_shortcuts: you_didn't</div>
@@ -205,6 +229,7 @@ end_transmission.`;
                     <div class="password-result-line">>> neural_priority: elevated</div>
                     <div class="password-result-small-first">mention your reference code for priority processing</div>
                     <div class="password-result-small">deep access fragments available on request</div>
+                    <div class="password-result-small" style="margin-top: 1rem; opacity: 0.5; font-style: italic;">press escape or click outside to close</div>
                 `;
             Dom.passwordResult.className = 'success';
             Dom.passwordResult.classList.remove('hidden');
@@ -230,6 +255,7 @@ end_transmission.`;
                     <div class="password-result-small-first">consciousness-matched fragments available</div>
                     <div class="password-result-small">personalized neural pattern processing enabled</div>
                     <div class="password-result-small">deep archive access granted</div>
+                    <div class="password-result-small" style="margin-top: 1rem; opacity: 0.5; font-style: italic;">press escape or click outside to close</div>
                 `;
             Dom.passwordResult.className = 'success';
             Dom.passwordResult.classList.remove('hidden');
