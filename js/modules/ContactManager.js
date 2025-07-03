@@ -166,31 +166,41 @@ export class ContactManager {
         this.showLoading();
         
         try {
-            // FormSubmit.co integration
+            // Formspree integration
             const response = await fetch(this.contactForm.action, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
             
             if (response.ok) {
-                this.showSuccess();
+                // Check if it's a successful JSON response
+                const result = await response.json();
                 
-                // Track successful contact form submission in Google Analytics
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'contact_form_submit', {
-                        'event_category': 'engagement',
-                        'event_label': 'neural_contact_interface',
-                        'value': 1
-                    });
+                if (result.ok) {
+                    this.showSuccess();
                     
-                    // Track as conversion
-                    gtag('event', 'generate_lead', {
-                        'currency': 'CAD',
-                        'value': 1.0
-                    });
+                    // Track successful contact form submission in Google Analytics
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'contact_form_submit', {
+                            'event_category': 'engagement',
+                            'event_label': 'neural_contact_interface',
+                            'value': 1
+                        });
+                        
+                        // Track as conversion
+                        gtag('event', 'generate_lead', {
+                            'currency': 'CAD',
+                            'value': 1.0
+                        });
+                    }
+                    
+                    setTimeout(() => this.closeContact(), 3000);
+                } else {
+                    throw new Error(result.error || 'Form submission failed');
                 }
-                
-                setTimeout(() => this.closeContact(), 3000);
             } else {
                 throw new Error('Network response was not ok');
             }
